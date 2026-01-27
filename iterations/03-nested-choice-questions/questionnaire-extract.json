@@ -1,0 +1,117 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "cts-study-questionnaire-nested-choice",
+  "meta": {
+    "profile": [
+      "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-extr-template"
+    ]
+  },
+  "url": "http://example.org/Questionnaire/cts-study-questionnaire-nested-choice",
+  "status": "active",
+  "title": "BHSC studie CTS (Nested Choice Questions)",
+  "contained": [
+    {
+      "resourceType": "Composition",
+      "id": "composition-template",
+      "status": "final",
+      "type": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "11488-4",
+            "display": "Consultation note"
+          }
+        ]
+      },
+      "date": "2024-01-01",
+      "_date": {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractValue",
+            "valueString": "{{%resource.authored}}"
+          }
+        ]
+      },
+      "title": "BHSC studie CTS",
+      "section": [
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='preop-ko')"
+            }
+          ],
+          "title": "CTS Preop KO",
+          "code": {
+            "coding": [
+              {
+                "system": "http://example.org/cts-sections",
+                "code": "preop-clinical-exam",
+                "display": "Preoperative Clinical Examination"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>drukpijn</dt><dd>{{%context.item.where(linkId='drukpijn').answer.value}}</dd></dl><table><thead><tr><th></th><th>RE</th><th>LI</th></tr></thead><tbody><tr><td>Thenar atrofie</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='thenar-atrofie').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='thenar-atrofie').answer.value}}</td></tr><tr><td>Durkan</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='durkan').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='durkan').answer.value}}</td></tr><tr><td>Tinel</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='tinel').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='tinel').answer.value}}</td></tr><tr><td>Phalen</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='phalen').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='phalen').answer.value}}</td></tr><tr><td>Key pinch (kgF)</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='key-pinch').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='key-pinch').answer.value}}</td></tr><tr><td>Precision pinch (kgF)</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='precision-pinch').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='precision-pinch').answer.value}}</td></tr><tr><td>Jamar 2 (kgF)</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='right').item.where(linkId='jamar2').answer.value}}</td><td>{{%context.item.where(linkId='laterality').answer.where(value.code='left').item.where(linkId='jamar2').answer.value}}</td></tr></tbody></table><dl><dt>Weber 2-pt discrim dig</dt><dd>{{%context.item.where(linkId='weber-dig').answer.value}}</dd></dl></div>"
+          }
+        }
+      ]
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtract",
+      "extension": [
+        {
+          "url": "template",
+          "valueReference": {
+            "reference": "#composition-template"
+          }
+        }
+      ]
+    }
+  ],
+  "item": [
+    {
+      "linkId": "preop-ko",
+      "text": "CTS Preop KO",
+      "type": "group",
+      "item": [
+        { "linkId": "drukpijn", "text": "drukpijn", "type": "string" },
+        {
+          "linkId": "laterality",
+          "text": "Laterality",
+          "type": "choice",
+          "repeats": true,
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://example.org/laterality",
+                "code": "right",
+                "display": "Right"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://example.org/laterality",
+                "code": "left",
+                "display": "Left"
+              }
+            }
+          ],
+          "item": [
+            { "linkId": "thenar-atrofie", "text": "Thenar atrofie", "type": "string" },
+            { "linkId": "durkan", "text": "Durkan", "type": "string" },
+            { "linkId": "tinel", "text": "Tinel", "type": "string" },
+            { "linkId": "phalen", "text": "Phalen", "type": "string" },
+            { "linkId": "key-pinch", "text": "Key pinch (kgF)", "type": "string" },
+            { "linkId": "precision-pinch", "text": "Precision pinch (kgF)", "type": "string" },
+            { "linkId": "jamar2", "text": "Jamar 2 (kgF)", "type": "string" }
+          ]
+        },
+        { "linkId": "weber-dig", "text": "Weber 2-pt discrim dig", "type": "string" }
+      ]
+    }
+  ]
+}
