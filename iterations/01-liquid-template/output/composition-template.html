@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="nl">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>BHSC studie CTS</title>
+        <style>
+            body {
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+                max-width: 800px;
+                margin: 2rem auto;
+                padding: 0 1rem;
+                line-height: 1.5;
+            }
+            h1 {
+                border-bottom: 2px solid #333;
+                padding-bottom: 0.5rem;
+            }
+            h2 {
+                background: #f0f0f0;
+                padding: 0.5rem;
+                margin-top: 2rem;
+            }
+            dl {
+                display: grid;
+                grid-template-columns: minmax(200px, 1fr) 2fr;
+                gap: 0.25rem 1rem;
+            }
+            dt {
+                font-weight: 600;
+                padding: 0.25rem 0;
+            }
+            dd {
+                margin: 0;
+                padding: 0.25rem 0;
+                border-bottom: 1px solid #eee;
+            }
+            section {
+                margin-bottom: 2rem;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 1rem 0;
+            }
+            th,
+            td {
+                padding: 0.5rem;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            th {
+                background: #f5f5f5;
+                font-weight: 600;
+            }
+            thead th {
+                border-bottom: 2px solid #ccc;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>BHSC studie CTS</h1>
+        <section>
+            <h2>CTS Preop An</h2>
+            <dl>
+                <dt>HAND</dt>
+                <dd>{{%context.item.where(linkId='hand').answer.value}}</dd>
+                <dt>klacht</dt>
+                <dd>{{%context.item.where(linkId='klacht').answer.value}}</dd>
+                <dt>nachtelijke tintelingen</dt>
+                <dd>
+                    {{%context.item.where(linkId='nachtelijke-tintelingen').answer.value}}
+                </dd>
+                <dt>fijne motoriek</dt>
+                <dd>
+                    {{%context.item.where(linkId='fijne-motoriek').answer.value}}
+                </dd>
+                <dt>Duur symptomen</dt>
+                <dd>
+                    {{%context.item.where(linkId='duur-symptomen').answer.value}}
+                </dd>
+                <dt>Subjectief krachtsverlies</dt>
+                <dd>
+                    {{%context.item.where(linkId='subjectief-krachtsverlies').answer.value}}
+                </dd>
+                <dt>Infiltraties</dt>
+                <dd>
+                    {{%context.item.where(linkId='infiltraties').answer.value}}
+                </dd>
+                <dt>Infiltraties aantal</dt>
+                <dd>
+                    {{%context.item.where(linkId='infiltraties-aantal').answer.value}}
+                </dd>
+                <dt>Infiltraties tijdstip laatste</dt>
+                <dd>
+                    {{%context.item.where(linkId='infiltraties-laatste').answer.value}}
+                </dd>
+                <dt>Dominantie</dt>
+                <dd>
+                    {{%context.item.where(linkId='dominantie').answer.value}}
+                </dd>
+                <dt>Beroep</dt>
+                <dd>{{%context.item.where(linkId='beroep').answer.value}}</dd>
+                <dt>Hobby</dt>
+                <dd>{{%context.item.where(linkId='hobby').answer.value}}</dd>
+                <dt>Allergie</dt>
+                <dd>{{%context.item.where(linkId='allergie').answer.value}}</dd>
+                <dt>Roken</dt>
+                <dd>{{%context.item.where(linkId='roken').answer.value}}</dd>
+                <dt>Pakjaren</dt>
+                <dd>{{%context.item.where(linkId='pakjaren').answer.value}}</dd>
+                <dt>Diabetes</dt>
+                <dd>{{%context.item.where(linkId='diabetes').answer.value}}</dd>
+                <dt>Diabetes type</dt>
+                <dd>
+                    {{%context.item.where(linkId='diabetes-type').answer.value}}
+                </dd>
+                <dt>RA</dt>
+                <dd>{{%context.item.where(linkId='ra').answer.value}}</dd>
+                <dt>SKlijden</dt>
+                <dd>{{%context.item.where(linkId='sklijden').answer.value}}</dd>
+                <dt>Relevante voorgaande handchirurgie</dt>
+                <dd>
+                    {{%context.item.where(linkId='voorgaande-handchirurgie').answer.value}}
+                </dd>
+            </dl>
+        </section>
+        <section>
+            <h2>CTS Preop KO</h2>
+            <dl>
+                <dt>drukpijn</dt>
+                <dd>{{%context.item.where(linkId='drukpijn').answer.value}}</dd>
+            </dl>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>RE</th>
+                        <th>LI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Thenar atrofie</td>
+                        <td>
+                            {{%context.item.where(linkId='thenar-atrofie-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='thenar-atrofie-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Durkan</td>
+                        <td>
+                            {{%context.item.where(linkId='durkan-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='durkan-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Tinel</td>
+                        <td>
+                            {{%context.item.where(linkId='tinel-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='tinel-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Phalen</td>
+                        <td>
+                            {{%context.item.where(linkId='phalen-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='phalen-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Reversed Phalen</td>
+                        <td>
+                            {{%context.item.where(linkId='reversed-phalen-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='reversed-phalen-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ROM CPP</td>
+                        <td>
+                            {{%context.item.where(linkId='rom-cpp-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='rom-cpp-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ROM PDPP</td>
+                        <td>
+                            {{%context.item.where(linkId='rom-pdpp-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='rom-pdpp-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Kracht oppositie /5</td>
+                        <td>
+                            {{%context.item.where(linkId='kracht-oppositie-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='kracht-oppositie-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Kracht FPL /5</td>
+                        <td>
+                            {{%context.item.where(linkId='kracht-fpl-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='kracht-fpl-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Kracht FDP 2 /5</td>
+                        <td>
+                            {{%context.item.where(linkId='kracht-fdp2-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='kracht-fdp2-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Key pinch (kgF)</td>
+                        <td>
+                            {{%context.item.where(linkId='key-pinch-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='key-pinch-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Precision pinch (kgF)</td>
+                        <td>
+                            {{%context.item.where(linkId='precision-pinch-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='precision-pinch-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Jamar 2 (kgF)</td>
+                        <td>
+                            {{%context.item.where(linkId='jamar2-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='jamar2-li').answer.value}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <dl>
+                <dt>Weber 2-pt discrim dig</dt>
+                <dd>
+                    {{%context.item.where(linkId='weber-dig').answer.value}}
+                </dd>
+            </dl>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Weber 2-pt discrim (mm)</th>
+                        <th>RE</th>
+                        <th>LI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>
+                            {{%context.item.where(linkId='weber-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='weber-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Scratch collapse test</td>
+                        <td>
+                            {{%context.item.where(linkId='scratch-collapse-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='scratch-collapse-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Lacertus</td>
+                        <td>
+                            {{%context.item.where(linkId='lacertus-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='lacertus-li').answer.value}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section>
+            <h2>CTS Preop TO</h2>
+            <dl>
+                <dt>EMG Canterbury scale gr /6</dt>
+                <dd>
+                    {{%context.item.where(linkId='emg-canterbury').answer.value}}
+                </dd>
+                <dt>echo pols</dt>
+                <dd>
+                    {{%context.item.where(linkId='echo-pols').answer.value}}
+                </dd>
+            </dl>
+        </section>
+        <section>
+            <h2>CTS Postop An</h2>
+            <dl>
+                <dt>HAND</dt>
+                <dd>
+                    {{%context.item.where(linkId='postop-hand').answer.value}}
+                </dd>
+                <dt>pijn</dt>
+                <dd>
+                    {{%context.item.where(linkId='postop-pijn').answer.value}}
+                </dd>
+                <dt>duur pijnstilling</dt>
+                <dd>
+                    {{%context.item.where(linkId='postop-duur-pijnstilling').answer.value}}
+                    d
+                </dd>
+                <dt>tintelingen</dt>
+                <dd>
+                    {{%context.item.where(linkId='postop-tintelingen').answer.value}}
+                </dd>
+                <dt>nachtelijk wakker worden</dt>
+                <dd>
+                    {{%context.item.where(linkId='postop-nachtelijk-wakker').answer.value}}
+                </dd>
+                <dt>arbeidsongeschiktheid</dt>
+                <dd>
+                    {{%context.item.where(linkId='arbeidsongeschiktheid-waarde').answer.value}}
+                    {{%context.item.where(linkId='arbeidsongeschiktheid-eenheid').answer.value}}
+                </dd>
+                <dt>hervating hobby's</dt>
+                <dd>
+                    {{%context.item.where(linkId='hervating-hobbys-waarde').answer.value}}
+                    {{%context.item.where(linkId='hervating-hobbys-eenheid').answer.value}}
+                </dd>
+            </dl>
+        </section>
+        <section>
+            <h2>CTS Postop KO</h2>
+            <dl>
+                <dt>litteken</dt>
+                <dd>{{%context.item.where(linkId='litteken').answer.value}}</dd>
+                <dt>Pillar pain</dt>
+                <dd>
+                    {{%context.item.where(linkId='pillar-pain').answer.value}}
+                </dd>
+                <dt>drukpijn localisatie</dt>
+                <dd>
+                    {{%context.item.where(linkId='postop-drukpijn-localisatie').answer.value}}
+                </dd>
+            </dl>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>RE</th>
+                        <th>LI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ROM CPP</td>
+                        <td>
+                            {{%context.item.where(linkId='postop-rom-cpp-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='postop-rom-cpp-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ROM PDPP</td>
+                        <td>
+                            {{%context.item.where(linkId='postop-rom-pdpp-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='postop-rom-pdpp-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Kracht oppositie /5</td>
+                        <td>
+                            {{%context.item.where(linkId='postop-kracht-oppositie-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='postop-kracht-oppositie-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Kracht FPL /5</td>
+                        <td>
+                            {{%context.item.where(linkId='postop-kracht-fpl-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='postop-kracht-fpl-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Kracht FDS 2 /5</td>
+                        <td>
+                            {{%context.item.where(linkId='postop-kracht-fds2-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='postop-kracht-fds2-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Precision pinch (KgF)</td>
+                        <td>
+                            {{%context.item.where(linkId='postop-precision-pinch-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='postop-precision-pinch-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Key pinch (KgF)</td>
+                        <td>
+                            {{%context.item.where(linkId='postop-key-pinch-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='postop-key-pinch-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Jamar 2 (KgF)</td>
+                        <td>
+                            {{%context.item.where(linkId='postop-jamar2-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='postop-jamar2-li').answer.value}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <dl>
+                <dt>Weber 2-pt discrim dig</dt>
+                <dd>
+                    {{%context.item.where(linkId='postop-weber-dig').answer.value}}
+                </dd>
+            </dl>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Weber 2-pt discrim (mm)</th>
+                        <th>RE</th>
+                        <th>LI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>
+                            {{%context.item.where(linkId='postop-weber-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='postop-weber-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Scratch collapse test</td>
+                        <td>
+                            {{%context.item.where(linkId='postop-scratch-collapse-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='postop-scratch-collapse-li').answer.value}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Lacertus</td>
+                        <td>
+                            {{%context.item.where(linkId='postop-lacertus-re').answer.value}}
+                        </td>
+                        <td>
+                            {{%context.item.where(linkId='postop-lacertus-li').answer.value}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </body>
+</html>

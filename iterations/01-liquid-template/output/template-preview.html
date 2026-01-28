@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHSC studie CTS - Template Preview</title>
+    <style>
+        :root {
+            --bg-code: #f4f4f5;
+            --border-code: #d4d4d8;
+            --text-code: #3f3f46;
+            --bg-expr: #fef3c7;
+            --border-expr: #f59e0b;
+            --text-expr: #92400e;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+            color: #1f2937;
+        }
+        h1 {
+            border-bottom: 2px solid #333;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .composition-meta {
+            background: var(--bg-code);
+            border: 1px solid var(--border-code);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        .composition-meta h2 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+            color: #6b7280;
+        }
+        .composition-meta code {
+            background: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+        .section {
+            margin-bottom: 1.5rem;
+            border-left: 3px solid #e5e7eb;
+            padding-left: 1rem;
+        }
+        .section.depth-0 { border-left-color: #3b82f6; }
+        .section.depth-1 { border-left-color: #8b5cf6; }
+        .section.depth-2 { border-left-color: #ec4899; }
+        .section-header {
+            margin-bottom: 0.75rem;
+        }
+        .section-title {
+            margin: 0 0 0.25rem 0;
+            color: #111827;
+        }
+        .context-expr {
+            display: inline-block;
+            background: var(--bg-code);
+            border: 1px solid var(--border-code);
+            color: var(--text-code);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-family: ui-monospace, monospace;
+        }
+        .section-content {
+            background: #fafafa;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 1rem;
+        }
+        .section-content dl {
+            display: grid;
+            grid-template-columns: minmax(180px, 1fr) 2fr;
+            gap: 0.25rem 1rem;
+            margin: 0;
+        }
+        .section-content dt {
+            font-weight: 600;
+            padding: 0.25rem 0;
+        }
+        .section-content dd {
+            margin: 0;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .section-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.5rem 0;
+        }
+        .section-content th, .section-content td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .section-content th {
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+        .fhirpath-expr {
+            background: var(--bg-expr);
+            border: 1px solid var(--border-expr);
+            color: var(--text-expr);
+            padding: 0.125rem 0.375rem;
+            border-radius: 3px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.8em;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <h1>BHSC studie CTS</h1>
+    
+    <div class="composition-meta">
+        <h2>Composition.date</h2>
+        <code class="fhirpath-expr">%resource.authored</code>
+    </div>
+    
+    
+    
+<div class="section depth-0">
+    <div class="section-header">
+        
+        <h2 class="section-title">CTS Preop An</h2>
+        
+        
+        <code class="context-expr">%resource.item.where(linkId='preop-an')</code>
+        
+    </div>
+    
+    <div class="section-content">
+        <dl><dt>HAND</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;hand&#x27;).answer.value</code></dd><dt>klacht</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;klacht&#x27;).answer.value</code></dd><dt>nachtelijke tintelingen</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;nachtelijke-tintelingen&#x27;).answer.value</code></dd><dt>fijne motoriek</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;fijne-motoriek&#x27;).answer.value</code></dd><dt>Duur symptomen</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;duur-symptomen&#x27;).answer.value</code></dd><dt>Subjectief krachtsverlies</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;subjectief-krachtsverlies&#x27;).answer.value</code></dd><dt>Infiltraties</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;infiltraties&#x27;).answer.value</code></dd><dt>Infiltraties aantal</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;infiltraties-aantal&#x27;).answer.value</code></dd><dt>Infiltraties tijdstip laatste</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;infiltraties-laatste&#x27;).answer.value</code></dd><dt>Dominantie</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;dominantie&#x27;).answer.value</code></dd><dt>Beroep</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;beroep&#x27;).answer.value</code></dd><dt>Hobby</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;hobby&#x27;).answer.value</code></dd><dt>Allergie</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;allergie&#x27;).answer.value</code></dd><dt>Roken</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;roken&#x27;).answer.value</code></dd><dt>Pakjaren</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;pakjaren&#x27;).answer.value</code></dd><dt>Diabetes</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;diabetes&#x27;).answer.value</code></dd><dt>Diabetes type</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;diabetes-type&#x27;).answer.value</code></dd><dt>RA</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;ra&#x27;).answer.value</code></dd><dt>SKlijden</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;sklijden&#x27;).answer.value</code></dd><dt>Relevante voorgaande handchirurgie</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;voorgaande-handchirurgie&#x27;).answer.value</code></dd></dl>
+    </div>
+    
+    
+</div>
+
+    
+    
+<div class="section depth-0">
+    <div class="section-header">
+        
+        <h2 class="section-title">CTS Preop KO</h2>
+        
+        
+        <code class="context-expr">%resource.item.where(linkId='preop-ko')</code>
+        
+    </div>
+    
+    <div class="section-content">
+        <dl><dt>drukpijn</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;drukpijn&#x27;).answer.value</code></dd></dl><table><thead><tr><th></th><th>RE</th><th>LI</th></tr></thead><tbody><tr><td>Thenar atrofie</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;thenar-atrofie-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;thenar-atrofie-li&#x27;).answer.value</code></td></tr><tr><td>Durkan</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;durkan-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;durkan-li&#x27;).answer.value</code></td></tr><tr><td>Tinel</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;tinel-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;tinel-li&#x27;).answer.value</code></td></tr><tr><td>Phalen</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;phalen-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;phalen-li&#x27;).answer.value</code></td></tr><tr><td>Reversed Phalen</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;reversed-phalen-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;reversed-phalen-li&#x27;).answer.value</code></td></tr><tr><td>ROM CPP</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;rom-cpp-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;rom-cpp-li&#x27;).answer.value</code></td></tr><tr><td>ROM PDPP</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;rom-pdpp-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;rom-pdpp-li&#x27;).answer.value</code></td></tr><tr><td>Kracht oppositie /5</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;kracht-oppositie-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;kracht-oppositie-li&#x27;).answer.value</code></td></tr><tr><td>Kracht FPL /5</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;kracht-fpl-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;kracht-fpl-li&#x27;).answer.value</code></td></tr><tr><td>Kracht FDP 2 /5</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;kracht-fdp2-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;kracht-fdp2-li&#x27;).answer.value</code></td></tr><tr><td>Key pinch (kgF)</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;key-pinch-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;key-pinch-li&#x27;).answer.value</code></td></tr><tr><td>Precision pinch (kgF)</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;precision-pinch-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;precision-pinch-li&#x27;).answer.value</code></td></tr><tr><td>Jamar 2 (kgF)</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;jamar2-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;jamar2-li&#x27;).answer.value</code></td></tr></tbody></table><dl><dt>Weber 2-pt discrim dig</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;weber-dig&#x27;).answer.value</code></dd></dl><table><thead><tr><th>Weber 2-pt discrim (mm)</th><th>RE</th><th>LI</th></tr></thead><tbody><tr><td></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;weber-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;weber-li&#x27;).answer.value</code></td></tr><tr><td>Scratch collapse test</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;scratch-collapse-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;scratch-collapse-li&#x27;).answer.value</code></td></tr><tr><td>Lacertus</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;lacertus-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;lacertus-li&#x27;).answer.value</code></td></tr></tbody></table>
+    </div>
+    
+    
+</div>
+
+    
+    
+<div class="section depth-0">
+    <div class="section-header">
+        
+        <h2 class="section-title">CTS Preop TO</h2>
+        
+        
+        <code class="context-expr">%resource.item.where(linkId='preop-to')</code>
+        
+    </div>
+    
+    <div class="section-content">
+        <dl><dt>EMG Canterbury scale gr /6</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;emg-canterbury&#x27;).answer.value</code></dd><dt>echo pols</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;echo-pols&#x27;).answer.value</code></dd></dl>
+    </div>
+    
+    
+</div>
+
+    
+    
+<div class="section depth-0">
+    <div class="section-header">
+        
+        <h2 class="section-title">CTS Postop An</h2>
+        
+        
+        <code class="context-expr">%resource.item.where(linkId='postop-an')</code>
+        
+    </div>
+    
+    <div class="section-content">
+        <dl><dt>HAND</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-hand&#x27;).answer.value</code></dd><dt>pijn</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-pijn&#x27;).answer.value</code></dd><dt>duur pijnstilling</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-duur-pijnstilling&#x27;).answer.value</code> d</dd><dt>tintelingen</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-tintelingen&#x27;).answer.value</code></dd><dt>nachtelijk wakker worden</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-nachtelijk-wakker&#x27;).answer.value</code></dd><dt>arbeidsongeschiktheid</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;arbeidsongeschiktheid-waarde&#x27;).answer.value</code> <code class="fhirpath-expr">%context.item.where(linkId=&#x27;arbeidsongeschiktheid-eenheid&#x27;).answer.value</code></dd><dt>hervating hobby's</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;hervating-hobbys-waarde&#x27;).answer.value</code> <code class="fhirpath-expr">%context.item.where(linkId=&#x27;hervating-hobbys-eenheid&#x27;).answer.value</code></dd></dl>
+    </div>
+    
+    
+</div>
+
+    
+    
+<div class="section depth-0">
+    <div class="section-header">
+        
+        <h2 class="section-title">CTS Postop KO</h2>
+        
+        
+        <code class="context-expr">%resource.item.where(linkId='postop-ko')</code>
+        
+    </div>
+    
+    <div class="section-content">
+        <dl><dt>litteken</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;litteken&#x27;).answer.value</code></dd><dt>Pillar pain</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;pillar-pain&#x27;).answer.value</code></dd><dt>drukpijn localisatie</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-drukpijn-localisatie&#x27;).answer.value</code></dd></dl><table><thead><tr><th></th><th>RE</th><th>LI</th></tr></thead><tbody><tr><td>ROM CPP</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-rom-cpp-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-rom-cpp-li&#x27;).answer.value</code></td></tr><tr><td>ROM PDPP</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-rom-pdpp-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-rom-pdpp-li&#x27;).answer.value</code></td></tr><tr><td>Kracht oppositie /5</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-kracht-oppositie-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-kracht-oppositie-li&#x27;).answer.value</code></td></tr><tr><td>Kracht FPL /5</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-kracht-fpl-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-kracht-fpl-li&#x27;).answer.value</code></td></tr><tr><td>Kracht FDS 2 /5</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-kracht-fds2-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-kracht-fds2-li&#x27;).answer.value</code></td></tr><tr><td>Precision pinch (KgF)</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-precision-pinch-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-precision-pinch-li&#x27;).answer.value</code></td></tr><tr><td>Key pinch (KgF)</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-key-pinch-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-key-pinch-li&#x27;).answer.value</code></td></tr><tr><td>Jamar 2 (KgF)</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-jamar2-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-jamar2-li&#x27;).answer.value</code></td></tr></tbody></table><dl><dt>Weber 2-pt discrim dig</dt><dd><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-weber-dig&#x27;).answer.value</code></dd></dl><table><thead><tr><th>Weber 2-pt discrim (mm)</th><th>RE</th><th>LI</th></tr></thead><tbody><tr><td></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-weber-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-weber-li&#x27;).answer.value</code></td></tr><tr><td>Scratch collapse test</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-scratch-collapse-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-scratch-collapse-li&#x27;).answer.value</code></td></tr><tr><td>Lacertus</td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-lacertus-re&#x27;).answer.value</code></td><td><code class="fhirpath-expr">%context.item.where(linkId=&#x27;postop-lacertus-li&#x27;).answer.value</code></td></tr></tbody></table>
+    </div>
+    
+    
+</div>
+
+    
+</body>
+</html>

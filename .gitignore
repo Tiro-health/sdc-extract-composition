@@ -12,8 +12,5 @@ wheels/
 # OS files
 .DS_Store
 
-# Generated output
-**/output/
-
 # Claude Code local settings
 .claude/settings.local.json
