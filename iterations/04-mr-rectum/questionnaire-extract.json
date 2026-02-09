@@ -1,0 +1,2942 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "2150",
+  "meta": {
+    "profile": [
+      "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-extr-template"
+    ]
+  },
+  "url": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e",
+  "version": "1.0.0",
+  "name": "MR rectum primaire staging",
+  "status": "active",
+  "description": "Gestandaardiseerde template voor MRI-stagering van het rectum.",
+  "contained": [
+    {
+      "resourceType": "Composition",
+      "id": "mr-rectum-template",
+      "status": "final",
+      "type": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "18748-4",
+            "display": "Diagnostic imaging study"
+          }
+        ]
+      },
+      "title": "MR Rectum",
+      "date": "2024-01-01",
+      "section": [
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='0199957a-5333-7e93-92d4-860d9cbd2374')"
+            }
+          ],
+          "title": "Morfologie",
+          "code": {
+            "coding": [
+              {
+                "system": "http://example.org/mr-rectum-sections",
+                "code": "morfologie",
+                "display": "Morfologie"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>Morfologie</dt><dd>{{%context.item.where(linkId='0199b916-d07c-755a-9527-2f4923325d49').answer.value.display}}</dd><dt>Lengte</dt><dd>{{%context.item.where(linkId='0199957a-5333-7e93-92d4-862e7eff1729').answer.value}} mm</dd><dt>Locatie</dt><dd>{{%context.item.where(linkId='0199957a-5333-7e93-92d4-863512dec4d4').answer.value.display}}</dd><dt>Circumferentiële locatie van de tumor</dt><dd>{{%context.item.where(linkId='0199b91a-bc04-755a-954f-abfa18b4965d').answer.value}}</dd><dt>Afstand ondergrens tumor tot anorectale junctie</dt><dd>{{%context.item.where(linkId='0199957a-5333-7e93-92d4-8619a5f73162').answer.value}} mm</dd><dt>MRF</dt><dd>{{%context.item.where(linkId='0199957a-5333-7e93-92d4-8650645b5157').answer.value.display}}</dd></dl></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='0199b922-44e8-755a-95a1-64d8398dbfbe')"
+            }
+          ],
+          "title": "Anaal kanaal",
+          "code": {
+            "coding": [
+              {
+                "system": "http://example.org/mr-rectum-sections",
+                "code": "anaal-kanaal",
+                "display": "Anaal kanaal"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>{{%context.item.where(linkId='0199b922-44e8-755a-95a1-7ed7953c4e79').answer.value.display}}</p></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.where(item.where(linkId='0199b922-44e8-755a-95a1-64d8398dbfbe').empty())"
+            }
+          ],
+          "title": "Anaal kanaal",
+          "code": {
+            "coding": [
+              {
+                "system": "http://example.org/mr-rectum-sections",
+                "code": "anaal-kanaal",
+                "display": "Anaal kanaal"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>NVT</p></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='0199b81d-1c00-755a-9348-38bf439f3279')"
+            }
+          ],
+          "title": "T-stadiëring",
+          "code": {
+            "coding": [
+              {
+                "system": "http://example.org/mr-rectum-sections",
+                "code": "t-staging",
+                "display": "T-stadiëring"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>{{%context.item.where(linkId='0199b929-64b2-755a-95bf-dca0ce150e7f').answer.value.display}}</p></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='0199957a-5334-74f2-b2f9-f6e2143a463e')"
+            }
+          ],
+          "title": "N-stadiëring",
+          "code": {
+            "coding": [
+              {
+                "system": "http://example.org/mr-rectum-sections",
+                "code": "n-staging",
+                "display": "N-stadiëring"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>Aantal verdachte klieren</dt><dd>{{%context.item.where(linkId='0199957a-5334-74f2-b2f9-f6ffc4993d08').answer.value.display}}</dd></dl></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='0199957a-5334-74f2-b2f9-f7363fc0dfe9')"
+            }
+          ],
+          "title": "EMVI en metastasen",
+          "code": {
+            "coding": [
+              {
+                "system": "http://example.org/mr-rectum-sections",
+                "code": "emvi-metastasen",
+                "display": "EMVI en metastasen"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>Niet-regionale lymfeklieren (inguinaal, Iliaca externa en verder)</dt><dd>{{%context.item.where(linkId='0199957a-5334-74f2-b2f9-f76f85aea2f3').answer.value}}</dd><dt>EMVI</dt><dd>{{%context.item.where(linkId='0199957a-5334-74f2-b2f9-f74e88638ad8').answer.value.display}}</dd><dt>Metastasen</dt><dd>{{%context.item.where(linkId='0199b842-905d-755a-94bc-0aa062e7c9e0').item.where(linkId='0199b842-30f0-755a-94a8-1a7bdb17efd3').answer.value.display}}</dd></dl></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='0199b820-dd1d-755a-9366-3a6bcd47d1a0')"
+            }
+          ],
+          "title": "Besluit",
+          "code": {
+            "coding": [
+              {
+                "system": "http://example.org/mr-rectum-sections",
+                "code": "besluit",
+                "display": "Besluit"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>{{%context.item.where(linkId='0199b821-03cd-755a-9369-6c818232877d').answer.value}}</p></div>"
+          }
+        },
+        {
+          "title": "Criteria",
+          "code": {
+            "coding": [
+              {
+                "system": "http://example.org/mr-rectum-sections",
+                "code": "criteria",
+                "display": "Gebruikte criteria"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>(*) Gebruikte criteria:</p><ul><li>Korte as: &gt; 9mm</li><li>Korte as: &gt; 5-9mm + 2/3: onregelmatige aflijning en/of heterogeen aspect en/of rond.</li><li>Korte as: &lt; 5 mm + 3/3: onregelmatige aflijning en heterogeen aspect en rond.</li></ul></div>"
+          }
+        }
+      ]
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtract",
+      "extension": [
+        {
+          "url": "template",
+          "valueReference": {
+            "reference": "#mr-rectum-template"
+          }
+        }
+      ]
+    }
+  ],
+  "item": [
+    {
+      "enableWhen": null,
+      "enableBehavior": null,
+      "disabledDisplay": null,
+      "id": null,
+      "linkId": "0199957a-5333-7e93-92d4-85be08bfce2e",
+      "type": "group",
+      "definition": null,
+      "text": "Technische gegevens MRI",
+      "code": [
+        {
+          "extension": null,
+          "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+          "code": "technische_gegevens_mri",
+          "display": "technische_gegevens_mri",
+          "version": null,
+          "userSelected": null
+        }
+      ],
+      "item": [
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199957a-5333-7e93-92d4-85cbd02f742a",
+          "type": "string",
+          "definition": null,
+          "text": "Type MRI-sequenties",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "type_mri-sequenties",
+              "display": "type_mri-sequenties",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": null,
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "textfield",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "textfield"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199957a-5333-7e93-92d4-85cbd02f742a",
+                "description": null,
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueString -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": null,
+          "answerOption": null,
+          "answerValueSet": null,
+          "initial": null
+        }
+      ],
+      "required": null,
+      "repeats": false,
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "text": "block",
+            "coding": [
+              {
+                "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                "code": "block"
+              }
+            ]
+          }
+        },
+        {
+          "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+          "valueExpression": {
+            "name": "0199957a-5333-7e93-92d4-85be08bfce2e",
+            "description": null,
+            "expression": "{%- assign type_mri-sequenties = item | fhirpath : \"item.where(linkId=0199957a-5333-7e93-92d4-85cbd02f742a)\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"0199957a-5333-7e93-92d4-85cbd02f742a\", item:type_mri-sequenties -%}\n",
+            "language": "text/liquid"
+          }
+        }
+      ],
+      "answerConstraint": null,
+      "answerOption": null,
+      "answerValueSet": null,
+      "initial": null
+    },
+    {
+      "enableWhen": null,
+      "enableBehavior": null,
+      "disabledDisplay": null,
+      "id": null,
+      "linkId": "0199957a-5333-7e93-92d4-860d9cbd2374",
+      "type": "group",
+      "definition": null,
+      "text": "Morfologie",
+      "code": [
+        {
+          "extension": null,
+          "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+          "code": "morfologie_1",
+          "display": "morfologie_1",
+          "version": null,
+          "userSelected": null
+        }
+      ],
+      "item": [
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199b916-d07c-755a-9527-2f4923325d49",
+          "type": "coding",
+          "definition": null,
+          "text": "Morfologie",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "morfologie",
+              "display": "morfologie",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": null,
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199b916-d07c-755a-9527-2f4923325d49",
+                "description": null,
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": "optionsOrType",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://snomed.info/sct",
+                "code": "441456002",
+                "display": "poliep",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b917-8072-755a-9530-952956d47dc6",
+                "display": "circulair",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b917-d85e-755a-9531-3b4675cef9dc",
+                "display": "semicirculair + solide",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b918-0514-755a-9531-e72a7bbe7498",
+                "display": "mucineus",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b918-16dd-755a-9532-8eeb3bd39652",
+                "display": "gemengd",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            }
+          ],
+          "answerValueSet": null,
+          "initial": null
+        },
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199957a-5333-7e93-92d4-862e7eff1729",
+          "type": "decimal",
+          "definition": null,
+          "text": "Lengte (maximaal)",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "lengte_maximaal",
+              "display": "lengte_maximaal",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": null,
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "decimal-field",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "decimal-field"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199957a-5333-7e93-92d4-862e7eff1729",
+                "description": null,
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append:   | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+              "valueCoding": {
+                "extension": null,
+                "system": "http://unitsofmeasure.org",
+                "code": "cm",
+                "display": "cm",
+                "version": null,
+                "userSelected": null
+              }
+            }
+          ],
+          "answerConstraint": null,
+          "answerOption": null,
+          "answerValueSet": null,
+          "initial": null
+        },
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199957a-5333-7e93-92d4-863512dec4d4",
+          "type": "coding",
+          "definition": null,
+          "text": "Locatie",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "locatie",
+              "display": "locatie",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": null,
+          "required": null,
+          "repeats": true,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199957a-5333-7e93-92d4-863512dec4d4",
+                "description": null,
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer | map: valueCoding | map: display | join: ,  -%}\n{%- if Answer and Answer !=  -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": "optionsOnly",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://snomed.info/sct",
+                "code": "40415009",
+                "display": "proximaal",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://snomed.info/sct",
+                "code": "46053002",
+                "display": "distaal",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b919-c788-755a-9541-4189c627052e",
+                "display": "sigmoid",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            }
+          ],
+          "answerValueSet": null,
+          "initial": null
+        },
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199b91a-bc04-755a-954f-abfa18b4965d",
+          "type": "string",
+          "definition": null,
+          "text": "Circumferentiële locatie in ruglig (klokgewijs)",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "circumferentiele_locatie_in_ruglig_klokgewijs",
+              "display": "circumferentiele_locatie_in_ruglig_klokgewijs",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": null,
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "textfield",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "textfield"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199b91a-bc04-755a-954f-abfa18b4965d",
+                "description": null,
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueString -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": null,
+          "answerOption": null,
+          "answerValueSet": null,
+          "initial": null
+        },
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199957a-5333-7e93-92d4-8619a5f73162",
+          "type": "decimal",
+          "definition": null,
+          "text": "Afstand distale tumor tot anorectale overgang",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "afstand_distale_tumor_tot_anorectale_overgang",
+              "display": "afstand_distale_tumor_tot_anorectale_overgang",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": null,
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "decimal-field",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "decimal-field"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199957a-5333-7e93-92d4-8619a5f73162",
+                "description": null,
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append:   | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                "code": "7a799db45eb7480d97e237e6b118e1be",
+                "display": "mm",
+                "version": null,
+                "userSelected": null
+              }
+            }
+          ],
+          "answerConstraint": null,
+          "answerOption": null,
+          "answerValueSet": null,
+          "initial": null
+        },
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199957a-5333-7e93-92d4-8650645b5157",
+          "type": "coding",
+          "definition": null,
+          "text": "Aantasting mesorectale fascia (< 1mm) ?",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "aantasting_mesorectale_fascia_1mm",
+              "display": "aantasting_mesorectale_fascia_1mm",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": null,
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199957a-5333-7e93-92d4-8650645b5157",
+                "description": null,
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": "optionsOnly",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                "code": "9ae0846a33654417bfdb2dd881d0f92f",
+                "display": "Ja",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                "code": "c9046106841447ff994718e42af417e2",
+                "display": "Nee",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            }
+          ],
+          "answerValueSet": null,
+          "initial": null
+        },
+        {
+          "enableWhen": [
+            {
+              "question": "0199957a-5333-7e93-92d4-8650645b5157",
+              "operator": "!=",
+              "answerCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                "code": "c9046106841447ff994718e42af417e2",
+                "display": "Nee",
+                "version": null,
+                "userSelected": null
+              }
+            }
+          ],
+          "enableBehavior": "all",
+          "disabledDisplay": "protected",
+          "id": null,
+          "linkId": "0199b920-d90e-755a-9593-98e2ca6369a8",
+          "type": "string",
+          "definition": null,
+          "text": "Locatie aantasting MRF (klokgewijs)",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "locatie_aantasting_mrf_klokgewijs",
+              "display": "locatie_aantasting_mrf_klokgewijs",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": null,
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "textfield",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "textfield"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199b920-d90e-755a-9593-98e2ca6369a8",
+                "description": null,
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueString -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": null,
+          "answerOption": null,
+          "answerValueSet": null,
+          "initial": null
+        }
+      ],
+      "required": null,
+      "repeats": false,
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "text": "block",
+            "coding": [
+              {
+                "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                "code": "block"
+              }
+            ]
+          }
+        },
+        {
+          "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+          "valueExpression": {
+            "name": "0199957a-5333-7e93-92d4-860d9cbd2374",
+            "description": null,
+            "expression": "{%- assign morfologie = item | fhirpath : \"item.where(linkId=0199b916-d07c-755a-9527-2f4923325d49)\" | first -%}\n{%- assign lengte_maximaal = item | fhirpath : \"item.where(linkId=0199957a-5333-7e93-92d4-862e7eff1729)\" | first -%}\n{%- assign locatie = item | fhirpath : \"item.where(linkId=0199957a-5333-7e93-92d4-863512dec4d4)\" | first -%}\n{%- assign circumferentiele_locatie_in_ruglig_klokgewijs = item | fhirpath : \"item.where(linkId=0199b91a-bc04-755a-954f-abfa18b4965d)\" | first -%}\n{%- assign afstand_distale_tumor_tot_anorectale_overgang = item | fhirpath : \"item.where(linkId=0199957a-5333-7e93-92d4-8619a5f73162)\" | first -%}\n{%- assign aantasting_mesorectale_fascia_1mm = item | fhirpath : \"item.where(linkId=0199957a-5333-7e93-92d4-8650645b5157)\" | first -%}\n{%- assign locatie_aantasting_mrf_klokgewijs = item | fhirpath : \"item.where(linkId=0199b920-d90e-755a-9593-98e2ca6369a8)\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"0199b916-d07c-755a-9527-2f4923325d49\", item:morfologie -%}\n{%- render \"0199957a-5333-7e93-92d4-862e7eff1729\", item:lengte_maximaal -%}\n{%- render \"0199957a-5333-7e93-92d4-863512dec4d4\", item:locatie -%}\n{%- render \"0199b91a-bc04-755a-954f-abfa18b4965d\", item:circumferentiele_locatie_in_ruglig_klokgewijs -%}\n{%- render \"0199957a-5333-7e93-92d4-8619a5f73162\", item:afstand_distale_tumor_tot_anorectale_overgang -%}\n{%- render \"0199957a-5333-7e93-92d4-8650645b5157\", item:aantasting_mesorectale_fascia_1mm -%}\n{%- render \"0199b920-d90e-755a-9593-98e2ca6369a8\", item:locatie_aantasting_mrf_klokgewijs -%}\n",
+            "language": "text/liquid"
+          }
+        }
+      ],
+      "answerConstraint": null,
+      "answerOption": null,
+      "answerValueSet": null,
+      "initial": null
+    },
+    {
+      "enableWhen": [
+        {
+          "question": "0199957a-5333-7e93-92d4-863512dec4d4",
+          "operator": "!=",
+          "answerCoding": {
+            "extension": null,
+            "system": "http://snomed.info/sct",
+            "code": "40415009",
+            "display": "proximaal",
+            "version": null,
+            "userSelected": null
+          }
+        },
+        {
+          "question": "0199957a-5333-7e93-92d4-863512dec4d4",
+          "operator": "!=",
+          "answerCoding": {
+            "extension": null,
+            "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+            "code": "0199b919-c788-755a-9541-4189c627052e",
+            "display": "sigmoid",
+            "version": null,
+            "userSelected": null
+          }
+        }
+      ],
+      "enableBehavior": "all",
+      "disabledDisplay": "hidden",
+      "id": null,
+      "linkId": "0199b922-44e8-755a-95a1-64d8398dbfbe",
+      "type": "group",
+      "definition": null,
+      "text": "Anaal kanaal (enkel bij distale rectale tumor)",
+      "code": [
+        {
+          "extension": null,
+          "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+          "code": "anaal_kanaal_enkel_bij_distale_rectale_tumor",
+          "display": "anaal_kanaal_enkel_bij_distale_rectale_tumor",
+          "version": null,
+          "userSelected": null
+        }
+      ],
+      "item": [
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199b922-44e8-755a-95a1-7ed7953c4e79",
+          "type": "coding",
+          "definition": null,
+          "text": "Rullier Classificatie",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "rullier_classificatie",
+              "display": "rullier_classificatie",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": null,
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "radio",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "radio"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199b922-44e8-755a-95a1-7ed7953c4e79",
+                "description": null,
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": "optionsOnly",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b926-4152-755a-95b0-bf8f39b151e8",
+                "display": "Type 1: supra-anaal, > 1 cm  anorectale overgang",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b926-94ac-755a-95b1-65fbf4269014",
+                "display": "Type 2: juxta-anaal, < 1 cm  anorectale overgang",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b927-05ae-755a-95b2-0a437ec9579e",
+                "display": "Type 3: intra-anaal, interne sfincter invasie",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b927-96e1-755a-95b2-b45adf212dde",
+                "display": "Type 4: trans-anaal, intersfincteriële of externe sfincter invasie",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            }
+          ],
+          "answerValueSet": null,
+          "initial": null
+        }
+      ],
+      "required": null,
+      "repeats": false,
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "text": "block",
+            "coding": [
+              {
+                "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                "code": "block"
+              }
+            ]
+          }
+        },
+        {
+          "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+          "valueExpression": {
+            "name": "0199b922-44e8-755a-95a1-64d8398dbfbe",
+            "description": null,
+            "expression": "{%- assign rullier_classificatie = item | fhirpath : \"item.where(linkId=0199b922-44e8-755a-95a1-7ed7953c4e79)\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"0199b922-44e8-755a-95a1-7ed7953c4e79\", item:rullier_classificatie -%}\n",
+            "language": "text/liquid"
+          }
+        }
+      ],
+      "answerConstraint": null,
+      "answerOption": null,
+      "answerValueSet": null,
+      "initial": null
+    },
+    {
+      "enableWhen": [
+        {
+          "question": "0199957a-5333-7e93-92d4-863512dec4d4",
+          "operator": "!=",
+          "answerCoding": {
+            "extension": null,
+            "system": "http://snomed.info/sct",
+            "code": "46053002",
+            "display": "distaal",
+            "version": null,
+            "userSelected": null
+          }
+        }
+      ],
+      "enableBehavior": "all",
+      "disabledDisplay": "hidden",
+      "id": null,
+      "linkId": "0199b81d-1c00-755a-9348-38bf439f3279",
+      "type": "group",
+      "definition": null,
+      "text": "T-Stadiëring",
+      "code": [
+        {
+          "extension": null,
+          "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+          "code": "t-stadiering",
+          "display": "t-stadiering",
+          "version": null,
+          "userSelected": null
+        }
+      ],
+      "item": [
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199b929-64b2-755a-95bf-dca0ce150e7f",
+          "type": "coding",
+          "definition": null,
+          "text": "Aantasting  darmwand",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "aantasting_darmwand",
+              "display": "aantasting_darmwand",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": [
+            {
+              "enableWhen": null,
+              "enableBehavior": null,
+              "disabledDisplay": null,
+              "id": null,
+              "linkId": "0199b929-64b2-755a-95bf-dca0ce150e7f_help_019c32e4",
+              "type": "display",
+              "definition": null,
+              "text": "Initial text",
+              "code": null,
+              "item": null,
+              "required": null,
+              "repeats": null,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "help",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "help"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
+                  "valueMarkdown": "Initial text"
+                }
+              ],
+              "answerConstraint": null,
+              "answerOption": null,
+              "answerValueSet": null,
+              "initial": null
+            }
+          ],
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "radio",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "radio"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199b929-64b2-755a-95bf-dca0ce150e7f",
+                "description": null,
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": "optionsOnly",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b92a-ac23-755a-95c9-98fcb7d1b7d9",
+                "display": "aantasting van de muscularis propria (T2)",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b92c-c53f-755a-95cd-8969551471b0",
+                "display": "< 1 mm extramurale uitbreiding (T3a)",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b92d-0f24-755a-95ce-3660735d56ce",
+                "display": "1 - 5 mm extramurale uitbreiding (T3b)",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b92d-4fb5-755a-95ce-de61862b73bc",
+                "display": "5 - 15 mm extramurale uitbreiding (T3c)",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b92d-8f51-755a-95cf-83705b5e869d",
+                "display": "> 15 mm extramurale uitbreiding (T3d)",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b92f-4212-755a-95d2-bd445dd9595c",
+                "display": "Peritoneale invasie (T4a)",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b92f-2671-755a-95d2-1566f04f4381",
+                "display": "Invasie in aanliggende orgaan/structuur (T4b)",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            }
+          ],
+          "answerValueSet": null,
+          "initial": null
+        }
+      ],
+      "required": null,
+      "repeats": false,
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "text": "block",
+            "coding": [
+              {
+                "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                "code": "block"
+              }
+            ]
+          }
+        },
+        {
+          "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+          "valueExpression": {
+            "name": "0199b81d-1c00-755a-9348-38bf439f3279",
+            "description": null,
+            "expression": "{%- assign aantasting_darmwand = item | fhirpath : \"item.where(linkId=0199b929-64b2-755a-95bf-dca0ce150e7f)\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"0199b929-64b2-755a-95bf-dca0ce150e7f\", item:aantasting_darmwand -%}\n",
+            "language": "text/liquid"
+          }
+        }
+      ],
+      "answerConstraint": null,
+      "answerOption": null,
+      "answerValueSet": null,
+      "initial": null
+    },
+    {
+      "enableWhen": null,
+      "enableBehavior": null,
+      "disabledDisplay": null,
+      "id": null,
+      "linkId": "0199957a-5334-74f2-b2f9-f6e2143a463e",
+      "type": "group",
+      "definition": null,
+      "text": "N-stadiëring",
+      "code": [
+        {
+          "extension": null,
+          "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+          "code": "n-stadiering",
+          "display": "n-stadiering",
+          "version": null,
+          "userSelected": null
+        }
+      ],
+      "item": [
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199957a-5334-74f2-b2f9-f6ffc4993d08",
+          "type": "coding",
+          "definition": null,
+          "text": "Aantal verdachte klieren:",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "aantal_verdachte_klieren",
+              "display": "aantal_verdachte_klieren",
+              "version": null,
+              "userSelected": null
+            },
+            {
+              "extension": null,
+              "system": "http://snomed.info/sct",
+              "code": "30746006",
+              "display": "adenopathie",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": null,
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "radio",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "radio"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199957a-5334-74f2-b2f9-f6ffc4993d08",
+                "description": null,
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": "optionsOnly",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b936-7935-755a-95e7-7ec33ef5a732",
+                "display": "Geen (N0)",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b936-9fb3-755a-95e8-26ca67135fda",
+                "display": "1  (N1a)",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b936-bde1-755a-95e8-ccffaa36d465",
+                "display": "2-3 (N1b)",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b939-2b1b-755a-95e9-72e7b4350655",
+                "display": "4-6  (N2a)",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b939-4aeb-755a-95ea-1a1e369e8631",
+                "display": "> 6  (N2b)",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                  "valueBoolean": false
+                }
+              ]
+            }
+          ],
+          "answerValueSet": null,
+          "initial": null
+        },
+        {
+          "enableWhen": [
+            {
+              "question": "0199957a-5334-74f2-b2f9-f6ffc4993d08",
+              "operator": "!=",
+              "answerCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b936-7935-755a-95e7-7ec33ef5a732",
+                "display": "N0 (geen vergrote klieren)",
+                "version": null,
+                "userSelected": null
+              }
+            }
+          ],
+          "enableBehavior": "all",
+          "disabledDisplay": "protected",
+          "id": null,
+          "linkId": "0199957a-5334-74f2-b2f9-f704b0bdbc12",
+          "type": "coding",
+          "definition": null,
+          "text": "Locatie verdachte regionale lymfeklier",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "locatie_verdachte_regionale_lymfeklier",
+              "display": "locatie_verdachte_regionale_lymfeklier",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": [
+            {
+              "enableWhen": null,
+              "enableBehavior": null,
+              "disabledDisplay": null,
+              "id": null,
+              "linkId": "0199957a-5334-74f2-b2f9-f71d61acee32",
+              "type": "decimal",
+              "definition": null,
+              "text": "Mesorectaal (*)",
+              "code": [
+                {
+                  "extension": null,
+                  "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+                  "code": "mesorectaal",
+                  "display": "mesorectaal",
+                  "version": null,
+                  "userSelected": null
+                }
+              ],
+              "item": null,
+              "required": null,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "decimal-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "decimal-field"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "0199957a-5334-74f2-b2f9-f71d61acee32",
+                    "description": null,
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append:   | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b93b-626b-755a-960a-f47549e38625",
+                    "display": "aantal",
+                    "version": null,
+                    "userSelected": null
+                  }
+                }
+              ],
+              "answerConstraint": null,
+              "answerOption": null,
+              "answerValueSet": null,
+              "initial": null
+            },
+            {
+              "enableWhen": null,
+              "enableBehavior": null,
+              "disabledDisplay": null,
+              "id": null,
+              "linkId": "0199b93b-96a2-755a-960c-dfe82f7580f0",
+              "type": "decimal",
+              "definition": null,
+              "text": "Iliaca interna (> 7mm)",
+              "code": [
+                {
+                  "extension": null,
+                  "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+                  "code": "iliaca_interna_7mm",
+                  "display": "iliaca_interna_7mm",
+                  "version": null,
+                  "userSelected": null
+                }
+              ],
+              "item": null,
+              "required": null,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "decimal-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "decimal-field"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "0199b93b-96a2-755a-960c-dfe82f7580f0",
+                    "description": null,
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append:   | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b93b-626b-755a-960a-f47549e38625",
+                    "display": "aantal",
+                    "version": null,
+                    "userSelected": null
+                  }
+                }
+              ],
+              "answerConstraint": null,
+              "answerOption": null,
+              "answerValueSet": null,
+              "initial": null
+            },
+            {
+              "enableWhen": null,
+              "enableBehavior": null,
+              "disabledDisplay": null,
+              "id": null,
+              "linkId": "0199b93e-2bff-755a-9616-070181b41c1d",
+              "type": "decimal",
+              "definition": null,
+              "text": "Obturator loge (> 5mm)",
+              "code": [
+                {
+                  "extension": null,
+                  "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+                  "code": "obturator_loge_5mm",
+                  "display": "obturator_loge_5mm",
+                  "version": null,
+                  "userSelected": null
+                }
+              ],
+              "item": null,
+              "required": null,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "decimal-field",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "decimal-field"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "0199b93e-2bff-755a-9616-070181b41c1d",
+                    "description": null,
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append:   | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b93b-626b-755a-960a-f47549e38625",
+                    "display": "aantal",
+                    "version": null,
+                    "userSelected": null
+                  }
+                }
+              ],
+              "answerConstraint": null,
+              "answerOption": null,
+              "answerValueSet": null,
+              "initial": null
+            }
+          ],
+          "required": null,
+          "repeats": true,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199957a-5334-74f2-b2f9-f704b0bdbc12",
+                "description": null,
+                "expression": "{%- assign answer = item.answer[index] -%}\n{%- assign mesorectaal = answer | fhirpath : \"item.where(linkId=0199957a-5334-74f2-b2f9-f71d61acee32)\" | first -%}\n{%- assign iliaca_interna_7mm = answer | fhirpath : \"item.where(linkId=0199b93b-96a2-755a-960c-dfe82f7580f0)\" | first -%}\n{%- assign obturator_loge_5mm = answer | fhirpath : \"item.where(linkId=0199b93e-2bff-755a-9616-070181b41c1d)\" | first -%}\n{%- assign Answer = item.answer[index].valueCoding.display -%}\n{%- assign Question = item.text | default: item.linkId -%}\n{%- if index == 0 -%}\n<div>{{ Question }}</div>\n{%- endif -%}\n{%- if Answer -%}\n<div>- {{Answer}}</div>\n{%- endif -%}\n{%- render \"0199957a-5334-74f2-b2f9-f71d61acee32\", item:mesorectaal -%}\n{%- render \"0199b93b-96a2-755a-960c-dfe82f7580f0\", item:iliaca_interna_7mm -%}\n{%- render \"0199b93e-2bff-755a-9616-070181b41c1d\", item:obturator_loge_5mm -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": "optionsOnly",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                "code": "578055ab10f446569eb15786daafc10f",
+                "display": "Mesorectaal",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b93c-fa9a-755a-960e-25bfc2ffac81",
+                "display": "Iliaca interna, extra- mesorectaal",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                "code": "0199b93d-4593-755a-960e-cba03c7a4401",
+                "display": "Obturator loge, extra- mesorectaal",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            }
+          ],
+          "answerValueSet": null,
+          "initial": null
+        }
+      ],
+      "required": null,
+      "repeats": false,
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "text": "block",
+            "coding": [
+              {
+                "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                "code": "block"
+              }
+            ]
+          }
+        },
+        {
+          "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+          "valueExpression": {
+            "name": "0199957a-5334-74f2-b2f9-f6e2143a463e",
+            "description": null,
+            "expression": "{%- assign aantal_verdachte_klieren = item | fhirpath : \"item.where(linkId=0199957a-5334-74f2-b2f9-f6ffc4993d08)\" | first -%}\n{%- assign locatie_verdachte_regionale_lymfeklier = item | fhirpath : \"item.where(linkId=0199957a-5334-74f2-b2f9-f704b0bdbc12)\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"0199957a-5334-74f2-b2f9-f6ffc4993d08\", item:aantal_verdachte_klieren -%}\n{%- for answer in locatie_verdachte_regionale_lymfeklier.answer -%}\n{%- render \"0199957a-5334-74f2-b2f9-f704b0bdbc12\", item:locatie_verdachte_regionale_lymfeklier, index:forloop.index0 -%}\n{%- endfor -%}\n",
+            "language": "text/liquid"
+          }
+        }
+      ],
+      "answerConstraint": null,
+      "answerOption": null,
+      "answerValueSet": null,
+      "initial": null
+    },
+    {
+      "enableWhen": null,
+      "enableBehavior": null,
+      "disabledDisplay": null,
+      "id": null,
+      "linkId": "0199957a-5334-74f2-b2f9-f7363fc0dfe9",
+      "type": "group",
+      "definition": null,
+      "text": "EMVI en METASTAEN:",
+      "code": [
+        {
+          "extension": null,
+          "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+          "code": "emvi_en_metastaen",
+          "display": "emvi_en_metastaen",
+          "version": null,
+          "userSelected": null
+        }
+      ],
+      "item": [
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199957a-5334-74f2-b2f9-f76f85aea2f3",
+          "type": "string",
+          "definition": null,
+          "text": "Niet-regionale lymfeklieren (iliaca externe, Inguinaal en verder)?",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "niet-regionale_lymfeklieren_iliaca_externe_inguinaal_en",
+              "display": "niet-regionale_lymfeklieren_iliaca_externe_inguinaal_en",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": null,
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "textfield",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "textfield"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199957a-5334-74f2-b2f9-f76f85aea2f3",
+                "description": null,
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueString -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": null,
+          "answerOption": null,
+          "answerValueSet": null,
+          "initial": null
+        },
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199957a-5334-74f2-b2f9-f74e88638ad8",
+          "type": "coding",
+          "definition": null,
+          "text": "Vasculaire invasie zichtbaar (EMVI)?",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "vasculaire_invasie_zichtbaar_emvi",
+              "display": "vasculaire_invasie_zichtbaar_emvi",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": null,
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "chips",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "chips"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199957a-5334-74f2-b2f9-f74e88638ad8",
+                "description": null,
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": "optionsOnly",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                "code": "e487d8f96bd2453aad8b2eaf52466447",
+                "display": "Ja",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            },
+            {
+              "valueCoding": {
+                "extension": null,
+                "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                "code": "0632a1f098d548cfa3214a26af8bfe4a",
+                "display": "Nee",
+                "version": null,
+                "userSelected": null
+              },
+              "initialSelected": null,
+              "extension": null
+            }
+          ],
+          "answerValueSet": null,
+          "initial": null
+        },
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199b842-905d-755a-94bc-0aa062e7c9e0",
+          "type": "group",
+          "definition": null,
+          "text": "Metastasen (TNM)?",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "metastasen_tnm",
+              "display": "metastasen_tnm",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": [
+            {
+              "enableWhen": null,
+              "enableBehavior": null,
+              "disabledDisplay": null,
+              "id": null,
+              "linkId": "0199b842-30f0-755a-94a8-1a7bdb17efd3",
+              "type": "coding",
+              "definition": null,
+              "text": "Metastase?",
+              "code": [
+                {
+                  "extension": null,
+                  "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+                  "code": "metastase",
+                  "display": "metastase",
+                  "version": null,
+                  "userSelected": null
+                }
+              ],
+              "item": null,
+              "required": null,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "radio",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "radio"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "0199b842-30f0-755a-94a8-1a7bdb17efd3",
+                    "description": null,
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerConstraint": null,
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://snomed.info/sct",
+                    "code": "1229901006",
+                    "display": "Geen metastasen (M0)",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b845-3ff6-755a-94db-faa9edace666",
+                    "display": "Metastase in 1 orgaan (M1a)",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b845-819e-755a-94dc-a2ff70bdb0ed",
+                    "display": "Metastase in meerdere organen (M1b)",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b845-c498-755a-94dd-486e5ddd2051",
+                    "display": "Peritoneale metastasen (M1c)",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionExclusive",
+                      "valueBoolean": false
+                    }
+                  ]
+                }
+              ],
+              "answerValueSet": null,
+              "initial": null
+            },
+            {
+              "enableWhen": null,
+              "enableBehavior": null,
+              "disabledDisplay": null,
+              "id": null,
+              "linkId": "0199b820-8c75-755a-935d-253ee48f358c",
+              "type": "string",
+              "definition": null,
+              "text": "Waar?",
+              "code": [
+                {
+                  "extension": null,
+                  "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+                  "code": "waar",
+                  "display": "waar",
+                  "version": null,
+                  "userSelected": null
+                }
+              ],
+              "item": null,
+              "required": null,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "textfield",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "textfield"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "0199b820-8c75-755a-935d-253ee48f358c",
+                    "description": null,
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueString -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerConstraint": null,
+              "answerOption": null,
+              "answerValueSet": null,
+              "initial": null
+            }
+          ],
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "list"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199b842-905d-755a-94bc-0aa062e7c9e0",
+                "description": null,
+                "expression": "{%- assign metastase = item | fhirpath : \"item.where(linkId=0199b842-30f0-755a-94a8-1a7bdb17efd3)\" | first -%}\n{%- assign waar = item | fhirpath : \"item.where(linkId=0199b820-8c75-755a-935d-253ee48f358c)\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"0199b842-30f0-755a-94a8-1a7bdb17efd3\", item:metastase -%}\n{%- render \"0199b820-8c75-755a-935d-253ee48f358c\", item:waar -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": null,
+          "answerOption": null,
+          "answerValueSet": null,
+          "initial": null
+        }
+      ],
+      "required": null,
+      "repeats": false,
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "text": "block",
+            "coding": [
+              {
+                "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                "code": "block"
+              }
+            ]
+          }
+        },
+        {
+          "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+          "valueExpression": {
+            "name": "0199957a-5334-74f2-b2f9-f7363fc0dfe9",
+            "description": null,
+            "expression": "{%- assign niet-regionale_lymfeklieren_iliaca_externe_inguinaal_en = item | fhirpath : \"item.where(linkId=0199957a-5334-74f2-b2f9-f76f85aea2f3)\" | first -%}\n{%- assign vasculaire_invasie_zichtbaar_emvi = item | fhirpath : \"item.where(linkId=0199957a-5334-74f2-b2f9-f74e88638ad8)\" | first -%}\n{%- assign metastasen_tnm = item | fhirpath : \"item.where(linkId=0199b842-905d-755a-94bc-0aa062e7c9e0)\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"0199957a-5334-74f2-b2f9-f76f85aea2f3\", item:niet-regionale_lymfeklieren_iliaca_externe_inguinaal_en -%}\n{%- render \"0199957a-5334-74f2-b2f9-f74e88638ad8\", item:vasculaire_invasie_zichtbaar_emvi -%}\n{%- render \"0199b842-905d-755a-94bc-0aa062e7c9e0\", item:metastasen_tnm -%}\n",
+            "language": "text/liquid"
+          }
+        }
+      ],
+      "answerConstraint": null,
+      "answerOption": null,
+      "answerValueSet": null,
+      "initial": null
+    },
+    {
+      "enableWhen": null,
+      "enableBehavior": null,
+      "disabledDisplay": null,
+      "id": null,
+      "linkId": "0199b820-dd1d-755a-9366-3a6bcd47d1a0",
+      "type": "group",
+      "definition": null,
+      "text": "Besluit",
+      "code": [
+        {
+          "extension": null,
+          "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+          "code": "besluit_1",
+          "display": "besluit_1",
+          "version": null,
+          "userSelected": null
+        }
+      ],
+      "item": [
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199b821-03cd-755a-9369-6c818232877d",
+          "type": "string",
+          "definition": null,
+          "text": "Besluit:",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "besluit",
+              "display": "besluit",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": null,
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "textfield",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "textfield"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199b821-03cd-755a-9369-6c818232877d",
+                "description": null,
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueString -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": null,
+          "answerOption": null,
+          "answerValueSet": null,
+          "initial": null
+        },
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199b840-44b5-755a-9477-4f06ac1818a4",
+          "type": "group",
+          "definition": null,
+          "text": "TNM (**)",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "tnm",
+              "display": "tnm",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": [
+            {
+              "enableWhen": null,
+              "enableBehavior": null,
+              "disabledDisplay": null,
+              "id": null,
+              "linkId": "0199b839-0b06-755a-93f4-b4f0a759e80d",
+              "type": "coding",
+              "definition": null,
+              "text": "T-stadium (TNM)",
+              "code": [
+                {
+                  "extension": null,
+                  "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+                  "code": "t-stadium_tnm",
+                  "display": "t-stadium_tnm",
+                  "version": null,
+                  "userSelected": null
+                }
+              ],
+              "item": null,
+              "required": null,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "0199b839-0b06-755a-93f4-b4f0a759e80d",
+                    "description": null,
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerConstraint": "optionsOnly",
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://snomed.info/sct",
+                    "code": "1228882005",
+                    "display": "T0",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://snomed.info/sct",
+                    "code": "1222604002",
+                    "display": "Tx",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b838-e6fd-755a-93f2-78c732bf091a",
+                    "display": "T1-T2",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                    "code": "053e106fe0c14e2cb09074d077cc7e2b",
+                    "display": "T3a",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                    "code": "b26423b015f34b92955549a2e243fb77",
+                    "display": "T3b",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                    "code": "2fdfca762f6f4fbf900e3009024705ee",
+                    "display": "T3c",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                    "code": "da545208798c469fbab1fa5b37b7de39",
+                    "display": "T3d",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b83c-65a8-755a-945e-40361647314e",
+                    "display": "T4a",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b83c-775a-755a-945e-ec104ff3f53e",
+                    "display": "T4b",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                }
+              ],
+              "answerValueSet": null,
+              "initial": null
+            },
+            {
+              "enableWhen": null,
+              "enableBehavior": null,
+              "disabledDisplay": null,
+              "id": null,
+              "linkId": "0199b83b-7c80-755a-944d-0ccf1c73c8e2",
+              "type": "coding",
+              "definition": null,
+              "text": "N-stadium (TNM)",
+              "code": [
+                {
+                  "extension": null,
+                  "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+                  "code": "n-stadium_tnm",
+                  "display": "n-stadium_tnm",
+                  "version": null,
+                  "userSelected": null
+                }
+              ],
+              "item": null,
+              "required": null,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "0199b83b-7c80-755a-944d-0ccf1c73c8e2",
+                    "description": null,
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerConstraint": "optionsOnly",
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                    "code": "0663f5bb911b4104ab11cd0705e485c1",
+                    "display": "N0",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b83a-62dd-755a-9449-1de4743742c8",
+                    "display": "N1a",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b83a-74a5-755a-9449-c56e1661d25c",
+                    "display": "N1b",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b83a-8efc-755a-944a-6c8ba1e3c241",
+                    "display": "N1c",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b83a-b1b4-755a-944b-106bbd726496",
+                    "display": "N2a",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b83a-bd6c-755a-944b-bd0da65d22ad",
+                    "display": "N2b",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                    "code": "0199b83b-5816-755a-944c-608b32350433",
+                    "display": "N2c",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                }
+              ],
+              "answerValueSet": null,
+              "initial": null
+            },
+            {
+              "enableWhen": null,
+              "enableBehavior": null,
+              "disabledDisplay": null,
+              "id": null,
+              "linkId": "0199b83f-6741-755a-945f-e0559956155b",
+              "type": "coding",
+              "definition": null,
+              "text": "M-stadium (TNM)",
+              "code": [
+                {
+                  "extension": null,
+                  "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+                  "code": "m-stadium_tnm",
+                  "display": "m-stadium_tnm",
+                  "version": null,
+                  "userSelected": null
+                }
+              ],
+              "item": null,
+              "required": null,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "chips",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "chips"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "0199b83f-6741-755a-945f-e0559956155b",
+                    "description": null,
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueCoding.display -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerConstraint": "optionsOnly",
+              "answerOption": [
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://snomed.info/sct",
+                    "code": "1229901006",
+                    "display": "M0",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://snomed.info/sct",
+                    "code": "1229904003",
+                    "display": "M1a",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://snomed.info/sct",
+                    "code": "1229907005",
+                    "display": "M1b",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                },
+                {
+                  "valueCoding": {
+                    "extension": null,
+                    "system": "http://snomed.info/sct",
+                    "code": "1229910003",
+                    "display": "M1c",
+                    "version": null,
+                    "userSelected": null
+                  },
+                  "initialSelected": null,
+                  "extension": null
+                }
+              ],
+              "answerValueSet": null,
+              "initial": null
+            }
+          ],
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "list"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199b840-44b5-755a-9477-4f06ac1818a4",
+                "description": null,
+                "expression": "{%- assign t-stadium_tnm = item | fhirpath : \"item.where(linkId=0199b839-0b06-755a-93f4-b4f0a759e80d)\" | first -%}\n{%- assign n-stadium_tnm = item | fhirpath : \"item.where(linkId=0199b83b-7c80-755a-944d-0ccf1c73c8e2)\" | first -%}\n{%- assign m-stadium_tnm = item | fhirpath : \"item.where(linkId=0199b83f-6741-755a-945f-e0559956155b)\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"0199b839-0b06-755a-93f4-b4f0a759e80d\", item:t-stadium_tnm -%}\n{%- render \"0199b83b-7c80-755a-944d-0ccf1c73c8e2\", item:n-stadium_tnm -%}\n{%- render \"0199b83f-6741-755a-945f-e0559956155b\", item:m-stadium_tnm -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": null,
+          "answerOption": null,
+          "answerValueSet": null,
+          "initial": null
+        },
+        {
+          "enableWhen": null,
+          "enableBehavior": null,
+          "disabledDisplay": null,
+          "id": null,
+          "linkId": "0199b834-797a-755a-93cd-22e9d4ec51d1",
+          "type": "group",
+          "definition": null,
+          "text": "Gebruikte criteria en TNM",
+          "code": [
+            {
+              "extension": null,
+              "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+              "code": "gebruikte_criteria_en_tnm",
+              "display": "gebruikte_criteria_en_tnm",
+              "version": null,
+              "userSelected": null
+            }
+          ],
+          "item": [
+            {
+              "enableWhen": null,
+              "enableBehavior": null,
+              "disabledDisplay": null,
+              "id": null,
+              "linkId": "0199b823-8b5c-755a-93a4-7fbae4c42485",
+              "type": "string",
+              "definition": null,
+              "text": "(*) Gebruikte criteria",
+              "code": [
+                {
+                  "extension": null,
+                  "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+                  "code": "gebruikte_criteria",
+                  "display": "gebruikte_criteria",
+                  "version": null,
+                  "userSelected": null
+                }
+              ],
+              "item": null,
+              "required": null,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "textfield",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "textfield"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "0199b823-8b5c-755a-93a4-7fbae4c42485",
+                    "description": null,
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueString -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                },
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/entryFormat",
+                  "valueString": "- Korte as: > 9mm - Korte as: > 5-9mm + 2/3: onregelmatige aflijning en/of heterogeen aspect en/of rond. - Korte as: < 5 mm + 3/3: onregelmatige aflijning en heterogeen aspect en rond."
+                }
+              ],
+              "answerConstraint": null,
+              "answerOption": null,
+              "answerValueSet": null,
+              "initial": null
+            },
+            {
+              "enableWhen": null,
+              "enableBehavior": null,
+              "disabledDisplay": null,
+              "id": null,
+              "linkId": "0199b835-063c-755a-93dc-35ddcb9ed7d2",
+              "type": "text",
+              "definition": null,
+              "text": "(**) TNM",
+              "code": [
+                {
+                  "extension": null,
+                  "system": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e/technical-key",
+                  "code": "tnm_1",
+                  "display": "tnm_1",
+                  "version": null,
+                  "userSelected": null
+                }
+              ],
+              "item": [
+                {
+                  "enableWhen": null,
+                  "enableBehavior": null,
+                  "disabledDisplay": null,
+                  "id": null,
+                  "linkId": "0199b835-063c-755a-93dc-35ddcb9ed7d2_help_019c32e4",
+                  "type": "display",
+                  "definition": null,
+                  "text": "Initial text",
+                  "code": null,
+                  "item": null,
+                  "required": null,
+                  "repeats": null,
+                  "extension": [
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                      "valueCodeableConcept": {
+                        "text": "help",
+                        "coding": [
+                          {
+                            "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                            "code": "help"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "url": "http://hl7.org/fhir/StructureDefinition/rendering-markdown",
+                      "valueMarkdown": "Initial text"
+                    }
+                  ],
+                  "answerConstraint": null,
+                  "answerOption": null,
+                  "answerValueSet": null,
+                  "initial": null
+                }
+              ],
+              "required": null,
+              "repeats": false,
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                  "valueCodeableConcept": {
+                    "text": "textarea",
+                    "coding": [
+                      {
+                        "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                        "code": "textarea"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+                  "valueExpression": {
+                    "name": "0199b835-063c-755a-93dc-35ddcb9ed7d2",
+                    "description": null,
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueString -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "language": "text/liquid"
+                  }
+                }
+              ],
+              "answerConstraint": null,
+              "answerOption": null,
+              "answerValueSet": null,
+              "initial": null
+            }
+          ],
+          "required": null,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "list",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "list"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "0199b834-797a-755a-93cd-22e9d4ec51d1",
+                "description": null,
+                "expression": "{%- assign gebruikte_criteria = item | fhirpath : \"item.where(linkId=0199b823-8b5c-755a-93a4-7fbae4c42485)\" | first -%}\n{%- assign tnm_1 = item | fhirpath : \"item.where(linkId=0199b835-063c-755a-93dc-35ddcb9ed7d2)\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"0199b823-8b5c-755a-93a4-7fbae4c42485\", item:gebruikte_criteria -%}\n{%- render \"0199b835-063c-755a-93dc-35ddcb9ed7d2\", item:tnm_1 -%}\n",
+                "language": "text/liquid"
+              }
+            }
+          ],
+          "answerConstraint": null,
+          "answerOption": null,
+          "answerValueSet": null,
+          "initial": null
+        }
+      ],
+      "required": null,
+      "repeats": false,
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+          "valueCodeableConcept": {
+            "text": "block",
+            "coding": [
+              {
+                "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                "code": "block"
+              }
+            ]
+          }
+        },
+        {
+          "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+          "valueExpression": {
+            "name": "0199b820-dd1d-755a-9366-3a6bcd47d1a0",
+            "description": null,
+            "expression": "{%- assign besluit = item | fhirpath : \"item.where(linkId=0199b821-03cd-755a-9369-6c818232877d)\" | first -%}\n{%- assign tnm = item | fhirpath : \"item.where(linkId=0199b840-44b5-755a-9477-4f06ac1818a4)\" | first -%}\n{%- assign gebruikte_criteria_en_tnm = item | fhirpath : \"item.where(linkId=0199b834-797a-755a-93cd-22e9d4ec51d1)\" | first -%}\n{%- if item.text -%}\n{%- assign GroupTitle = item.text -%}\n<h2>{{ GroupTitle }}</h2>\n{%- endif -%}\n{%- render \"0199b821-03cd-755a-9369-6c818232877d\", item:besluit -%}\n{%- render \"0199b840-44b5-755a-9477-4f06ac1818a4\", item:tnm -%}\n{%- render \"0199b834-797a-755a-93cd-22e9d4ec51d1\", item:gebruikte_criteria_en_tnm -%}\n",
+            "language": "text/liquid"
+          }
+        }
+      ],
+      "answerConstraint": null,
+      "answerOption": null,
+      "answerValueSet": null,
+      "initial": null
+    }
+  ]
+}
