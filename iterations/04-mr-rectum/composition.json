@@ -1,0 +1,188 @@
+{
+  "resourceType": "Composition",
+  "id": "mr-rectum-template",
+  "status": "final",
+  "type": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "18748-4",
+        "display": "Diagnostic imaging study"
+      }
+    ]
+  },
+  "title": "MR Rectum",
+  "date": "2024-01-01",
+  "section": [
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+          "valueString": "%resource.item.where(linkId='0199957a-5333-7e93-92d4-860d9cbd2374')"
+        }
+      ],
+      "title": "Morfologie",
+      "code": {
+        "coding": [
+          {
+            "system": "http://example.org/mr-rectum-sections",
+            "code": "morfologie",
+            "display": "Morfologie"
+          }
+        ]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>Morfologie</dt><dd>{{%context.item.where(linkId='0199b916-d07c-755a-9527-2f4923325d49').answer.value.display}}</dd><dt>Lengte</dt><dd>{{%context.item.where(linkId='0199957a-5333-7e93-92d4-862e7eff1729').answer.value}} mm</dd><dt>Locatie</dt><dd>{{%context.item.where(linkId='0199957a-5333-7e93-92d4-863512dec4d4').answer.value.display}}</dd><dt>Circumferentiële locatie van de tumor</dt><dd>{{%context.item.where(linkId='0199b91a-bc04-755a-954f-abfa18b4965d').answer.value}}</dd><dt>Afstand ondergrens tumor tot anorectale junctie</dt><dd>{{%context.item.where(linkId='0199957a-5333-7e93-92d4-8619a5f73162').answer.value}} mm</dd><dt>MRF</dt><dd>{{%context.item.where(linkId='0199957a-5333-7e93-92d4-8650645b5157').answer.value.display}}</dd></dl></div>"
+      }
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+          "valueString": "%resource.item.where(linkId='0199b922-44e8-755a-95a1-64d8398dbfbe')"
+        }
+      ],
+      "title": "Anaal kanaal",
+      "code": {
+        "coding": [
+          {
+            "system": "http://example.org/mr-rectum-sections",
+            "code": "anaal-kanaal",
+            "display": "Anaal kanaal"
+          }
+        ]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>{{%context.item.where(linkId='0199b922-44e8-755a-95a1-7ed7953c4e79').answer.value.display}}</p></div>"
+      }
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+          "valueString": "%resource.where(item.where(linkId='0199b922-44e8-755a-95a1-64d8398dbfbe').empty())"
+        }
+      ],
+      "title": "Anaal kanaal",
+      "code": {
+        "coding": [
+          {
+            "system": "http://example.org/mr-rectum-sections",
+            "code": "anaal-kanaal",
+            "display": "Anaal kanaal"
+          }
+        ]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>NVT</p></div>"
+      }
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+          "valueString": "%resource.item.where(linkId='0199b81d-1c00-755a-9348-38bf439f3279')"
+        }
+      ],
+      "title": "T-stadiëring",
+      "code": {
+        "coding": [
+          {
+            "system": "http://example.org/mr-rectum-sections",
+            "code": "t-staging",
+            "display": "T-stadiëring"
+          }
+        ]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>{{%context.item.where(linkId='0199b929-64b2-755a-95bf-dca0ce150e7f').answer.value.display}}</p></div>"
+      }
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+          "valueString": "%resource.item.where(linkId='0199957a-5334-74f2-b2f9-f6e2143a463e')"
+        }
+      ],
+      "title": "N-stadiëring",
+      "code": {
+        "coding": [
+          {
+            "system": "http://example.org/mr-rectum-sections",
+            "code": "n-staging",
+            "display": "N-stadiëring"
+          }
+        ]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>Aantal verdachte klieren</dt><dd>{{%context.item.where(linkId='0199957a-5334-74f2-b2f9-f6ffc4993d08').answer.value.display}}</dd></dl></div>"
+      }
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+          "valueString": "%resource.item.where(linkId='0199957a-5334-74f2-b2f9-f7363fc0dfe9')"
+        }
+      ],
+      "title": "EMVI en metastasen",
+      "code": {
+        "coding": [
+          {
+            "system": "http://example.org/mr-rectum-sections",
+            "code": "emvi-metastasen",
+            "display": "EMVI en metastasen"
+          }
+        ]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>Niet-regionale lymfeklieren (inguinaal, Iliaca externa en verder)</dt><dd>{{%context.item.where(linkId='0199957a-5334-74f2-b2f9-f76f85aea2f3').answer.value}}</dd><dt>EMVI</dt><dd>{{%context.item.where(linkId='0199957a-5334-74f2-b2f9-f74e88638ad8').answer.value.display}}</dd><dt>Metastasen</dt><dd>{{%context.item.where(linkId='0199b842-905d-755a-94bc-0aa062e7c9e0').item.where(linkId='0199b842-30f0-755a-94a8-1a7bdb17efd3').answer.value.display}}</dd></dl></div>"
+      }
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+          "valueString": "%resource.item.where(linkId='0199b820-dd1d-755a-9366-3a6bcd47d1a0')"
+        }
+      ],
+      "title": "Besluit",
+      "code": {
+        "coding": [
+          {
+            "system": "http://example.org/mr-rectum-sections",
+            "code": "besluit",
+            "display": "Besluit"
+          }
+        ]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>{{%context.item.where(linkId='0199b821-03cd-755a-9369-6c818232877d').answer.value}}</p></div>"
+      }
+    },
+    {
+      "title": "Criteria",
+      "code": {
+        "coding": [
+          {
+            "system": "http://example.org/mr-rectum-sections",
+            "code": "criteria",
+            "display": "Gebruikte criteria"
+          }
+        ]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>(*) Gebruikte criteria:</p><ul><li>Korte as: &gt; 9mm</li><li>Korte as: &gt; 5-9mm + 2/3: onregelmatige aflijning en/of heterogeen aspect en/of rond.</li><li>Korte as: &lt; 5 mm + 3/3: onregelmatige aflijning en heterogeen aspect en rond.</li></ul></div>"
+      }
+    }
+  ]
+}

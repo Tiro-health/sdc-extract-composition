@@ -1,0 +1,224 @@
+{
+    "resourceType": "QuestionnaireResponse",
+    "questionnaire": "http://templates.tiro.health/templates/a1b9a07562514db0af31ac872431e49e|1.0.0",
+    "status": "in-progress",
+    "item": [
+        {
+            "linkId": "0199957a-5333-7e93-92d4-860d9cbd2374",
+            "text": "Morfologie",
+            "item": [
+                {
+                    "linkId": "0199b916-d07c-755a-9527-2f4923325d49",
+                    "text": "Morfologie",
+                    "answer": [
+                        {
+                            "valueCoding": {
+                                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                                "code": "0199b917-d85e-755a-9531-3b4675cef9dc",
+                                "display": "semicirculair + solide"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "linkId": "0199957a-5333-7e93-92d4-862e7eff1729",
+                    "text": "Lengte (maximaal)",
+                    "answer": [
+                        {
+                            "valueDecimal": 47
+                        }
+                    ]
+                },
+                {
+                    "linkId": "0199957a-5333-7e93-92d4-863512dec4d4",
+                    "text": "Locatie",
+                    "answer": [
+                        {
+                            "valueCoding": {
+                                "system": "http://snomed.info/sct",
+                                "code": "40415009",
+                                "display": "proximaal"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "linkId": "0199b91a-bc04-755a-954f-abfa18b4965d",
+                    "text": "Circumferentiële locatie in ruglig (klokgewijs)",
+                    "answer": [
+                        {
+                            "valueString": "2 tot 7 uur in rugligging"
+                        }
+                    ]
+                },
+                {
+                    "linkId": "0199957a-5333-7e93-92d4-8619a5f73162",
+                    "text": "Afstand distale tumor tot anorectale overgang",
+                    "answer": [
+                        {
+                            "valueDecimal": 45
+                        }
+                    ]
+                },
+                {
+                    "linkId": "0199957a-5333-7e93-92d4-8650645b5157",
+                    "text": "Aantasting mesorectale fascia (< 1mm) ?",
+                    "answer": [
+                        {
+                            "valueCoding": {
+                                "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                                "code": "c9046106841447ff994718e42af417e2",
+                                "display": "Nee"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "linkId": "0199b81d-1c00-755a-9348-38bf439f3279",
+            "text": "T-Stadiëring",
+            "item": [
+                {
+                    "linkId": "0199b929-64b2-755a-95bf-dca0ce150e7f",
+                    "text": "Aantasting  darmwand",
+                    "answer": [
+                        {
+                            "valueCoding": {
+                                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                                "code": "0199b92d-0f24-755a-95ce-3660735d56ce",
+                                "display": "1 - 5 mm extramurale uitbreiding (T3b)"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "linkId": "0199957a-5334-74f2-b2f9-f6e2143a463e",
+            "text": "N-stadiëring",
+            "item": [
+                {
+                    "linkId": "0199957a-5334-74f2-b2f9-f6ffc4993d08",
+                    "text": "Aantal verdachte klieren:",
+                    "answer": [
+                        {
+                            "valueCoding": {
+                                "system": "http://templates.tiro.health/templates/07e26acc4114489bb52b971d0c4ca855/custom-codes",
+                                "code": "0199b936-7935-755a-95e7-7ec33ef5a732",
+                                "display": "Geen (N0)"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "linkId": "0199957a-5334-74f2-b2f9-f7363fc0dfe9",
+            "text": "EMVI en METASTAEN:",
+            "item": [
+                {
+                    "linkId": "0199957a-5334-74f2-b2f9-f76f85aea2f3",
+                    "text": "Niet-regionale lymfeklieren (iliaca externe, Inguinaal en verder)?",
+                    "answer": [
+                        {
+                            "valueString": "geen"
+                        }
+                    ]
+                },
+                {
+                    "linkId": "0199957a-5334-74f2-b2f9-f74e88638ad8",
+                    "text": "Vasculaire invasie zichtbaar (EMVI)?",
+                    "answer": [
+                        {
+                            "valueCoding": {
+                                "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                                "code": "0632a1f098d548cfa3214a26af8bfe4a",
+                                "display": "Nee"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "linkId": "0199b842-905d-755a-94bc-0aa062e7c9e0",
+                    "text": "Metastasen (TNM)?",
+                    "item": [
+                        {
+                            "linkId": "0199b842-30f0-755a-94a8-1a7bdb17efd3",
+                            "text": "Metastase?",
+                            "answer": [
+                                {
+                                    "valueCoding": {
+                                        "system": "http://snomed.info/sct",
+                                        "code": "1229901006",
+                                        "display": "Geen metastasen (M0)"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "linkId": "0199b820-dd1d-755a-9366-3a6bcd47d1a0",
+            "text": "Besluit",
+            "item": [
+                {
+                    "linkId": "0199b821-03cd-755a-9369-6c818232877d",
+                    "text": "Besluit:",
+                    "answer": [
+                        {
+                            "valueString": "Staging: cT3bN0M0"
+                        }
+                    ]
+                },
+                {
+                    "linkId": "0199b840-44b5-755a-9477-4f06ac1818a4",
+                    "text": "TNM (**)",
+                    "item": [
+                        {
+                            "linkId": "0199b839-0b06-755a-93f4-b4f0a759e80d",
+                            "text": "T-stadium (TNM)",
+                            "answer": [
+                                {
+                                    "valueCoding": {
+                                        "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                                        "code": "b26423b015f34b92955549a2e243fb77",
+                                        "display": "T3b"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "linkId": "0199b83b-7c80-755a-944d-0ccf1c73c8e2",
+                            "text": "N-stadium (TNM)",
+                            "answer": [
+                                {
+                                    "valueCoding": {
+                                        "system": "http://templates.tiro.health/templates/3746c6aab4f149718d9de9af62eb0d73/custom-codes",
+                                        "code": "0663f5bb911b4104ab11cd0705e485c1",
+                                        "display": "N0"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "linkId": "0199b83f-6741-755a-945f-e0559956155b",
+                            "text": "M-stadium (TNM)",
+                            "answer": [
+                                {
+                                    "valueCoding": {
+                                        "system": "http://snomed.info/sct",
+                                        "code": "1229901006",
+                                        "display": "M0"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

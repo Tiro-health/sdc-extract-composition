@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from fhir_liquid import render_template
+from fhir_liquid import evaluate_fhirpath, render_template
 
 HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="nl">
@@ -29,8 +29,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             padding-bottom: 0.5rem;
         }}
         h2 {{
-            background: #f0f0f0;
-            padding: 0.5rem;
+            font-size: 1.15rem;
             margin-top: 2rem;
         }}
         dl {{
@@ -114,14 +113,24 @@ def load_composition(questionnaire: dict[str, Any]) -> dict[str, Any]:
 def render_section(
     section: dict[str, Any],
     resource: dict[str, Any],
-) -> str:
-    """Render a single Composition section with FHIRPath expressions evaluated."""
+) -> str | None:
+    """Render a single Composition section with FHIRPath expressions evaluated.
+
+    Returns None if the section's templateExtractContext resolves to empty,
+    skipping the section from output.
+    """
     section_title = section.get("title", "Untitled")
     section_text = section.get("text", {}).get("div", "")
 
     # Get the templateExtractContext expression (base path for %context)
     extensions = section.get("extension", [])
     base_path = get_extension_value(extensions, TEMPLATE_EXTRACT_CONTEXT_URL)
+
+    # Skip section if context resolves to empty
+    if base_path:
+        context_result = evaluate_fhirpath(base_path, resource)
+        if not context_result:
+            return None
 
     # Create context with base path for proper type resolution
     context = {"resource": resource}
@@ -146,8 +155,9 @@ def generate_html(
     title = composition.get("title", "Composition")
 
     sections_html = [
-        render_section(section, resource)
+        html
         for section in composition.get("section", [])
+        if (html := render_section(section, resource)) is not None
     ]
 
     return HTML_TEMPLATE.format(title=title, sections="\n".join(sections_html))
