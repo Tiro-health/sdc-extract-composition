@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colon Resection</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0.5cm 2.2cm;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+            font-size: 8pt;
+        }
+        h1 {
+            font-size: 12pt;
+            border-bottom: 1.5px solid #333;
+            padding-bottom: 0.3rem;
+            margin: 0.5rem 0;
+        }
+        h2 {
+            font-size: 9pt;
+            margin: 0.8rem 0 0.3rem;
+            padding-bottom: 0.2rem;
+            border-bottom: 1px solid #ddd;
+        }
+        dl {
+            display: grid;
+            grid-template-columns: minmax(120px, 1fr) 2fr;
+            gap: 0.1rem 0.8rem;
+            margin: 0.2rem 0;
+        }
+        dt {
+            font-weight: 600;
+            padding: 0.1rem 0;
+        }
+        dd {
+            margin: 0;
+            padding: 0.1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        section {
+            margin: 1rem 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.5rem 0;
+        }
+        th, td {
+            padding: 0.2rem 0.4rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+        thead th {
+            border-bottom: 2px solid #ccc;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1.5px solid #333;
+            padding-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
+        }
+        .lab-info {
+            font-size: 7pt;
+            color: #555;
+        }
+        .lab-info strong {
+            font-size: 8pt;
+            color: #111;
+        }
+        .report-meta {
+            font-size: 7pt;
+            text-align: right;
+            color: #555;
+        }
+        .report-meta strong {
+            color: #111;
+        }
+        footer {
+            margin-top: 1rem;
+            padding-top: 0.4rem;
+            border-top: 1.5px solid #333;
+        }
+        .attestation {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            font-size: 7pt;
+        }
+        .attestation .signer {
+            padding-top: 0.2rem;
+        }
+        .attestation .signature-line {
+            margin-top: 1rem;
+            border-top: 1px solid #999;
+            padding-top: 0.15rem;
+            font-size: 6.5pt;
+            color: #666;
+        }
+        .attestation-note {
+            margin-top: 0.4rem;
+            font-size: 6pt;
+            color: #888;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="lab-info">
+        <strong>Department of Pathology</strong><br>
+        St. Elsewhere General Hospital<br>
+        123 Medical Drive, Anytown
+    </div>
+    <div class="report-meta">
+        <strong>Accession:</strong> SP-2026-00142<br>
+        <strong>Patient:</strong> Janssen, Pieter (°1958-03-12)<br>
+        <strong>Collected:</strong> 2026-02-07<br>
+        <strong>Reported:</strong> 2026-02-10T14:30:00Z
+    </div>
+</header>
+
+    <h1>Colon Resection</h1>
+    <section>
+        <h2>Gross Description</h2>
+        <dl><dt>Specimen type</dt><dd>Right hemicolectomy specimen</dd><dt>Specimen length</dt><dd>22.5 cm</dd><dt>Tumor location</dt><dd>Ascending colon</dd><dt>Tumor size</dt><dd>4.2 cm</dd><dt>Distance to nearest margin</dt><dd>8.0 cm</dd><dt>Cut surface</dt><dd>Firm, tan-white, ulcerated mass with irregular borders, invading through the muscularis propria into the pericolonic adipose tissue.</dd></dl>
+    </section>
+    <section>
+        <h2>Microscopic Description</h2>
+        <dl><dt>Histological type</dt><dd>Adenocarcinoma, NOS</dd><dt>Grade</dt><dd>Moderately differentiated (G2)</dd><dt>Depth of invasion</dt><dd>Through muscularis propria into pericolorectal tissues</dd><dt>Lymphovascular invasion</dt><dd>Present</dd><dt>Perineural invasion</dt><dd>Absent</dd><dt>Tumor budding</dt><dd>Low (0-4 buds per 0.785 mm²)</dd></dl>
+    </section>
+    <section>
+        <h2>Diagnosis</h2>
+        <p>Right colon, right hemicolectomy: Moderately differentiated adenocarcinoma, invading through muscularis propria into pericolonic fat (pT3). Metastatic carcinoma in 1 of 18 regional lymph nodes (pN1a). All surgical margins are negative.</p><p><b>Additional comments:</b> Recommend molecular testing for mismatch repair (MMR) protein expression by immunohistochemistry and KRAS/NRAS/BRAF mutation analysis to guide adjuvant therapy.</p>
+    </section>
+    <section>
+        <h2>Synoptic Report</h2>
+        <dl><dt>pT stage</dt><dd>pT3</dd><dt>pN stage</dt><dd>pN1a</dd><dt>Lymph nodes examined</dt><dd>18</dd><dt>Lymph nodes positive</dt><dd>1</dd><dt>Proximal margin</dt><dd>Negative (uninvolved by invasive carcinoma)</dd><dt>Distal margin</dt><dd>Negative (uninvolved by invasive carcinoma)</dd><dt>Circumferential (radial) margin</dt><dd>Negative (uninvolved by invasive carcinoma)</dd><dt>MMR / MSI status</dt><dd>MMR proficient (pMMR) — intact nuclear expression of MLH1, PMS2, MSH2, MSH6</dd></dl>
+    </section>
+<footer>
+    <div class="attestation">
+        <div class="signer">
+            <strong>Dr. Sophie De Moor</strong><br>
+            Pathologist<br>
+            Department of Pathology
+            <div class="signature-line">Electronically signed</div>
+        </div>
+        <div class="signer">
+            <strong>Dr. Jan Verhoeven</strong><br>
+            Attending Pathologist<br>
+            Department of Pathology
+            <div class="signature-line">Electronically attested</div>
+        </div>
+    </div>
+    <div class="attestation-note">
+        This report has been electronically signed and constitutes the final pathology diagnosis.
+        Amendments, if any, will be issued as addenda.
+    </div>
+</footer>
+
+</body>
+</html>

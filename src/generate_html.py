@@ -133,41 +133,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </style>
 </head>
 <body>
-    <header>
-        <div class="lab-info">
-            <strong>Department of Pathology</strong><br>
-            St. Elsewhere General Hospital<br>
-            123 Medical Drive, Anytown
-        </div>
-        <div class="report-meta">
-            <strong>Accession:</strong> SP-2026-00142<br>
-            <strong>Patient:</strong> Janssen, Pieter (°1958-03-12)<br>
-            <strong>Collected:</strong> 2026-02-07<br>
-            <strong>Reported:</strong> 2026-02-10
-        </div>
-    </header>
+{header}
     <h1>{title}</h1>
 {sections}
-    <footer>
-        <div class="attestation">
-            <div class="signer">
-                <strong>Dr. Sophie De Moor</strong><br>
-                Pathologist<br>
-                Department of Pathology
-                <div class="signature-line">Electronically signed</div>
-            </div>
-            <div class="signer">
-                <strong>Dr. Jan Verhoeven</strong><br>
-                Attending Pathologist<br>
-                Department of Pathology
-                <div class="signature-line">Electronically attested</div>
-            </div>
-        </div>
-        <div class="attestation-note">
-            This report has been electronically signed and constitutes the final pathology diagnosis.
-            Amendments, if any, will be issued as addenda.
-        </div>
-    </footer>
+{footer}
 </body>
 </html>
 """
@@ -247,6 +216,9 @@ def render_section(
 def generate_html(
     composition: dict[str, Any],
     resource: dict[str, Any],
+    *,
+    header_template: str = "",
+    footer_template: str = "",
 ) -> str:
     """Generate HTML from a Composition resource with evaluated FHIRPath expressions."""
     title = composition.get("title", "Composition")
@@ -257,7 +229,16 @@ def generate_html(
         if (html := render_section(section, resource)) is not None
     ]
 
-    return HTML_TEMPLATE.format(title=title, sections="\n".join(sections_html))
+    context = {"resource": resource}
+    header = render_template(header_template, context) if header_template else ""
+    footer = render_template(footer_template, context) if footer_template else ""
+
+    return HTML_TEMPLATE.format(
+        title=title,
+        sections="\n".join(sections_html),
+        header=header,
+        footer=footer,
+    )
 
 
 def main() -> None:
@@ -288,8 +269,19 @@ def main() -> None:
     # Extract composition template from questionnaire
     composition = load_composition(questionnaire)
 
+    # Load optional header/footer templates
+    header_path = iteration_path / "header.html"
+    footer_path = iteration_path / "footer.html"
+    header_template = header_path.read_text() if header_path.exists() else ""
+    footer_template = footer_path.read_text() if footer_path.exists() else ""
+
     # Generate HTML with evaluated expressions
-    html = generate_html(composition, response)
+    html = generate_html(
+        composition,
+        response,
+        header_template=header_template,
+        footer_template=footer_template,
+    )
 
     # Write output
     output_dir = iteration_path / "output"
