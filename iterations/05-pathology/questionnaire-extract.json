@@ -1,0 +1,653 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "pathology-colon-resection",
+  "meta": {
+    "profile": [
+      "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-extr-template"
+    ]
+  },
+  "url": "http://example.org/Questionnaire/pathology-colon-resection",
+  "version": "1.0.0",
+  "name": "Pathology Colon Resection",
+  "status": "active",
+  "description": "Structured pathology report for colon resection specimens — gross description, microscopic findings, diagnosis, and synoptic staging.",
+  "contained": [
+    {
+      "resourceType": "Composition",
+      "id": "pathology-report-template",
+      "status": "final",
+      "type": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "22034-3",
+            "display": "Surgical pathology report"
+          }
+        ]
+      },
+      "title": "Colon Resection",
+      "date": "2024-01-01",
+      "section": [
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='gross')"
+            }
+          ],
+          "title": "Gross Description",
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "22634-0",
+                "display": "Pathology report gross observation"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>Specimen type</dt><dd>{{%context.item.where(linkId='specimen-type').answer.value.display}}</dd><dt>Specimen length</dt><dd>{{%context.item.where(linkId='specimen-length').answer.value}} cm</dd><dt>Tumor location</dt><dd>{{%context.item.where(linkId='tumor-location').answer.value.display}}</dd><dt>Tumor size</dt><dd>{{%context.item.where(linkId='tumor-size').answer.value}} cm</dd><dt>Distance to nearest margin</dt><dd>{{%context.item.where(linkId='margin-distance').answer.value}} cm</dd><dt>Cut surface</dt><dd>{{%context.item.where(linkId='cut-surface').answer.value}}</dd></dl></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='microscopic')"
+            }
+          ],
+          "title": "Microscopic Description",
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "22635-7",
+                "display": "Pathology report microscopic observation"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>Histological type</dt><dd>{{%context.item.where(linkId='histological-type').answer.value.display}}</dd><dt>Grade</dt><dd>{{%context.item.where(linkId='grade').answer.value.display}}</dd><dt>Depth of invasion</dt><dd>{{%context.item.where(linkId='depth-of-invasion').answer.value.display}}</dd><dt>Lymphovascular invasion</dt><dd>{{%context.item.where(linkId='lymphovascular-invasion').answer.value.display}}</dd><dt>Perineural invasion</dt><dd>{{%context.item.where(linkId='perineural-invasion').answer.value.display}}</dd><dt>Tumor budding</dt><dd>{{%context.item.where(linkId='tumor-budding').answer.value.display}}</dd></dl></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='diagnosis')"
+            }
+          ],
+          "title": "Diagnosis",
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "22637-3",
+                "display": "Pathology report diagnosis"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>{{%context.item.where(linkId='final-diagnosis').answer.value}}</p><p><b>Additional comments:</b> {{%context.item.where(linkId='additional-comments').answer.value}}</p></div>"
+          }
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+              "valueString": "%resource.item.where(linkId='synoptic')"
+            }
+          ],
+          "title": "Synoptic Report",
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "60568-3",
+                "display": "Pathology synoptic report"
+              }
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>pT stage</dt><dd>{{%context.item.where(linkId='pt-stage').answer.value.display}}</dd><dt>pN stage</dt><dd>{{%context.item.where(linkId='pn-stage').answer.value.display}}</dd><dt>Lymph nodes examined</dt><dd>{{%context.item.where(linkId='lymph-nodes-examined').answer.value}}</dd><dt>Lymph nodes positive</dt><dd>{{%context.item.where(linkId='lymph-nodes-positive').answer.value}}</dd><dt>Proximal margin</dt><dd>{{%context.item.where(linkId='proximal-margin').answer.value.display}}</dd><dt>Distal margin</dt><dd>{{%context.item.where(linkId='distal-margin').answer.value.display}}</dd><dt>Circumferential (radial) margin</dt><dd>{{%context.item.where(linkId='radial-margin').answer.value.display}}</dd><dt>MMR / MSI status</dt><dd>{{%context.item.where(linkId='mmr-status').answer.value.display}}</dd></dl></div>"
+          }
+        }
+      ]
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtract",
+      "extension": [
+        {
+          "url": "template",
+          "valueReference": {
+            "reference": "#pathology-report-template"
+          }
+        }
+      ]
+    }
+  ],
+  "item": [
+    {
+      "linkId": "gross",
+      "text": "Gross Description",
+      "type": "group",
+      "item": [
+        {
+          "linkId": "specimen-type",
+          "text": "Specimen type",
+          "type": "choice",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "787021009",
+                "display": "Right hemicolectomy specimen"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "787022002",
+                "display": "Left hemicolectomy specimen"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "119379005",
+                "display": "Sigmoid colectomy specimen"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "119376003",
+                "display": "Total colectomy specimen"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "specimen-length",
+          "text": "Specimen length (cm)",
+          "type": "decimal"
+        },
+        {
+          "linkId": "tumor-location",
+          "text": "Tumor location",
+          "type": "choice",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "32713005",
+                "display": "Cecum"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "9040008",
+                "display": "Ascending colon"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "485005",
+                "display": "Transverse colon"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "32622004",
+                "display": "Descending colon"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "60184004",
+                "display": "Sigmoid colon"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "tumor-size",
+          "text": "Tumor size (cm)",
+          "type": "decimal"
+        },
+        {
+          "linkId": "margin-distance",
+          "text": "Distance to nearest margin (cm)",
+          "type": "decimal"
+        },
+        {
+          "linkId": "cut-surface",
+          "text": "Cut surface description",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "linkId": "microscopic",
+      "text": "Microscopic Description",
+      "type": "group",
+      "item": [
+        {
+          "linkId": "histological-type",
+          "text": "Histological type",
+          "type": "choice",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "35917007",
+                "display": "Adenocarcinoma, NOS"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "72495009",
+                "display": "Mucinous adenocarcinoma"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "87737001",
+                "display": "Signet ring cell carcinoma"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "32913002",
+                "display": "Medullary carcinoma"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "grade",
+          "text": "Grade of differentiation",
+          "type": "choice",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "54102005",
+                "display": "Well differentiated (G1)"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1663004",
+                "display": "Moderately differentiated (G2)"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "69049003",
+                "display": "Poorly differentiated (G3)"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "258245003",
+                "display": "Undifferentiated (G4)"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "depth-of-invasion",
+          "text": "Depth of invasion",
+          "type": "choice",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "396921008",
+                "display": "Lamina propria or muscularis mucosae"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "396922001",
+                "display": "Submucosa"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "396923006",
+                "display": "Muscularis propria"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "396924000",
+                "display": "Through muscularis propria into pericolorectal tissues"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "lymphovascular-invasion",
+          "text": "Lymphovascular invasion",
+          "type": "choice",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "52101004",
+                "display": "Present"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "2667000",
+                "display": "Absent"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "82334004",
+                "display": "Indeterminate"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "perineural-invasion",
+          "text": "Perineural invasion",
+          "type": "choice",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "52101004",
+                "display": "Present"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "2667000",
+                "display": "Absent"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "82334004",
+                "display": "Indeterminate"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "tumor-budding",
+          "text": "Tumor budding",
+          "type": "choice",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://example.org/pathology-codes",
+                "code": "low",
+                "display": "Low (0-4 buds per 0.785 mm²)"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://example.org/pathology-codes",
+                "code": "intermediate",
+                "display": "Intermediate (5-9 buds per 0.785 mm²)"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://example.org/pathology-codes",
+                "code": "high",
+                "display": "High (≥10 buds per 0.785 mm²)"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis",
+      "text": "Diagnosis",
+      "type": "group",
+      "item": [
+        {
+          "linkId": "final-diagnosis",
+          "text": "Final diagnosis",
+          "type": "text"
+        },
+        {
+          "linkId": "additional-comments",
+          "text": "Additional comments",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "linkId": "synoptic",
+      "text": "Synoptic Report",
+      "type": "group",
+      "item": [
+        {
+          "linkId": "pt-stage",
+          "text": "pT stage",
+          "type": "choice",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228935004",
+                "display": "pTis"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228936003",
+                "display": "pT1"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228937007",
+                "display": "pT2"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228938002",
+                "display": "pT3"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228944003",
+                "display": "pT4a"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228945002",
+                "display": "pT4b"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "pn-stage",
+          "text": "pN stage",
+          "type": "choice",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1229945006",
+                "display": "pN0"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1229947003",
+                "display": "pN1a"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1229949000",
+                "display": "pN1b"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1229951001",
+                "display": "pN2a"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1229953003",
+                "display": "pN2b"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "lymph-nodes-examined",
+          "text": "Lymph nodes examined",
+          "type": "integer"
+        },
+        {
+          "linkId": "lymph-nodes-positive",
+          "text": "Lymph nodes positive",
+          "type": "integer"
+        },
+        {
+          "linkId": "proximal-margin",
+          "text": "Proximal margin",
+          "type": "choice",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "55182004",
+                "display": "Negative (uninvolved by invasive carcinoma)"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "10828004",
+                "display": "Positive (involved by invasive carcinoma)"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "distal-margin",
+          "text": "Distal margin",
+          "type": "choice",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "55182004",
+                "display": "Negative (uninvolved by invasive carcinoma)"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "10828004",
+                "display": "Positive (involved by invasive carcinoma)"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "radial-margin",
+          "text": "Circumferential (radial) margin",
+          "type": "choice",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "55182004",
+                "display": "Negative (uninvolved by invasive carcinoma)"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "10828004",
+                "display": "Positive (involved by invasive carcinoma)"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "mmr-status",
+          "text": "MMR / MSI status",
+          "type": "choice",
+          "answerOption": [
+            {
+              "valueCoding": {
+                "system": "http://example.org/pathology-codes",
+                "code": "mmr-proficient",
+                "display": "MMR proficient (pMMR) — intact nuclear expression of MLH1, PMS2, MSH2, MSH6"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://example.org/pathology-codes",
+                "code": "mmr-deficient",
+                "display": "MMR deficient (dMMR) — loss of expression detected"
+              }
+            },
+            {
+              "valueCoding": {
+                "system": "http://example.org/pathology-codes",
+                "code": "mmr-pending",
+                "display": "Pending"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

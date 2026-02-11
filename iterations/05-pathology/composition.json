@@ -1,0 +1,106 @@
+{
+  "resourceType": "Composition",
+  "id": "pathology-report-template",
+  "status": "final",
+  "type": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "22034-3",
+        "display": "Surgical pathology report"
+      }
+    ]
+  },
+  "title": "Colon Resection",
+  "date": "2024-01-01",
+  "section": [
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+          "valueString": "%resource.item.where(linkId='gross')"
+        }
+      ],
+      "title": "Gross Description",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "22634-0",
+            "display": "Pathology report gross observation"
+          }
+        ]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>Specimen type</dt><dd>{{%context.item.where(linkId='specimen-type').answer.value.display}}</dd><dt>Specimen length</dt><dd>{{%context.item.where(linkId='specimen-length').answer.value}} cm</dd><dt>Tumor location</dt><dd>{{%context.item.where(linkId='tumor-location').answer.value.display}}</dd><dt>Tumor size</dt><dd>{{%context.item.where(linkId='tumor-size').answer.value}} cm</dd><dt>Distance to nearest margin</dt><dd>{{%context.item.where(linkId='margin-distance').answer.value}} cm</dd><dt>Cut surface</dt><dd>{{%context.item.where(linkId='cut-surface').answer.value}}</dd></dl></div>"
+      }
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+          "valueString": "%resource.item.where(linkId='microscopic')"
+        }
+      ],
+      "title": "Microscopic Description",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "22635-7",
+            "display": "Pathology report microscopic observation"
+          }
+        ]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>Histological type</dt><dd>{{%context.item.where(linkId='histological-type').answer.value.display}}</dd><dt>Grade</dt><dd>{{%context.item.where(linkId='grade').answer.value.display}}</dd><dt>Depth of invasion</dt><dd>{{%context.item.where(linkId='depth-of-invasion').answer.value.display}}</dd><dt>Lymphovascular invasion</dt><dd>{{%context.item.where(linkId='lymphovascular-invasion').answer.value.display}}</dd><dt>Perineural invasion</dt><dd>{{%context.item.where(linkId='perineural-invasion').answer.value.display}}</dd><dt>Tumor budding</dt><dd>{{%context.item.where(linkId='tumor-budding').answer.value.display}}</dd></dl></div>"
+      }
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+          "valueString": "%resource.item.where(linkId='diagnosis')"
+        }
+      ],
+      "title": "Diagnosis",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "22637-3",
+            "display": "Pathology report diagnosis"
+          }
+        ]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>{{%context.item.where(linkId='final-diagnosis').answer.value}}</p><p><b>Additional comments:</b> {{%context.item.where(linkId='additional-comments').answer.value}}</p></div>"
+      }
+    },
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext",
+          "valueString": "%resource.item.where(linkId='synoptic')"
+        }
+      ],
+      "title": "Synoptic Report",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "60568-3",
+            "display": "Pathology synoptic report"
+          }
+        ]
+      },
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><dl><dt>pT stage</dt><dd>{{%context.item.where(linkId='pt-stage').answer.value.display}}</dd><dt>pN stage</dt><dd>{{%context.item.where(linkId='pn-stage').answer.value.display}}</dd><dt>Lymph nodes examined</dt><dd>{{%context.item.where(linkId='lymph-nodes-examined').answer.value}}</dd><dt>Lymph nodes positive</dt><dd>{{%context.item.where(linkId='lymph-nodes-positive').answer.value}}</dd><dt>Proximal margin</dt><dd>{{%context.item.where(linkId='proximal-margin').answer.value.display}}</dd><dt>Distal margin</dt><dd>{{%context.item.where(linkId='distal-margin').answer.value.display}}</dd><dt>Circumferential (radial) margin</dt><dd>{{%context.item.where(linkId='radial-margin').answer.value.display}}</dd><dt>MMR / MSI status</dt><dd>{{%context.item.where(linkId='mmr-status').answer.value.display}}</dd></dl></div>"
+      }
+    }
+  ]
+}

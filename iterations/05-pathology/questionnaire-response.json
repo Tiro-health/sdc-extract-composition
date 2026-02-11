@@ -1,0 +1,286 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "questionnaire": "http://example.org/Questionnaire/pathology-colon-resection|1.0.0",
+  "status": "completed",
+  "authored": "2026-02-10T14:30:00Z",
+  "item": [
+    {
+      "linkId": "gross",
+      "text": "Gross Description",
+      "item": [
+        {
+          "linkId": "specimen-type",
+          "text": "Specimen type",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "787021009",
+                "display": "Right hemicolectomy specimen"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "specimen-length",
+          "text": "Specimen length (cm)",
+          "answer": [
+            {
+              "valueDecimal": 22.5
+            }
+          ]
+        },
+        {
+          "linkId": "tumor-location",
+          "text": "Tumor location",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "9040008",
+                "display": "Ascending colon"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "tumor-size",
+          "text": "Tumor size (cm)",
+          "answer": [
+            {
+              "valueDecimal": 4.2
+            }
+          ]
+        },
+        {
+          "linkId": "margin-distance",
+          "text": "Distance to nearest margin (cm)",
+          "answer": [
+            {
+              "valueDecimal": 8.0
+            }
+          ]
+        },
+        {
+          "linkId": "cut-surface",
+          "text": "Cut surface description",
+          "answer": [
+            {
+              "valueString": "Firm, tan-white, ulcerated mass with irregular borders, invading through the muscularis propria into the pericolonic adipose tissue."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "microscopic",
+      "text": "Microscopic Description",
+      "item": [
+        {
+          "linkId": "histological-type",
+          "text": "Histological type",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "35917007",
+                "display": "Adenocarcinoma, NOS"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "grade",
+          "text": "Grade of differentiation",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1663004",
+                "display": "Moderately differentiated (G2)"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "depth-of-invasion",
+          "text": "Depth of invasion",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "396924000",
+                "display": "Through muscularis propria into pericolorectal tissues"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "lymphovascular-invasion",
+          "text": "Lymphovascular invasion",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "52101004",
+                "display": "Present"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "perineural-invasion",
+          "text": "Perineural invasion",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "2667000",
+                "display": "Absent"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "tumor-budding",
+          "text": "Tumor budding",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://example.org/pathology-codes",
+                "code": "low",
+                "display": "Low (0-4 buds per 0.785 mm²)"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "diagnosis",
+      "text": "Diagnosis",
+      "item": [
+        {
+          "linkId": "final-diagnosis",
+          "text": "Final diagnosis",
+          "answer": [
+            {
+              "valueString": "Right colon, right hemicolectomy: Moderately differentiated adenocarcinoma, invading through muscularis propria into pericolonic fat (pT3). Metastatic carcinoma in 1 of 18 regional lymph nodes (pN1a). All surgical margins are negative."
+            }
+          ]
+        },
+        {
+          "linkId": "additional-comments",
+          "text": "Additional comments",
+          "answer": [
+            {
+              "valueString": "Recommend molecular testing for mismatch repair (MMR) protein expression by immunohistochemistry and KRAS/NRAS/BRAF mutation analysis to guide adjuvant therapy."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "synoptic",
+      "text": "Synoptic Report",
+      "item": [
+        {
+          "linkId": "pt-stage",
+          "text": "pT stage",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1228938002",
+                "display": "pT3"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "pn-stage",
+          "text": "pN stage",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "1229947003",
+                "display": "pN1a"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "lymph-nodes-examined",
+          "text": "Lymph nodes examined",
+          "answer": [
+            {
+              "valueInteger": 18
+            }
+          ]
+        },
+        {
+          "linkId": "lymph-nodes-positive",
+          "text": "Lymph nodes positive",
+          "answer": [
+            {
+              "valueInteger": 1
+            }
+          ]
+        },
+        {
+          "linkId": "proximal-margin",
+          "text": "Proximal margin",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "55182004",
+                "display": "Negative (uninvolved by invasive carcinoma)"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "distal-margin",
+          "text": "Distal margin",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "55182004",
+                "display": "Negative (uninvolved by invasive carcinoma)"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "radial-margin",
+          "text": "Circumferential (radial) margin",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "55182004",
+                "display": "Negative (uninvolved by invasive carcinoma)"
+              }
+            }
+          ]
+        },
+        {
+          "linkId": "mmr-status",
+          "text": "MMR / MSI status",
+          "answer": [
+            {
+              "valueCoding": {
+                "system": "http://example.org/pathology-codes",
+                "code": "mmr-proficient",
+                "display": "MMR proficient (pMMR) — intact nuclear expression of MLH1, PMS2, MSH2, MSH6"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

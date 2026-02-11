@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+import os
+
+os.environ.setdefault("DYLD_FALLBACK_LIBRARY_PATH", "/opt/homebrew/lib")
+
 import json
 import re
 import sys
@@ -17,45 +21,54 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
     <style>
+        @page {{
+            size: A4;
+            margin: 0.5cm 2.2cm;
+        }}
         body {{
             font-family: system-ui, -apple-system, sans-serif;
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+            font-size: 8pt;
         }}
         h1 {{
-            border-bottom: 2px solid #333;
-            padding-bottom: 0.5rem;
+            font-size: 12pt;
+            border-bottom: 1.5px solid #333;
+            padding-bottom: 0.3rem;
+            margin: 0.5rem 0;
         }}
         h2 {{
-            font-size: 1.15rem;
-            margin-top: 2rem;
+            font-size: 9pt;
+            margin: 0.8rem 0 0.3rem;
+            padding-bottom: 0.2rem;
+            border-bottom: 1px solid #ddd;
         }}
         dl {{
             display: grid;
-            grid-template-columns: minmax(200px, 1fr) 2fr;
-            gap: 0.25rem 1rem;
+            grid-template-columns: minmax(120px, 1fr) 2fr;
+            gap: 0.1rem 0.8rem;
+            margin: 0.2rem 0;
         }}
         dt {{
             font-weight: 600;
-            padding: 0.25rem 0;
+            padding: 0.1rem 0;
         }}
         dd {{
             margin: 0;
-            padding: 0.25rem 0;
+            padding: 0.1rem 0;
             border-bottom: 1px solid #eee;
         }}
         section {{
-            margin-bottom: 2rem;
+            margin: 1rem 0;
         }}
         table {{
             width: 100%;
             border-collapse: collapse;
-            margin: 1rem 0;
+            margin: 0.5rem 0;
         }}
         th, td {{
-            padding: 0.5rem;
+            padding: 0.2rem 0.4rem;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }}
@@ -66,11 +79,95 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         thead th {{
             border-bottom: 2px solid #ccc;
         }}
+        header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1.5px solid #333;
+            padding-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
+        }}
+        .lab-info {{
+            font-size: 7pt;
+            color: #555;
+        }}
+        .lab-info strong {{
+            font-size: 8pt;
+            color: #111;
+        }}
+        .report-meta {{
+            font-size: 7pt;
+            text-align: right;
+            color: #555;
+        }}
+        .report-meta strong {{
+            color: #111;
+        }}
+        footer {{
+            margin-top: 1rem;
+            padding-top: 0.4rem;
+            border-top: 1.5px solid #333;
+        }}
+        .attestation {{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            font-size: 7pt;
+        }}
+        .attestation .signer {{
+            padding-top: 0.2rem;
+        }}
+        .attestation .signature-line {{
+            margin-top: 1rem;
+            border-top: 1px solid #999;
+            padding-top: 0.15rem;
+            font-size: 6.5pt;
+            color: #666;
+        }}
+        .attestation-note {{
+            margin-top: 0.4rem;
+            font-size: 6pt;
+            color: #888;
+            font-style: italic;
+        }}
     </style>
 </head>
 <body>
+    <header>
+        <div class="lab-info">
+            <strong>Department of Pathology</strong><br>
+            St. Elsewhere General Hospital<br>
+            123 Medical Drive, Anytown
+        </div>
+        <div class="report-meta">
+            <strong>Accession:</strong> SP-2026-00142<br>
+            <strong>Patient:</strong> Janssen, Pieter (°1958-03-12)<br>
+            <strong>Collected:</strong> 2026-02-07<br>
+            <strong>Reported:</strong> 2026-02-10
+        </div>
+    </header>
     <h1>{title}</h1>
 {sections}
+    <footer>
+        <div class="attestation">
+            <div class="signer">
+                <strong>Dr. Sophie De Moor</strong><br>
+                Pathologist<br>
+                Department of Pathology
+                <div class="signature-line">Electronically signed</div>
+            </div>
+            <div class="signer">
+                <strong>Dr. Jan Verhoeven</strong><br>
+                Attending Pathologist<br>
+                Department of Pathology
+                <div class="signature-line">Electronically attested</div>
+            </div>
+        </div>
+        <div class="attestation-note">
+            This report has been electronically signed and constitutes the final pathology diagnosis.
+            Amendments, if any, will be issued as addenda.
+        </div>
+    </footer>
 </body>
 </html>
 """
@@ -195,11 +292,19 @@ def main() -> None:
     html = generate_html(composition, response)
 
     # Write output
-    output_path = iteration_path / "output" / "composition-rendered.html"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(html)
+    output_dir = iteration_path / "output"
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-    print(f"Generated: {output_path}")
+    html_path = output_dir / "composition-rendered.html"
+    html_path.write_text(html)
+    print(f"Generated: {html_path}")
+
+    # Generate PDF with weasyprint
+    from weasyprint import HTML
+
+    pdf_path = output_dir / "composition-rendered.pdf"
+    HTML(string=html).write_pdf(pdf_path)
+    print(f"Generated: {pdf_path}")
 
 
 if __name__ == "__main__":
