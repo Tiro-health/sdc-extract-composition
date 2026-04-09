@@ -6,18 +6,34 @@ html, body {
 }
 
 /*
- * FHIRPath expression pill — inline styled <code> injected into narrative HTML.
+ * Warm document-like palette — matching tekstgeneratie_coloscopie.html
+ */
+:root {
+  --doc-bg: #fdfdfc;
+  --doc-fg: #1a1a1a;
+  --doc-muted: #6b6b6b;
+  --doc-accent: #2d5a27;
+  --doc-cond-bg: #f4f1eb;
+  --doc-cond-border: #d4cfc4;
+  --doc-field-bg: #fff8e1;
+  --doc-field-border: #e6d590;
+  --doc-field-text: #8b6914;
+}
+
+/*
+ * FHIRPath expression pill — inline field placeholder.
  */
 .fhirpath-pill {
   display: inline;
-  background: #fff1f2;          /* rose-50 */
-  border: 1px solid #fecdd3;    /* rose-200 */
-  color: #881337;               /* rose-900 */
-  font-family: ui-monospace, Consolas, monospace;
-  font-size: 0.625rem;
-  line-height: 0.875rem;
-  border-radius: 0.1875rem;
-  padding: 0.0625rem 0.25rem;
+  background: var(--doc-field-bg);
+  border: 1px solid var(--doc-field-border);
+  color: var(--doc-field-text);
+  font-family: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  font-size: 0.75em;
+  line-height: 1;
+  border-radius: 3px;
+  padding: 0.1em 0.4em;
+  white-space: nowrap;
 }
 
 /*
@@ -25,28 +41,259 @@ html, body {
  */
 .inline-badge {
   display: inline;
-  font-family: ui-monospace, Consolas, monospace;
-  font-size: 0.625rem;
-  line-height: 0.875rem;
-  border-radius: 0.1875rem;
-  padding: 0.0625rem 0.25rem;
+  font-family: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  font-size: 0.7em;
+  line-height: 1;
+  border-radius: 3px;
+  padding: 0.1em 0.35em;
 }
 
 .repeating-badge {
-  background: #fffbeb;          /* amber-50 */
-  border: 1px solid #fde68a;    /* amber-200 */
-  color: #92400e;               /* amber-800 */
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: var(--doc-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.condition-badge {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: var(--doc-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .context-badge {
-  background: #eff6ff;          /* blue-50 */
-  border: 1px solid #bfdbfe;    /* blue-200 */
-  color: #1e40af;               /* blue-800 */
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.78rem;
+  color: var(--doc-muted);
+  font-style: italic;
+  cursor: help;
+  background: none;
+  border: none;
+  padding: 0;
 }
 
-.child-badges-row td {
-  padding-top: 0.4rem;
-  border-bottom: none;
+.context-badge-resolved {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.78rem;
+  color: var(--doc-muted);
+  font-style: italic;
+  cursor: help;
+}
+
+.context-badge-resolved .expr-text {
+  opacity: 0.5;
+}
+
+.context-badge-resolved .expr-pill {
+  display: inline;
+  font-style: normal;
+  font-weight: 500;
+  border-radius: 3px;
+  padding: 0.05em 0.35em;
+  white-space: nowrap;
+}
+
+.context-badge-resolved .expr-pill.answer {
+  background: var(--doc-field-bg);
+  border: 1px solid var(--doc-field-border);
+  color: var(--doc-field-text);
+}
+
+.context-badge-resolved .expr-pill.code {
+  background: #e8f5e9;
+  border: 1px solid #a5d6a7;
+  color: #2e7d32;
+}
+
+/*
+ * Conditional blocks — warm beige background with left border accent,
+ * matching the visual language of tekstgeneratie_coloscopie.html
+ */
+.cond-block {
+  background: var(--doc-cond-bg);
+  border-left: 3px solid var(--doc-cond-border);
+  border-radius: 0 4px 4px 0;
+  padding: 0.6rem 0.8rem;
+  margin: 0.5rem 0;
+}
+
+.cond-block .cond-block {
+  background: rgba(255,255,255,0.5);
+  border-left-color: #bab5a8;
+}
+
+.cond-block .cond-block .cond-block {
+  background: rgba(255,255,255,0.4);
+  border-left-color: #a8a299;
+}
+
+.cond-label {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--doc-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: inline-block;
+  margin-bottom: 0.2rem;
+}
+
+.cond-expr {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.78rem;
+  color: var(--doc-muted);
+  font-style: italic;
+  cursor: help;
+}
+
+/*
+ * Raw Composition view — structural tree of sections + extensions.
+ */
+.raw-composition {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.raw-header {
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.raw-meta {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.75rem;
+  margin: 0.1rem 0;
+}
+
+.json-key { color: #6f42c1; }
+.json-string { color: #032f62; }
+.json-number { color: #005cc5; }
+.json-bool { color: #d73a49; }
+.json-null { color: #999; }
+
+.raw-section {
+  border-left: 2px solid transparent;
+  margin: 0.15rem 0;
+}
+
+.raw-section:hover > .raw-section-header {
+  background: #f8f9fa;
+}
+
+.raw-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.4rem;
+  cursor: pointer;
+  border-radius: 3px;
+  user-select: none;
+  font-size: 0.8rem;
+}
+
+.raw-toggle {
+  color: #999;
+  font-size: 0.65rem;
+  width: 0.8rem;
+  flex-shrink: 0;
+}
+
+.raw-section-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.raw-ext-badge {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.6rem;
+  padding: 0.05em 0.3em;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+.raw-ext-badge.context {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.raw-ext-badge.narrative {
+  background: #f3f4f6;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+}
+
+.raw-child-count {
+  font-size: 0.65rem;
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.raw-section-body {
+  padding-left: 0.4rem;
+}
+
+.raw-extension {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.4rem;
+  margin: 0.1rem 0;
+  border-radius: 3px;
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+}
+
+.raw-extension.highlight {
+  background: #fffde7;
+  border-left: 2px solid var(--doc-field-border);
+}
+
+.raw-ext-url {
+  color: #6f42c1;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.raw-ext-value {
+  color: #032f62;
+  word-break: break-all;
+}
+
+.raw-narrative {
+  margin: 0.15rem 0;
+  padding: 0.15rem 0.4rem;
+}
+
+.raw-narrative summary {
+  cursor: pointer;
+  font-size: 0.7rem;
+}
+
+.raw-narrative-content {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.65rem;
+  background: #f8f9fa;
+  padding: 0.4rem;
+  border-radius: 3px;
+  margin-top: 0.3rem;
+  overflow-x: auto;
+  max-height: 10rem;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 
 /*

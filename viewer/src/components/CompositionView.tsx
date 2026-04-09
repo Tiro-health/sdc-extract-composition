@@ -1,10 +1,11 @@
 import type { Composition } from "../types";
+import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import { FhirPathPill } from "./FhirPathPill";
 import { SectionView } from "./SectionView";
 
 interface CompositionViewProps {
   composition: Composition;
-  linkIdTextMap?: Map<string, string>;
+  questionnaireIndex?: QuestionnaireIndex;
 }
 
 const TEMPLATE_EXTRACT_VALUE_URL =
@@ -19,7 +20,7 @@ function getDateExpression(composition: Composition): string | null {
   return match ? match[1].trim() : ext.valueString;
 }
 
-export function CompositionView({ composition, linkIdTextMap }: CompositionViewProps) {
+export function CompositionView({ composition, questionnaireIndex }: CompositionViewProps) {
   const dateExpr = getDateExpression(composition);
 
   return (
@@ -45,7 +46,7 @@ export function CompositionView({ composition, linkIdTextMap }: CompositionViewP
 
       <div className="space-y-2">
         {composition.section?.map((section, i) => (
-          <SectionView key={i} section={section} linkIdTextMap={linkIdTextMap} />
+          <SectionView key={i} section={section} questionnaireIndex={questionnaireIndex} />
         ))}
       </div>
     </div>

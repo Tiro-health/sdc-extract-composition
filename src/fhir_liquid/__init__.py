@@ -58,22 +58,22 @@ class FHIRContext(TypedDict, total=False):
 def combine_expression(base: str, expression: str) -> str:
     """Combine a base path with an expression by replacing %context.
 
+    Replaces all occurrences of ``%context`` in the expression with
+    the resolved base path.  When ``%context`` is followed by ``.``
+    the dot is kept (e.g. ``%context.item`` → ``base.item``).
+    A standalone ``%context`` is replaced with the bare base path.
+
     Args:
         base: The base FHIRPath (e.g., "%resource.item.where(linkId='x')")
-        expression: Expression using %context (e.g., "%context.item.answer.value")
+        expression: Expression using %context (e.g., "%context.item.answer.value"
+            or "iif(%context.item.exists(), 'a', 'b')")
 
     Returns:
-        Combined expression (e.g., "%resource.item.where(linkId='x').item.answer.value")
+        Combined expression with %context resolved.
     """
-    # Replace %context with the base path (removing %context. prefix)
-    if expression.startswith("%context."):
-        suffix = expression[9:]  # Remove "%context."
-        return f"{base}.{suffix}"
-    if expression.startswith("%context"):
-        # Just %context alone - return the base
-        return base
-    # Expression doesn't use %context, return as-is
-    return expression
+    if "%context" not in expression:
+        return expression
+    return expression.replace("%context", base)
 
 
 def evaluate_fhirpath(

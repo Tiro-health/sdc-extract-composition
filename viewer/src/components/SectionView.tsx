@@ -1,4 +1,6 @@
 import type { CompositionSection } from "../types";
+import type { QuestionnaireIndex } from "../utils/questionnaire-index";
+import { segmentExpressionToHtml } from "../utils/expression-pills";
 import { stripDivWrapper } from "../utils/parse-narrative";
 import { ContextBadge } from "./ContextBadge";
 import { injectPills, NarrativeHtml } from "./NarrativeHtml";
@@ -6,8 +8,7 @@ import { injectPills, NarrativeHtml } from "./NarrativeHtml";
 interface SectionViewProps {
   section: CompositionSection;
   depth?: number;
-  parentHasSectionsPlaceholder?: boolean;
-  linkIdTextMap?: Map<string, string>;
+  questionnaireIndex?: QuestionnaireIndex;
 }
 
 const TEMPLATE_EXTRACT_CONTEXT_URL =
@@ -27,23 +28,44 @@ function hasSectionsPlaceholder(section: CompositionSection): boolean {
 }
 
 /**
- * Build an inline HTML snippet for a child section's badges (repeating + context),
- * used when the child is inlined into a parent table row.
+ * Determine whether a context expression represents a repeating (clone) pattern
+ * vs a conditional (show/hide) pattern.
+ *
+ * Repeating: navigates to child items, e.g. `%context.item.where(linkId='poliep')`
+ * Conditional: filters current context with a predicate, e.g. `%context.where(item...code = 'ja')`
  */
-function buildChildBadgesHtml(child: CompositionSection): string {
-  const parts: string[] = [];
-  const ctx = getContextExpression(child);
+function isRepeatingContext(expr: string | null): boolean {
+  if (!expr) return false;
+  if (/^%(?:context|resource)\.where\(/.test(expr)) return false;
+  return true;
+}
 
-  parts.push(
-    `<span class="inline-badge repeating-badge">↻ repeating</span>`
+/**
+ * A section is a "conditional block" if it has a context expression but no title.
+ * Titled sections with context are just scoped (e.g., "Procedure info" scoped to group).
+ */
+function isCondBlock(section: CompositionSection): boolean {
+  return !section.title && !!getContextExpression(section);
+}
+
+/**
+ * Build a label badge ("als" or "per item") + context expression HTML.
+ * When a QuestionnaireIndex is available, renders pills for answer-value
+ * paths and code literals.
+ */
+function buildLabelHtml(
+  section: CompositionSection,
+  questionnaireIndex?: QuestionnaireIndex
+): string {
+  const ctx = getContextExpression(section);
+  if (!ctx) return "";
+  const repeating = isRepeatingContext(ctx);
+  const label = repeating ? "per item" : "als";
+  const exprHtml = segmentExpressionToHtml(ctx, questionnaireIndex);
+  return (
+    `<span class="cond-label">${label}</span> ` +
+    `<span class="context-badge-resolved" title="${ctx.replace(/"/g, "&quot;")}">${exprHtml}</span>`
   );
-  if (ctx) {
-    parts.push(
-      `<span class="inline-badge context-badge"># ${ctx}</span>`
-    );
-  }
-
-  return `<tr class="child-badges-row"><td colspan="99">${parts.join(" ")}</td></tr>`;
 }
 
 /**
@@ -52,11 +74,12 @@ function buildChildBadgesHtml(child: CompositionSection): string {
  */
 function buildSectionHtml(
   section: CompositionSection,
-  linkIdTextMap?: Map<string, string>
+  questionnaireIndex?: QuestionnaireIndex
 ): string {
   const div = section.text?.div;
   if (!div) return "";
 
+  const linkIdTextMap = questionnaireIndex?.linkIdTextMap;
   let html = stripDivWrapper(div);
   html = injectPills(html, linkIdTextMap);
 
@@ -65,12 +88,16 @@ function buildSectionHtml(
       .map((child) => {
         const childDiv = child.text?.div;
         if (!childDiv) return "";
-        const badges = buildChildBadgesHtml(child);
+        const isCond = isCondBlock(child);
+        const label = buildLabelHtml(child, questionnaireIndex);
         const childInner = injectPills(
           stripDivWrapper(childDiv),
           linkIdTextMap
         );
-        return badges + childInner;
+        if (isCond) {
+          return `<div class="cond-block">${label}${childInner}</div>`;
+        }
+        return childInner;
       })
       .join("\n");
 
@@ -83,17 +110,23 @@ function buildSectionHtml(
 export function SectionView({
   section,
   depth = 0,
-  parentHasSectionsPlaceholder = false,
-  linkIdTextMap,
+  questionnaireIndex,
 }: SectionViewProps) {
   const contextExpr = getContextExpression(section);
-  const isRepeating = parentHasSectionsPlaceholder;
+  const isCond = isCondBlock(section);
+  const repeating = isCond && isRepeatingContext(contextExpr);
+  const conditional = isCond && !repeating;
   const inlinesChildren = hasSectionsPlaceholder(section);
 
   return (
     <div
-      className="border-l-2 border-gray-200 pl-4 py-2"
-      style={{ marginLeft: depth > 0 ? "1rem" : 0 }}
+      className={isCond ? "cond-block" : "py-2"}
+      style={{
+        marginLeft: depth > 0 && !isCond ? "1rem" : 0,
+        ...(!isCond && depth > 0
+          ? { borderLeft: "2px solid #e5e7eb", paddingLeft: "1rem" }
+          : {}),
+      }}
     >
       <div className="flex items-center gap-2 flex-wrap mb-1">
         {section.title && (
@@ -101,20 +134,16 @@ export function SectionView({
             {section.title}
           </h3>
         )}
-        {isRepeating && (
-          <span className="inline-flex items-center gap-1 bg-amber-50 border border-amber-200 text-amber-800 text-xs rounded px-1.5 py-0.5">
-            ↻ repeating
-          </span>
-        )}
-        {contextExpr && <ContextBadge expression={contextExpr} />}
+        {conditional && <span className="cond-label">als</span>}
+        {repeating && <span className="cond-label">per item</span>}
+        {contextExpr && <ContextBadge expression={contextExpr} questionnaireIndex={questionnaireIndex} />}
       </div>
 
       {inlinesChildren ? (
-        /* Render parent + children as one HTML block so <tr> stays in <table> */
         <div
           className="narrative-content"
           dangerouslySetInnerHTML={{
-            __html: buildSectionHtml(section, linkIdTextMap),
+            __html: buildSectionHtml(section, questionnaireIndex),
           }}
         />
       ) : (
@@ -122,7 +151,7 @@ export function SectionView({
           {section.text?.div && (
             <NarrativeHtml
               divHtml={section.text.div}
-              linkIdTextMap={linkIdTextMap}
+              linkIdTextMap={questionnaireIndex?.linkIdTextMap}
             />
           )}
           {section.section?.map((child, i) => (
@@ -130,8 +159,7 @@ export function SectionView({
               key={i}
               section={child}
               depth={depth + 1}
-              parentHasSectionsPlaceholder={false}
-              linkIdTextMap={linkIdTextMap}
+              questionnaireIndex={questionnaireIndex}
             />
           ))}
         </>

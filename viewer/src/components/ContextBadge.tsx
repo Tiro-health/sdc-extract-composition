@@ -1,24 +1,71 @@
+import { useMemo } from "react";
+import type { QuestionnaireIndex } from "../utils/questionnaire-index";
+import {
+  segmentExpression,
+  type ExpressionSegment,
+} from "../utils/expression-pills";
+
 interface ContextBadgeProps {
   expression: string;
+  questionnaireIndex?: QuestionnaireIndex;
 }
 
-export function ContextBadge({ expression }: ContextBadgeProps) {
+function SegmentView({
+  segment,
+  index,
+}: {
+  segment: ExpressionSegment;
+  index?: QuestionnaireIndex;
+}) {
+  if (segment.kind === "text") {
+    return <span className="expr-text">{segment.text}</span>;
+  }
+
+  if (segment.kind === "answer-pill" && index) {
+    const lastLinkId = segment.linkIds[segment.linkIds.length - 1];
+    const label = index.resolveItemText(lastLinkId) ?? lastLinkId;
+    return (
+      <span className="expr-pill answer" title={`linkId: ${segment.linkIds.join(" → ")}`}>
+        {label}
+      </span>
+    );
+  }
+
+  if (segment.kind === "code-pill" && index) {
+    const display = index.resolveCodeDisplay(segment.contextLinkId, segment.value);
+    const label = display ?? segment.value.replace(/[-_]/g, " ").replace(/^\w/, (c) => c.toUpperCase());
+    return (
+      <span className="expr-pill code" title={`code: ${segment.value}`}>
+        {label}
+      </span>
+    );
+  }
+
+  return <span className="expr-text" />;
+}
+
+export function ContextBadge({ expression, questionnaireIndex }: ContextBadgeProps) {
+  const segments = useMemo(
+    () => (questionnaireIndex ? segmentExpression(expression) : null),
+    [expression, questionnaireIndex]
+  );
+
+  const hasPills = segments?.some((s) => s.kind !== "text");
+
+  if (!segments || !hasPills) {
+    // Fallback: raw monospace expression
+    return (
+      <span className="context-badge" title={expression}>
+        {expression}
+      </span>
+    );
+  }
+
   return (
-    <span className="inline-flex items-center gap-1 bg-blue-50 border border-blue-200 text-blue-800 font-mono text-xs rounded px-2 py-0.5">
-      <svg
-        className="w-3 h-3"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"
-        />
-      </svg>
-      {expression}
+    <span className="context-badge-resolved" title={expression}>
+      {segments.map((seg, i) => (
+        <SegmentView key={i} segment={seg} index={questionnaireIndex} />
+      ))}
     </span>
   );
 }

@@ -12,18 +12,44 @@ const iterations = Object.entries(iterationModules).map(([path, data]) => {
   return { name, data };
 });
 
+/** Get iteration name from URL ?iteration= parameter */
+function getIterationFromUrl(): string | null {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("iteration");
+}
+
+/** Find a matching iteration by name (exact or partial match) */
+function findIteration(name: string) {
+  return (
+    iterations.find((it) => it.name === name) ??
+    iterations.find((it) => it.name.includes(name))
+  );
+}
+
+/** Default iteration when none specified */
+const DEFAULT_ITERATION = "07-coloscopie";
+
 interface QuestionnaireLoaderProps {
   onLoad: (questionnaire: Questionnaire) => void;
 }
 
 function IterationDropdown({
   onSelect,
+  initialSelection,
 }: {
   onSelect: (q: Questionnaire) => void;
+  initialSelection?: string;
 }) {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string | null>(initialSelection ?? null);
   const ref = useRef<HTMLDivElement>(null);
+
+  // Sync when initialSelection arrives asynchronously
+  useEffect(() => {
+    if (initialSelection && !selected) {
+      setSelected(initialSelection);
+    }
+  }, [initialSelection]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -88,6 +114,18 @@ export function QuestionnaireLoader({ onLoad }: QuestionnaireLoaderProps) {
   const [pasteValue, setPasteValue] = useState("");
   const [pasteError, setPasteError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [initialSelection, setInitialSelection] = useState<string>();
+
+  // Auto-load from URL param or default on mount
+  useEffect(() => {
+    const urlIteration = getIterationFromUrl();
+    const target = urlIteration ?? DEFAULT_ITERATION;
+    const match = findIteration(target);
+    if (match) {
+      setInitialSelection(match.name);
+      onLoad(match.data);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handlePaste = useCallback(() => {
     setPasteError(null);
@@ -129,7 +167,7 @@ export function QuestionnaireLoader({ onLoad }: QuestionnaireLoaderProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-3">
-        <IterationDropdown onSelect={onLoad} />
+        <IterationDropdown onSelect={onLoad} initialSelection={initialSelection} />
 
         <button
           onClick={() => fileInputRef.current?.click()}
