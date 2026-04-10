@@ -247,15 +247,9 @@ function tryMatchPath(
   const match = matchQRPath(chain);
   if (!match) return null;
 
-  // Find the start of the path (first 'item' identifier, skipping %resource/%context)
-  const firstItem = chain.find(
-    (s) => s.kind === "identifier" && s.name === "item"
-  );
-  const from = firstItem?.from ?? node.from;
-
   return {
     kind: "answer-pill",
-    from,
+    from: node.from,
     to: node.to,
     linkIds: match.linkIds,
   };

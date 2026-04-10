@@ -9,6 +9,7 @@ interface SectionViewProps {
   section: CompositionSection;
   depth?: number;
   questionnaireIndex?: QuestionnaireIndex;
+  showContext?: boolean;
 }
 
 const TEMPLATE_EXTRACT_CONTEXT_URL =
@@ -65,14 +66,14 @@ function buildCondIndicatorHtml(
  */
 function buildSectionHtml(
   section: CompositionSection,
-  questionnaireIndex?: QuestionnaireIndex
+  questionnaireIndex?: QuestionnaireIndex,
+  showContext = true
 ): string {
   const div = section.text?.div;
   if (!div) return "";
 
-  const linkIdTextMap = questionnaireIndex?.linkIdTextMap;
   let html = stripDivWrapper(div);
-  html = injectPills(html, linkIdTextMap);
+  html = injectPills(html, questionnaireIndex);
 
   if (hasSectionsPlaceholder(section) && section.section?.length) {
     const childrenHtml = section.section
@@ -80,10 +81,10 @@ function buildSectionHtml(
         const childDiv = child.text?.div;
         if (!childDiv) return "";
         const isCond = isCondBlock(child);
-        const indicator = buildCondIndicatorHtml(child, questionnaireIndex);
+        const indicator = showContext ? buildCondIndicatorHtml(child, questionnaireIndex) : "";
         const childInner = injectPills(
           stripDivWrapper(childDiv),
-          linkIdTextMap
+          questionnaireIndex
         );
         if (isCond) {
           return `<div class="cond-block">${indicator}${childInner}</div>`;
@@ -102,37 +103,25 @@ export function SectionView({
   section,
   depth = 0,
   questionnaireIndex,
+  showContext = true,
 }: SectionViewProps) {
   const contextExpr = getContextExpression(section);
-  const isCond = isCondBlock(section);
-  const repeating = isCond && isRepeatingContext(contextExpr);
-  const conditional = isCond && !repeating;
+  const repeating = isRepeatingContext(contextExpr);
   const inlinesChildren = hasSectionsPlaceholder(section);
 
   return (
-    <div
-      className={isCond ? "cond-block" : "py-2"}
-      style={{
-        marginLeft: depth > 0 && !isCond ? "1rem" : 0,
-        ...(!isCond && depth > 0
-          ? { borderLeft: "1px solid #e8e5df", paddingLeft: "0.8rem" }
-          : {}),
-      }}
-    >
+    <div className="section-block" data-depth={depth}>
       <div className="flex items-center gap-2 flex-wrap">
         {section.title && (
           <h3 className="text-sm font-semibold text-gray-900 m-0">
             {section.title}
-            {contextExpr && (
-              <span className="context-scope-icon" title={contextExpr}>⚙</span>
-            )}
           </h3>
         )}
-        {isCond && contextExpr && (
+        {showContext && contextExpr && (
           <details className="cond-details">
             <summary className="cond-summary">
               <span className="cond-icon">{repeating ? "↻" : "⎇"}</span>
-              <span className="cond-label">{conditional ? "als" : "per item"}</span>
+              <span className="cond-label">{repeating ? "per item" : "als"}</span>
             </summary>
             <ContextBadge expression={contextExpr} questionnaireIndex={questionnaireIndex} />
           </details>
@@ -143,7 +132,7 @@ export function SectionView({
         <div
           className="narrative-content"
           dangerouslySetInnerHTML={{
-            __html: buildSectionHtml(section, questionnaireIndex),
+            __html: buildSectionHtml(section, questionnaireIndex, showContext),
           }}
         />
       ) : (
@@ -151,7 +140,7 @@ export function SectionView({
           {section.text?.div && (
             <NarrativeHtml
               divHtml={section.text.div}
-              linkIdTextMap={questionnaireIndex?.linkIdTextMap}
+              questionnaireIndex={questionnaireIndex}
             />
           )}
           {section.section?.map((child, i) => (
@@ -160,6 +149,7 @@ export function SectionView({
               section={child}
               depth={depth + 1}
               questionnaireIndex={questionnaireIndex}
+              showContext={showContext}
             />
           ))}
         </>

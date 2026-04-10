@@ -6,6 +6,33 @@ html, body {
 }
 
 /*
+ * Resizable panel handle
+ */
+.panel-resize-handle {
+  width: 8px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: col-resize;
+  transition: background 0.15s;
+}
+
+.panel-resize-handle::after {
+  content: '';
+  width: 3px;
+  height: 32px;
+  border-radius: 2px;
+  background: #d1d5db;
+  transition: background 0.15s;
+}
+
+.panel-resize-handle:hover::after,
+.panel-resize-handle[data-resize-handle-active]::after {
+  background: #9ca3af;
+}
+
+/*
  * Warm document-like palette — matching tekstgeneratie_coloscopie.html
  */
 :root {
@@ -110,35 +137,38 @@ html, body {
 }
 
 /*
- * Conditional blocks — warm beige background with left border accent,
- * matching the visual language of tekstgeneratie_coloscopie.html
+ * Unified section block — consistent left border at every depth.
  */
-.cond-block {
-  background: transparent;
+.section-block {
   border-left: 2px solid var(--doc-cond-border);
-  border-radius: 0;
-  padding: 0.1rem 0 0.1rem 0.6rem;
-  margin: 0.1rem 0;
+  padding: 0.15rem 0 0.15rem 0.7rem;
+  margin: 0.15rem 0;
 }
 
-.cond-block .cond-block {
+.section-block .section-block {
   border-left-color: #d4cfc4;
 }
 
-.cond-block .cond-block .cond-block {
+.section-block .section-block .section-block {
   border-left-color: #e0ddd6;
+}
+
+/*
+ * Inline cond-blocks inside narrative HTML (built by buildSectionHtml).
+ */
+.cond-block {
+  border-left: 2px solid var(--doc-cond-border);
+  padding: 0.1rem 0 0.1rem 0.6rem;
+  margin: 0.1rem 0;
 }
 
 /*
  * Condition indicator — compact icon + label with expandable expression.
  */
 .cond-details {
-  display: inline;
-}
-
-.cond-details[open] {
-  display: block;
-  margin-bottom: 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 
 .cond-summary {
@@ -179,25 +209,12 @@ html, body {
 
 .cond-details[open] .context-badge-resolved,
 .cond-details[open] .context-badge {
-  display: block;
-  margin-top: 0.2rem;
-  padding: 0.2rem 0.4rem;
+  display: inline;
+  margin-left: 0.3rem;
+  padding: 0.1rem 0.4rem;
   background: #f9f8f6;
   border-radius: 3px;
   border: 1px solid #e8e5df;
-}
-
-/*
- * Scope indicator for titled sections with context.
- */
-.context-scope-icon {
-  display: inline-block;
-  margin-left: 0.35rem;
-  font-size: 0.65rem;
-  color: var(--doc-muted);
-  opacity: 0.5;
-  cursor: help;
-  vertical-align: middle;
 }
 
 /*

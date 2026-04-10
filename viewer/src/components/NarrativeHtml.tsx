@@ -1,29 +1,18 @@
+import type { QuestionnaireIndex } from "../utils/questionnaire-index";
+import { segmentExpressionToHtml } from "../utils/expression-pills";
 import { stripDivWrapper } from "../utils/parse-narrative";
 
 interface NarrativeHtmlProps {
   divHtml: string;
-  linkIdTextMap?: Map<string, string>;
+  questionnaireIndex?: QuestionnaireIndex;
 }
 
-// Match expressions ending with .answer.value or .answer.value.display
-// and extract the last linkId='...' before that suffix.
-const ANSWER_VALUE_RE =
-  /\.where\(linkId='([^']+)'\)\.answer\.value(?:\.display)?$/;
-
-/**
- * For expressions ending in answer.value, resolve to "Answer for {question text}".
- * Falls back to full expression if linkId not found.
- */
-function resolveLabel(
-  expression: string,
-  linkIdTextMap?: Map<string, string>
-): string {
-  if (!linkIdTextMap) return expression;
-  const match = expression.match(ANSWER_VALUE_RE);
-  if (!match) return expression;
-  const linkId = match[1];
-  const text = linkIdTextMap.get(linkId);
-  return text ? `Answer for &quot;${text}&quot;` : expression;
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 /**
@@ -32,18 +21,20 @@ function resolveLabel(
  */
 export function injectPills(
   html: string,
-  linkIdTextMap?: Map<string, string>
+  index?: QuestionnaireIndex
 ): string {
   return html.replace(/\{\{(.*?)\}\}/g, (_match, expr: string) => {
     const trimmed = expr.trim();
-    const label = resolveLabel(trimmed, linkIdTextMap);
-    return `<code class="fhirpath-pill" title="${trimmed}">${label}</code>`;
+    const pillHtml = index
+      ? segmentExpressionToHtml(trimmed, index)
+      : escapeHtml(trimmed);
+    return `<code class="fhirpath-pill" title="${escapeHtml(trimmed)}">${pillHtml}</code>`;
   });
 }
 
-export function NarrativeHtml({ divHtml, linkIdTextMap }: NarrativeHtmlProps) {
+export function NarrativeHtml({ divHtml, questionnaireIndex }: NarrativeHtmlProps) {
   const inner = stripDivWrapper(divHtml);
-  const withPills = injectPills(inner, linkIdTextMap);
+  const withPills = injectPills(inner, questionnaireIndex);
 
   return (
     <div

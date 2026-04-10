@@ -6,6 +6,7 @@ import { SectionView } from "./SectionView";
 interface CompositionViewProps {
   composition: Composition;
   questionnaireIndex?: QuestionnaireIndex;
+  showContext?: boolean;
 }
 
 const TEMPLATE_EXTRACT_VALUE_URL =
@@ -20,7 +21,7 @@ function getDateExpression(composition: Composition): string | null {
   return match ? match[1].trim() : ext.valueString;
 }
 
-export function CompositionView({ composition, questionnaireIndex }: CompositionViewProps) {
+export function CompositionView({ composition, questionnaireIndex, showContext = true }: CompositionViewProps) {
   const dateExpr = getDateExpression(composition);
 
   return (
@@ -46,7 +47,7 @@ export function CompositionView({ composition, questionnaireIndex }: Composition
 
       <div className="space-y-2">
         {composition.section?.map((section, i) => (
-          <SectionView key={i} section={section} questionnaireIndex={questionnaireIndex} />
+          <SectionView key={i} section={section} questionnaireIndex={questionnaireIndex} showContext={showContext} />
         ))}
       </div>
     </div>

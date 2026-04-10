@@ -12,7 +12,8 @@
   "dependencies": {
     "lezer-fhirpath": "^1.2.0",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "react-resizable-panels": "^4.9.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from "react-resizable-panels";
 import type { Questionnaire } from "./types";
 import { extractComposition } from "./utils/extract-composition";
 import { buildQuestionnaireIndex } from "./utils/questionnaire-index";
@@ -13,6 +14,7 @@ function App() {
     null
   );
   const [viewMode, setViewMode] = useState<ViewMode>("split");
+  const [showContext, setShowContext] = useState(true);
 
   const composition = questionnaire
     ? extractComposition(questionnaire)
@@ -37,20 +39,31 @@ function App() {
             </p>
           </div>
           {composition && (
-            <div className="flex gap-1 bg-gray-100 rounded-lg p-0.5">
-              {(["rendered", "split", "raw"] as const).map((mode) => (
-                <button
-                  key={mode}
-                  onClick={() => setViewMode(mode)}
-                  className={`px-3 py-1 text-xs rounded-md transition-colors ${
-                    viewMode === mode
-                      ? "bg-white shadow-sm text-gray-900 font-medium"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                >
-                  {mode === "rendered" ? "Rendered" : mode === "raw" ? "Raw" : "Split"}
-                </button>
-              ))}
+            <div className="flex items-center gap-3">
+              <label className="flex items-center gap-1.5 text-xs text-gray-500 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={showContext}
+                  onChange={(e) => setShowContext(e.target.checked)}
+                  className="rounded border-gray-300"
+                />
+                Context
+              </label>
+              <div className="flex gap-1 bg-gray-100 rounded-lg p-0.5">
+                {(["rendered", "split", "raw"] as const).map((mode) => (
+                  <button
+                    key={mode}
+                    onClick={() => setViewMode(mode)}
+                    className={`px-3 py-1 text-xs rounded-md transition-colors ${
+                      viewMode === mode
+                        ? "bg-white shadow-sm text-gray-900 font-medium"
+                        : "text-gray-500 hover:text-gray-700"
+                    }`}
+                  >
+                    {mode === "rendered" ? "Rendered" : mode === "raw" ? "Raw" : "Split"}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </header>
@@ -65,18 +78,31 @@ function App() {
           </div>
         )}
 
-        {composition && (
-          <div className={viewMode === "split" ? "grid grid-cols-2 gap-4" : ""}>
-            {(viewMode === "rendered" || viewMode === "split") && (
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 overflow-auto">
-                <CompositionView composition={composition} questionnaireIndex={questionnaireIndex} />
+        {composition && viewMode === "split" && (
+          <PanelGroup direction="horizontal" autoSaveId="composition-panels">
+            <Panel defaultSize={60} minSize={20}>
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 overflow-auto h-[calc(100vh-14rem)]">
+                <CompositionView composition={composition} questionnaireIndex={questionnaireIndex} showContext={showContext} />
               </div>
-            )}
-            {(viewMode === "raw" || viewMode === "split") && (
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 overflow-auto">
+            </Panel>
+            <PanelResizeHandle className="panel-resize-handle" />
+            <Panel defaultSize={40} minSize={10} collapsible>
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 overflow-auto h-[calc(100vh-14rem)]">
                 <RawCompositionView composition={composition} />
               </div>
-            )}
+            </Panel>
+          </PanelGroup>
+        )}
+
+        {composition && viewMode === "rendered" && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 overflow-auto">
+            <CompositionView composition={composition} questionnaireIndex={questionnaireIndex} showContext={showContext} />
+          </div>
+        )}
+
+        {composition && viewMode === "raw" && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 overflow-auto">
+            <RawCompositionView composition={composition} />
           </div>
         )}
       </div>

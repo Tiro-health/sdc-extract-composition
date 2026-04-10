@@ -8458,7 +8458,7 @@
               ],
               "text": {
                 "status": "generated",
-                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Ter hoogte van {{%context.item.where(linkId='locatie').answer.value.display}} op {{%context.item.where(linkId='afstand').answer.value}} cm, {{%context.item.where(linkId='architectuur').answer.value.display}} poliep van {{%context.item.where(linkId='grootte').answer.value.display}}{{iif(%context.item.where(linkId='lst-type').answer.value.exists(), ', ' + %context.item.where(linkId='lst-type').answer.value.display, '')}}{{iif(%context.item.where(linkId='mucosaal-patroon').answer.value.exists(), ', ' + %context.item.where(linkId='mucosaal-patroon').answer.value.display, '')}}{{iif(%context.item.where(linkId='wasp').answer.value.exists(), ', WASP ' + %context.item.where(linkId='wasp').answer.value.display, '')}}{{iif(%context.item.where(linkId='jnet-type').answer.value.exists(), ', ' + %context.item.where(linkId='jnet-type').answer.value.display, '')}}.</p><!-- sections --></div>"
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Ter hoogte van {{%context.item.where(linkId='locatie').answer.value.display}} op {{%context.item.where(linkId='afstand').answer.value}} cm, {{%context.item.where(linkId='architectuur').answer.value.display}} poliep van {{%context.item.where(linkId='grootte').answer.value.display}}{{', ' + %context.item.where(linkId='lst-type').answer.value.display}}{{', ' + %context.item.where(linkId='mucosaal-patroon').answer.value.display}}{{', WASP ' + %context.item.where(linkId='wasp').answer.value.display}}{{', ' + %context.item.where(linkId='jnet-type').answer.value.display}}.</p><!-- sections --></div>"
               },
               "section": [
                 {
@@ -8470,7 +8470,7 @@
                   ],
                   "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>waarvoor {{iif(%context.item.where(linkId='resectie').answer.item.where(linkId='lifting').answer.value.exists(), 'lifting en vervolgens ' + %context.item.where(linkId='resectie').answer.item.where(linkId='lifting').answer.value.display + ' ', '')}}{{%context.item.where(linkId='resectie').answer.item.where(linkId='device').answer.value.display}} {{%context.item.where(linkId='resectie').answer.item.where(linkId='modaliteit').answer.value.display}}.</p><!-- sections --></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>waarvoor {{'lifting en vervolgens ' + %context.item.where(linkId='resectie').answer.item.where(linkId='lifting').answer.value.display + ' '}}{{%context.item.where(linkId='resectie').answer.item.where(linkId='device').answer.value.display}} {{%context.item.where(linkId='resectie').answer.item.where(linkId='modaliteit').answer.value.display}}.</p><!-- sections --></div>"
                   },
                   "section": [
                     {
