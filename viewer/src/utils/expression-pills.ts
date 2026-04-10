@@ -40,15 +40,17 @@ export type ExpressionSegment =
 // QR navigation state machine
 // ---------------------------------------------------------------------------
 
-const enum QRState {
-  START,
-  ITEM,
-  ITEM_FILTERED,
-  ANSWER,
-  VALUE,
-  PROP,
-  REJECTED,
-}
+const QRState = {
+  START: 0,
+  ITEM: 1,
+  ITEM_FILTERED: 2,
+  ANSWER: 3,
+  VALUE: 4,
+  PROP: 5,
+  REJECTED: 6,
+} as const;
+
+type QRState = (typeof QRState)[keyof typeof QRState];
 
 interface ChainStep {
   kind: "identifier" | "function" | "external";

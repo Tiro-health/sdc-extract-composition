@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Questionnaire } from "../types";
 
 const iterationModules = import.meta.glob(
-  "../../../iterations/*/questionnaire-extract.json",
+  "../iterations/*/questionnaire-extract.json",
   { eager: true, import: "default" }
 ) as Record<string, Questionnaire>;
 

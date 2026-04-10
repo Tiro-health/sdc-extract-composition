@@ -13,7 +13,7 @@ function App() {
   const [questionnaire, setQuestionnaire] = useState<Questionnaire | null>(
     null
   );
-  const [viewMode, setViewMode] = useState<ViewMode>("split");
+  const [viewMode, setViewMode] = useState<ViewMode>("rendered");
   const [showContext, setShowContext] = useState(true);
 
   const composition = questionnaire
@@ -79,7 +79,7 @@ function App() {
         )}
 
         {composition && viewMode === "split" && (
-          <PanelGroup direction="horizontal" autoSaveId="composition-panels">
+          <PanelGroup orientation="horizontal">
             <Panel defaultSize={60} minSize={20}>
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 overflow-auto h-[calc(100vh-14rem)]">
                 <CompositionView composition={composition} questionnaireIndex={questionnaireIndex} showContext={showContext} />

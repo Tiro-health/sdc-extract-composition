@@ -143,6 +143,19 @@ html, body {
   border-left: 2px solid var(--doc-cond-border);
   padding: 0.15rem 0 0.15rem 0.7rem;
   margin: 0.15rem 0;
+  transition: background 0.15s;
+}
+
+.section-block:hover {
+  background: #faf9f7;
+}
+
+/* Only highlight the directly hovered section, not parents */
+.section-block:hover > .section-block:hover {
+  background: transparent;
+}
+.section-block:has(> .section-block:hover) {
+  background: transparent;
 }
 
 .section-block .section-block {

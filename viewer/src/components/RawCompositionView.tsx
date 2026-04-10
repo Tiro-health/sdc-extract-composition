@@ -18,7 +18,7 @@ function isTemplateExtension(url: string): boolean {
 }
 
 /** Render a JSON value with syntax highlighting for template extensions */
-function JsonValue({ value, indent }: { value: unknown; indent: number }) {
+function JsonValue({ value, indent: _indent }: { value: unknown; indent: number }) {
   if (value === null) return <span className="json-null">null</span>;
   if (typeof value === "boolean")
     return <span className="json-bool">{String(value)}</span>;
