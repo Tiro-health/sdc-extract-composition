@@ -1,0 +1,502 @@
+@import "tailwindcss";
+
+html, body {
+  overflow: auto;
+  height: auto;
+}
+
+/*
+ * Resizable panel handle
+ */
+.panel-resize-handle {
+  width: 8px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: col-resize;
+  transition: background 0.15s;
+}
+
+.panel-resize-handle::after {
+  content: '';
+  width: 3px;
+  height: 32px;
+  border-radius: 2px;
+  background: #d1d5db;
+  transition: background 0.15s;
+}
+
+.panel-resize-handle:hover::after,
+.panel-resize-handle[data-resize-handle-active]::after {
+  background: #9ca3af;
+}
+
+/*
+ * Warm document-like palette — matching tekstgeneratie_coloscopie.html
+ */
+:root {
+  --doc-bg: #fdfdfc;
+  --doc-fg: #1a1a1a;
+  --doc-muted: #6b6b6b;
+  --doc-accent: #2d5a27;
+  --doc-cond-bg: #f4f1eb;
+  --doc-cond-border: #d4cfc4;
+  --doc-field-bg: #fff8e1;
+  --doc-field-border: #e6d590;
+  --doc-field-text: #8b6914;
+}
+
+/*
+ * FHIRPath expression pill — inline field placeholder.
+ * Subtle styling so narrative text stays readable.
+ */
+.fhirpath-pill {
+  display: inline;
+  background: transparent;
+  border-bottom: 1px dashed var(--doc-cond-border);
+  color: var(--doc-muted);
+  font-family: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  font-size: 0.7em;
+  line-height: 1;
+  padding: 0;
+}
+
+/*
+ * Inline badges for child sections rendered inside table rows.
+ */
+.inline-badge {
+  display: inline;
+  font-family: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  font-size: 0.7em;
+  line-height: 1;
+  border-radius: 3px;
+  padding: 0.1em 0.35em;
+}
+
+.repeating-badge {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: var(--doc-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.condition-badge {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: var(--doc-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.context-badge {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.78rem;
+  color: var(--doc-muted);
+  font-style: italic;
+  cursor: help;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.context-badge-resolved {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.78rem;
+  color: var(--doc-muted);
+  font-style: italic;
+  cursor: help;
+}
+
+.context-badge-resolved .expr-text {
+  opacity: 0.5;
+}
+
+.context-badge-resolved .expr-pill {
+  display: inline;
+  font-style: normal;
+  font-weight: 500;
+  border-radius: 3px;
+  padding: 0.05em 0.35em;
+  white-space: nowrap;
+}
+
+.context-badge-resolved .expr-pill.answer {
+  background: var(--doc-field-bg);
+  border: 1px solid var(--doc-field-border);
+  color: var(--doc-field-text);
+}
+
+.context-badge-resolved .expr-pill.code {
+  background: #e8f5e9;
+  border: 1px solid #a5d6a7;
+  color: #2e7d32;
+}
+
+/*
+ * Unified section block — consistent left border at every depth.
+ */
+.section-block {
+  border-left: 2px solid var(--doc-cond-border);
+  padding: 0.15rem 0 0.15rem 0.7rem;
+  margin: 0.15rem 0;
+  transition: background 0.15s;
+}
+
+.section-block:hover {
+  background: #faf9f7;
+}
+
+/* Only highlight the directly hovered section, not parents */
+.section-block:hover > .section-block:hover {
+  background: transparent;
+}
+.section-block:has(> .section-block:hover) {
+  background: transparent;
+}
+
+.section-block .section-block {
+  border-left-color: #d4cfc4;
+}
+
+.section-block .section-block .section-block {
+  border-left-color: #e0ddd6;
+}
+
+/*
+ * Inline cond-blocks inside narrative HTML (built by buildSectionHtml).
+ */
+.cond-block {
+  border-left: 2px solid var(--doc-cond-border);
+  padding: 0.1rem 0 0.1rem 0.6rem;
+  margin: 0.1rem 0;
+}
+
+/*
+ * Condition indicator — compact icon + label with expandable expression.
+ */
+.cond-details {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.cond-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  border-radius: 3px;
+  padding: 0.05rem 0.3rem;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.cond-summary:hover {
+  opacity: 1;
+}
+
+.cond-summary::-webkit-details-marker {
+  display: none;
+}
+
+.cond-icon {
+  font-size: 0.7rem;
+  color: var(--doc-accent);
+  line-height: 1;
+}
+
+.cond-label {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--doc-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cond-details[open] .context-badge-resolved,
+.cond-details[open] .context-badge {
+  display: inline;
+  margin-left: 0.3rem;
+  padding: 0.1rem 0.4rem;
+  background: #f9f8f6;
+  border-radius: 3px;
+  border: 1px solid #e8e5df;
+}
+
+/*
+ * Raw Composition view — structural tree of sections + extensions.
+ */
+.raw-composition {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.raw-header {
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.raw-meta {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.75rem;
+  margin: 0.1rem 0;
+}
+
+.json-key { color: #6f42c1; }
+.json-string { color: #032f62; }
+.json-number { color: #005cc5; }
+.json-bool { color: #d73a49; }
+.json-null { color: #999; }
+
+.raw-section {
+  border-left: 2px solid transparent;
+  margin: 0.15rem 0;
+}
+
+.raw-section:hover > .raw-section-header {
+  background: #f8f9fa;
+}
+
+.raw-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.4rem;
+  cursor: pointer;
+  border-radius: 3px;
+  user-select: none;
+  font-size: 0.8rem;
+}
+
+.raw-toggle {
+  color: #999;
+  font-size: 0.65rem;
+  width: 0.8rem;
+  flex-shrink: 0;
+}
+
+.raw-section-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.raw-ext-badge {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.6rem;
+  padding: 0.05em 0.3em;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+.raw-ext-badge.context {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.raw-ext-badge.narrative {
+  background: #f3f4f6;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+}
+
+.raw-child-count {
+  font-size: 0.65rem;
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.raw-section-body {
+  padding-left: 0.4rem;
+}
+
+.raw-extension {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.4rem;
+  margin: 0.1rem 0;
+  border-radius: 3px;
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+}
+
+.raw-extension.highlight {
+  background: #fffde7;
+  border-left: 2px solid var(--doc-field-border);
+}
+
+.raw-ext-url {
+  color: #6f42c1;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.raw-ext-value {
+  color: #032f62;
+  word-break: break-all;
+}
+
+.raw-narrative {
+  margin: 0.15rem 0;
+  padding: 0.15rem 0.4rem;
+}
+
+.raw-narrative summary {
+  cursor: pointer;
+  font-size: 0.7rem;
+}
+
+.raw-narrative-content {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.65rem;
+  background: #f8f9fa;
+  padding: 0.4rem;
+  border-radius: 3px;
+  margin-top: 0.3rem;
+  overflow-x: auto;
+  max-height: 10rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/*
+ * Narrative content styles — matches the CSS from generate_html.py
+ * so the template structure looks the same as the rendered output.
+ * Scoped under .narrative-content to avoid Tailwind conflicts.
+ */
+.narrative-content {
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-size: 10pt;
+}
+
+.narrative-content h1 {
+  font-size: 14pt;
+  border-bottom: 1.5px solid #333;
+  padding-bottom: 0.3rem;
+  margin: 0.5rem 0;
+}
+
+.narrative-content h2 {
+  font-size: 11pt;
+  margin: 0.8rem 0 0.3rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.narrative-content dl {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) 2fr;
+  gap: 0.1rem 0.8rem;
+  margin: 0.2rem 0;
+}
+
+.narrative-content dt {
+  font-weight: 600;
+  padding: 0.1rem 0;
+}
+
+.narrative-content dd {
+  margin: 0;
+  padding: 0.1rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.narrative-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0;
+}
+
+.narrative-content th,
+.narrative-content td {
+  padding: 0.2rem 0.4rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.narrative-content th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+.narrative-content thead th {
+  border-bottom: 2px solid #ccc;
+}
+
+.narrative-content header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1.5px solid #333;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.narrative-content .lab-info {
+  font-size: 7pt;
+  color: #555;
+}
+
+.narrative-content .lab-info strong {
+  font-size: 8pt;
+  color: #111;
+}
+
+.narrative-content .report-meta {
+  font-size: 7pt;
+  text-align: right;
+  color: #555;
+}
+
+.narrative-content .report-meta strong {
+  color: #111;
+}
+
+.narrative-content footer {
+  margin-top: 1rem;
+  padding-top: 0.4rem;
+  border-top: 1.5px solid #333;
+}
+
+.narrative-content .attestation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  font-size: 7pt;
+}
+
+.narrative-content .attestation .signer {
+  padding-top: 0.2rem;
+}
+
+.narrative-content .attestation .signature-line {
+  margin-top: 1rem;
+  border-top: 1px solid #999;
+  padding-top: 0.15rem;
+  font-size: 6.5pt;
+  color: #666;
+}
+
+.narrative-content .attestation-note {
+  margin-top: 0.4rem;
+  font-size: 6pt;
+  color: #888;
+  font-style: italic;
+}
