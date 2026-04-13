@@ -4,7 +4,7 @@
   "installCommand": "cd viewer && npm install",
   "functions": {
     "api/index.py": {
-      "runtime": "@vercel/python@4",
+      "runtime": "@vercel/python@6.30.0",
       "maxDuration": 30
     }
   },
