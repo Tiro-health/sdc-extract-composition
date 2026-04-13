@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd viewer && npm run build",
+  "outputDirectory": "viewer/dist",
+  "installCommand": "cd viewer && npm install"
+}
