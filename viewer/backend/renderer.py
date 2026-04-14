@@ -12,6 +12,8 @@ import re
 from typing import Any
 
 import fhirpathpy
+import fhirpathpy.engine.invocations.equality as _fhirpath_equality
+import fhirpathpy.engine.util as _fp_util
 from fhirpathpy.models import models as fhir_models
 
 R4_MODEL = fhir_models["r4"]
@@ -28,6 +30,39 @@ EMPTY_PLACEHOLDER = "/"
 FACTORY_CODING_PATTERN = re.compile(
     r"%factory\.Coding\(\s*'([^']+)'\s*,\s*'([^']+)'\s*\)"
 )
+
+
+# ---------------------------------------------------------------------------
+# Coding-aware equivalence — patches fhirpathpy's ~ operator
+# ---------------------------------------------------------------------------
+
+_original_equivalence = _fhirpath_equality.equivalence
+
+
+def _coding_equivalence(ctx: dict, x: list, y: list) -> bool:
+    """Coding-aware ~ that compares code + system (if both present), ignoring display.
+
+    fhirpathpy's built-in ~ does exact dict comparison which fails when one
+    side has extra fields (e.g. display). This override detects Coding-shaped
+    dicts and applies FHIR equivalence semantics, falling back to the default
+    for everything else.
+    """
+    if not _fp_util.is_empty(x) and not _fp_util.is_empty(y):
+        a = _fp_util.get_data(x[0])
+        b = _fp_util.get_data(y[0])
+
+        if isinstance(a, dict) and isinstance(b, dict) and "code" in a and "code" in b:
+            if a["code"] != b["code"]:
+                return False
+            a_sys, b_sys = a.get("system"), b.get("system")
+            if a_sys is not None and b_sys is not None and a_sys != b_sys:
+                return False
+            return True
+
+    return _original_equivalence(ctx, x, y)
+
+
+_fhirpath_equality.equivalence = _coding_equivalence
 
 
 def _rewrite_factory_calls(expression: str) -> tuple[str, dict[str, Any]]:
