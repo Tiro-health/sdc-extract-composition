@@ -12,6 +12,8 @@ import re
 from typing import Any
 
 import fhirpathpy
+import fhirpathpy.engine.util as _fp_util
+from fhirpathpy.engine.invocations.equality import equival as _default_equival
 from fhirpathpy.models import models as fhir_models
 
 R4_MODEL = fhir_models["r4"]
@@ -30,13 +32,49 @@ FACTORY_CODING_PATTERN = re.compile(
 )
 
 
+# ---------------------------------------------------------------------------
+# Coding-aware equivalence operator
+# ---------------------------------------------------------------------------
+
+def _coding_equival(ctx: dict, x: list, y: list) -> list:
+    """Coding-aware ~ that compares code + system (if both present), ignoring display.
+
+    fhirpathpy's built-in ~ does exact dict comparison which fails when one
+    side has extra fields (e.g. display). This override detects Coding-shaped
+    dicts and applies FHIR equivalence semantics, falling back to the default
+    for everything else.
+    """
+    if _fp_util.is_empty(x) or _fp_util.is_empty(y):
+        return _default_equival(ctx, x, y)
+
+    a = _fp_util.get_data(x[0])
+    b = _fp_util.get_data(y[0])
+
+    if isinstance(a, dict) and isinstance(b, dict) and "code" in a and "code" in b:
+        if a["code"] != b["code"]:
+            return [False]
+        a_sys, b_sys = a.get("system"), b.get("system")
+        if a_sys is not None and b_sys is not None and a_sys != b_sys:
+            return [False]
+        return [True]
+
+    return _default_equival(ctx, x, y)
+
+
+_USER_INVOCATIONS: dict[str, Any] = {
+    "~": {"fn": _coding_equival, "arity": {2: ["Any", "Any"]}},
+}
+
+
+# ---------------------------------------------------------------------------
+# Factory call rewriting
+# ---------------------------------------------------------------------------
+
 def _rewrite_factory_calls(expression: str) -> tuple[str, dict[str, Any]]:
     """Replace %factory.Coding(...) calls with context variables.
 
     Returns the rewritten expression and a dict of generated context variables
-    mapping variable names to Coding objects. Includes both the full Coding
-    (system + code) and a code-only variant for matching QR data that may
-    lack a system field.
+    mapping variable names to Coding dicts with system and code.
     """
     extra_context: dict[str, Any] = {}
     counter = 0
@@ -47,9 +85,7 @@ def _rewrite_factory_calls(expression: str) -> tuple[str, dict[str, Any]]:
         code = match.group(2)
         var_name = f"_coding_{counter}"
         counter += 1
-        # Provide code-only Coding so ~ equivalence works even when QR
-        # valueCoding lacks a system field (common with form-filler output)
-        extra_context[var_name] = {"code": code}
+        extra_context[var_name] = {"system": system, "code": code}
         return f"%{var_name}"
 
     rewritten = FACTORY_CODING_PATTERN.sub(replacer, expression)
@@ -61,7 +97,10 @@ def evaluate(resource: dict[str, Any], path: str) -> list[Any]:
     path, extra = _rewrite_factory_calls(path)
     context: dict[str, Any] = {"resource": resource, **extra}
     try:
-        return fhirpathpy.evaluate(resource, path, context, R4_MODEL)
+        return fhirpathpy.evaluate(
+            resource, path, context, R4_MODEL,
+            options={"userInvocationTable": _USER_INVOCATIONS},
+        )
     except Exception:
         return []
 
