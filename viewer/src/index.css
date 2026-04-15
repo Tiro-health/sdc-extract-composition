@@ -629,3 +629,25 @@ html, body, #root {
   color: #888;
   font-style: italic;
 }
+
+/*
+ * Editable section hover indicator
+ */
+.narrative-content-editable {
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+  border-radius: 2px;
+}
+
+.narrative-content-editable:hover {
+  box-shadow: 0 0 0 1px var(--doc-cond-border);
+}
+
+/*
+ * Selected pill in Lexical editor
+ */
+.fhirpath-pill-selected {
+  outline: 2px solid #6366f1;
+  outline-offset: 1px;
+  border-radius: 2px;
+}

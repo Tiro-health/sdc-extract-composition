@@ -1,9 +1,12 @@
+import { useState } from "react";
 import type { CompositionSection } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import { segmentExpressionToHtml } from "../utils/expression-pills";
 import { stripDivWrapper } from "../utils/parse-narrative";
 import { ContextBadge } from "./ContextBadge";
+import { ContextExpressionModal } from "./ContextExpressionModal";
 import { ContextTooltip } from "./ContextTooltip";
+import { NarrativeEditorModal } from "./lexical/NarrativeEditorModal";
 import { injectPills, NarrativeHtml } from "./NarrativeHtml";
 
 interface SectionViewProps {
@@ -11,6 +14,9 @@ interface SectionViewProps {
   depth?: number;
   questionnaireIndex?: QuestionnaireIndex;
   showContext?: boolean;
+  sectionPath?: number[];
+  onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
+  onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
 }
 
 const TEMPLATE_EXTRACT_CONTEXT_URL =
@@ -27,6 +33,17 @@ function getContextExpression(section: CompositionSection): string | null {
 
 function hasSectionsPlaceholder(section: CompositionSection): boolean {
   return section.text?.div?.includes(SECTIONS_PLACEHOLDER) ?? false;
+}
+
+/**
+ * Whether child sections must be inlined into the parent HTML
+ * (e.g. <tr> rows inside a <table>). For non-table parents we can
+ * render children as individual SectionView components instead.
+ */
+function mustInlineChildren(section: CompositionSection): boolean {
+  if (!hasSectionsPlaceholder(section)) return false;
+  const div = section.text?.div ?? "";
+  return /<table\b/i.test(div);
 }
 
 function isRepeatingContext(expr: string | null): boolean {
@@ -105,15 +122,115 @@ function buildSectionHtml(
   return html;
 }
 
+/**
+ * Renders a section's narrative text and child sections.
+ * When the parent text.div contains <!-- sections -->, splits the content
+ * around the placeholder and interleaves child SectionView components.
+ */
+function SectionContentWithChildren({
+  section,
+  depth,
+  questionnaireIndex,
+  showContext,
+  sectionPath,
+  editable,
+  onNarrativeClick,
+  onSectionHtmlChange,
+  onContextExpressionChange,
+}: {
+  section: CompositionSection;
+  depth: number;
+  questionnaireIndex?: QuestionnaireIndex;
+  showContext: boolean;
+  sectionPath: number[];
+  editable: boolean;
+  onNarrativeClick: () => void;
+  onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
+  onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
+}) {
+  const divHtml = section.text?.div;
+  const hasPlaceholder = hasSectionsPlaceholder(section);
+  const inner = divHtml ? stripDivWrapper(divHtml).trim() : "";
+  const isContainerOnly = inner === SECTIONS_PLACEHOLDER;
+
+  const children = section.section?.map((child, i) => (
+    <SectionView
+      key={i}
+      section={child}
+      depth={depth + 1}
+      questionnaireIndex={questionnaireIndex}
+      showContext={showContext}
+      sectionPath={[...sectionPath, i]}
+      onSectionHtmlChange={onSectionHtmlChange}
+      onContextExpressionChange={onContextExpressionChange}
+    />
+  ));
+
+  // No placeholder — simple case
+  if (!hasPlaceholder) {
+    return (
+      <>
+        {divHtml && (
+          <NarrativeHtml
+            divHtml={divHtml}
+            questionnaireIndex={questionnaireIndex}
+            onClick={editable ? onNarrativeClick : undefined}
+          />
+        )}
+        {children}
+      </>
+    );
+  }
+
+  // Container-only (text.div is just <!-- sections -->) — skip parent text, render children directly
+  if (isContainerOnly) {
+    return <>{children}</>;
+  }
+
+  // Mixed content: split around <!-- sections --> and interleave
+  const [before, after] = inner.split(SECTIONS_PLACEHOLDER);
+  const XHTML_NS = "http://www.w3.org/1999/xhtml";
+  const beforeDiv = before.trim() ? `<div xmlns="${XHTML_NS}">${before}</div>` : null;
+  const afterDiv = after.trim() ? `<div xmlns="${XHTML_NS}">${after}</div>` : null;
+
+  return (
+    <>
+      {beforeDiv && (
+        <NarrativeHtml
+          divHtml={beforeDiv}
+          questionnaireIndex={questionnaireIndex}
+          onClick={editable ? onNarrativeClick : undefined}
+        />
+      )}
+      {children}
+      {afterDiv && (
+        <NarrativeHtml
+          divHtml={afterDiv}
+          questionnaireIndex={questionnaireIndex}
+          onClick={editable ? onNarrativeClick : undefined}
+        />
+      )}
+    </>
+  );
+}
+
 export function SectionView({
   section,
   depth = 0,
   questionnaireIndex,
   showContext = true,
+  sectionPath = [],
+  onSectionHtmlChange,
+  onContextExpressionChange,
 }: SectionViewProps) {
   const contextExpr = getContextExpression(section);
   const repeating = isRepeatingContext(contextExpr);
-  const inlinesChildren = hasSectionsPlaceholder(section);
+  const inlinesChildren = mustInlineChildren(section);
+
+  const [narrativeModalOpen, setNarrativeModalOpen] = useState(false);
+  const [contextModalOpen, setContextModalOpen] = useState(false);
+
+  const editable = !!onSectionHtmlChange;
 
   return (
     <div className="section-block" data-depth={depth}>
@@ -122,7 +239,10 @@ export function SectionView({
           <ContextTooltip
             content={<ContextBadge expression={contextExpr} questionnaireIndex={questionnaireIndex} />}
           >
-            <span className={`cond-summary ${repeating ? 'cond-repeating' : 'cond-conditional'}`}>
+            <span
+              className={`cond-summary ${repeating ? 'cond-repeating' : 'cond-conditional'}${editable ? ' cursor-pointer' : ''}`}
+              onClick={editable ? (e) => { e.stopPropagation(); setContextModalOpen(true); } : undefined}
+            >
               <span className="cond-icon">{repeating ? "↻" : "⎇"}</span>
               <span className="cond-label">{repeating ? "per item" : "als"}</span>
             </span>
@@ -136,30 +256,47 @@ export function SectionView({
       )}
 
       {inlinesChildren ? (
+        /* Tables require inlining child <tr> rows into the parent HTML */
         <div
-          className="narrative-content"
+          className={`narrative-content${editable ? " narrative-content-editable" : ""}`}
+          onClick={editable ? () => setNarrativeModalOpen(true) : undefined}
           dangerouslySetInnerHTML={{
             __html: buildSectionHtml(section, questionnaireIndex, showContext),
           }}
         />
       ) : (
-        <>
-          {section.text?.div && (
-            <NarrativeHtml
-              divHtml={section.text.div}
-              questionnaireIndex={questionnaireIndex}
-            />
-          )}
-          {section.section?.map((child, i) => (
-            <SectionView
-              key={i}
-              section={child}
-              depth={depth + 1}
-              questionnaireIndex={questionnaireIndex}
-              showContext={showContext}
-            />
-          ))}
-        </>
+        <SectionContentWithChildren
+          section={section}
+          depth={depth}
+          questionnaireIndex={questionnaireIndex}
+          showContext={showContext}
+          sectionPath={sectionPath}
+          editable={editable}
+          onNarrativeClick={() => setNarrativeModalOpen(true)}
+          onSectionHtmlChange={onSectionHtmlChange}
+          onContextExpressionChange={onContextExpressionChange}
+        />
+      )}
+
+      {/* Narrative editor modal */}
+      {section.text?.div && (
+        <NarrativeEditorModal
+          open={narrativeModalOpen}
+          onClose={() => setNarrativeModalOpen(false)}
+          divHtml={section.text.div}
+          questionnaireIndex={questionnaireIndex}
+          onSave={(html) => onSectionHtmlChange?.(sectionPath, html)}
+        />
+      )}
+
+      {/* Context expression editor modal */}
+      {contextExpr && (
+        <ContextExpressionModal
+          open={contextModalOpen}
+          onClose={() => setContextModalOpen(false)}
+          expression={contextExpr}
+          onSave={(expr) => onContextExpressionChange?.(sectionPath, expr)}
+        />
       )}
     </div>
   );

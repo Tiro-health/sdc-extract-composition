@@ -5,6 +5,7 @@ import { stripDivWrapper } from "../utils/parse-narrative";
 interface NarrativeHtmlProps {
   divHtml: string;
   questionnaireIndex?: QuestionnaireIndex;
+  onClick?: () => void;
 }
 
 function escapeHtml(s: string): string {
@@ -32,13 +33,14 @@ export function injectPills(
   });
 }
 
-export function NarrativeHtml({ divHtml, questionnaireIndex }: NarrativeHtmlProps) {
+export function NarrativeHtml({ divHtml, questionnaireIndex, onClick }: NarrativeHtmlProps) {
   const inner = stripDivWrapper(divHtml);
   const withPills = injectPills(inner, questionnaireIndex);
 
   return (
     <div
-      className="narrative-content"
+      className={`narrative-content${onClick ? " narrative-content-editable" : ""}`}
+      onClick={onClick}
       dangerouslySetInnerHTML={{ __html: withPills }}
     />
   );
