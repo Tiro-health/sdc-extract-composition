@@ -649,12 +649,13 @@ html, body, #root {
 }
 
 .section-header-untitled {
-  justify-content: flex-end;
-  min-height: 0;
+  position: absolute;
+  right: 0.3rem;
+  top: 0;
 }
 
 .section-remove-btn {
-  display: none;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 1.2rem;
@@ -668,12 +669,15 @@ html, body, #root {
   cursor: pointer;
   padding: 0;
   flex-shrink: 0;
-  transition: color 0.15s, background 0.15s;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s, color 0.15s, background 0.15s;
 }
 
 .section-block:hover > .section-header > .section-remove-btn,
 .section-block:hover > .section-header-untitled > .section-remove-btn {
-  display: inline-flex;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .section-remove-btn:hover {
