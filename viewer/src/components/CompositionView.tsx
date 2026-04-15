@@ -7,6 +7,8 @@ interface CompositionViewProps {
   composition: Composition;
   questionnaireIndex?: QuestionnaireIndex;
   showContext?: boolean;
+  onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
+  onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
 }
 
 const TEMPLATE_EXTRACT_VALUE_URL =
@@ -21,7 +23,7 @@ function getDateExpression(composition: Composition): string | null {
   return match ? match[1].trim() : ext.valueString;
 }
 
-export function CompositionView({ composition, questionnaireIndex, showContext = true }: CompositionViewProps) {
+export function CompositionView({ composition, questionnaireIndex, showContext = true, onSectionHtmlChange, onContextExpressionChange }: CompositionViewProps) {
   const dateExpr = getDateExpression(composition);
 
   return (
@@ -47,7 +49,15 @@ export function CompositionView({ composition, questionnaireIndex, showContext =
 
       <div className="sections-gutter space-y-2">
         {composition.section?.map((section, i) => (
-          <SectionView key={i} section={section} questionnaireIndex={questionnaireIndex} showContext={showContext} />
+          <SectionView
+            key={i}
+            section={section}
+            questionnaireIndex={questionnaireIndex}
+            showContext={showContext}
+            sectionPath={[i]}
+            onSectionHtmlChange={onSectionHtmlChange}
+            onContextExpressionChange={onContextExpressionChange}
+          />
         ))}
       </div>
     </div>

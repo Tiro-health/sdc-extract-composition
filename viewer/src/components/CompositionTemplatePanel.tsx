@@ -10,12 +10,16 @@ interface CompositionTemplatePanelProps {
   composition: Composition;
   questionnaireIndex?: QuestionnaireIndex;
   showContext: boolean;
+  onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
+  onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
 }
 
 export function CompositionTemplatePanel({
   composition,
   questionnaireIndex,
   showContext,
+  onSectionHtmlChange,
+  onContextExpressionChange,
 }: CompositionTemplatePanelProps) {
   const [tab, setTab] = useState<Tab>("template");
 
@@ -45,6 +49,8 @@ export function CompositionTemplatePanel({
             composition={composition}
             questionnaireIndex={questionnaireIndex}
             showContext={showContext}
+            onSectionHtmlChange={onSectionHtmlChange}
+            onContextExpressionChange={onContextExpressionChange}
           />
         ) : (
           <RawCompositionView composition={composition} />

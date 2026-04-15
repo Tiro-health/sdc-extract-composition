@@ -12,6 +12,11 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
+    "@lexical/html": "^0.43.0",
+    "@lexical/react": "^0.43.0",
+    "@lexical/rich-text": "^0.43.0",
+    "@lexical/utils": "^0.43.0",
+    "lexical": "^0.43.0",
     "lezer-fhirpath": "^1.2.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

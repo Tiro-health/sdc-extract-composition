@@ -1,9 +1,12 @@
+import { useState } from "react";
 import type { CompositionSection } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import { segmentExpressionToHtml } from "../utils/expression-pills";
 import { stripDivWrapper } from "../utils/parse-narrative";
 import { ContextBadge } from "./ContextBadge";
+import { ContextExpressionModal } from "./ContextExpressionModal";
 import { ContextTooltip } from "./ContextTooltip";
+import { NarrativeEditorModal } from "./lexical/NarrativeEditorModal";
 import { injectPills, NarrativeHtml } from "./NarrativeHtml";
 
 interface SectionViewProps {
@@ -11,6 +14,9 @@ interface SectionViewProps {
   depth?: number;
   questionnaireIndex?: QuestionnaireIndex;
   showContext?: boolean;
+  sectionPath?: number[];
+  onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
+  onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
 }
 
 const TEMPLATE_EXTRACT_CONTEXT_URL =
@@ -110,10 +116,18 @@ export function SectionView({
   depth = 0,
   questionnaireIndex,
   showContext = true,
+  sectionPath = [],
+  onSectionHtmlChange,
+  onContextExpressionChange,
 }: SectionViewProps) {
   const contextExpr = getContextExpression(section);
   const repeating = isRepeatingContext(contextExpr);
   const inlinesChildren = hasSectionsPlaceholder(section);
+
+  const [narrativeModalOpen, setNarrativeModalOpen] = useState(false);
+  const [contextModalOpen, setContextModalOpen] = useState(false);
+
+  const editable = !!onSectionHtmlChange;
 
   return (
     <div className="section-block" data-depth={depth}>
@@ -122,7 +136,10 @@ export function SectionView({
           <ContextTooltip
             content={<ContextBadge expression={contextExpr} questionnaireIndex={questionnaireIndex} />}
           >
-            <span className={`cond-summary ${repeating ? 'cond-repeating' : 'cond-conditional'}`}>
+            <span
+              className={`cond-summary ${repeating ? 'cond-repeating' : 'cond-conditional'}${editable ? ' cursor-pointer' : ''}`}
+              onClick={editable ? (e) => { e.stopPropagation(); setContextModalOpen(true); } : undefined}
+            >
               <span className="cond-icon">{repeating ? "↻" : "⎇"}</span>
               <span className="cond-label">{repeating ? "per item" : "als"}</span>
             </span>
@@ -137,7 +154,8 @@ export function SectionView({
 
       {inlinesChildren ? (
         <div
-          className="narrative-content"
+          className={`narrative-content${editable ? " narrative-content-editable" : ""}`}
+          onClick={editable ? () => setNarrativeModalOpen(true) : undefined}
           dangerouslySetInnerHTML={{
             __html: buildSectionHtml(section, questionnaireIndex, showContext),
           }}
@@ -148,6 +166,7 @@ export function SectionView({
             <NarrativeHtml
               divHtml={section.text.div}
               questionnaireIndex={questionnaireIndex}
+              onClick={editable ? () => setNarrativeModalOpen(true) : undefined}
             />
           )}
           {section.section?.map((child, i) => (
@@ -157,9 +176,33 @@ export function SectionView({
               depth={depth + 1}
               questionnaireIndex={questionnaireIndex}
               showContext={showContext}
+              sectionPath={[...sectionPath, i]}
+              onSectionHtmlChange={onSectionHtmlChange}
+              onContextExpressionChange={onContextExpressionChange}
             />
           ))}
         </>
+      )}
+
+      {/* Narrative editor modal */}
+      {section.text?.div && (
+        <NarrativeEditorModal
+          open={narrativeModalOpen}
+          onClose={() => setNarrativeModalOpen(false)}
+          divHtml={section.text.div}
+          questionnaireIndex={questionnaireIndex}
+          onSave={(html) => onSectionHtmlChange?.(sectionPath, html)}
+        />
+      )}
+
+      {/* Context expression editor modal */}
+      {contextExpr && (
+        <ContextExpressionModal
+          open={contextModalOpen}
+          onClose={() => setContextModalOpen(false)}
+          expression={contextExpr}
+          onSave={(expr) => onContextExpressionChange?.(sectionPath, expr)}
+        />
       )}
     </div>
   );

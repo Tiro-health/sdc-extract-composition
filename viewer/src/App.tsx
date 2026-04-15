@@ -4,7 +4,7 @@ import {
   Group as PanelGroup,
   Separator as PanelResizeHandle,
 } from "react-resizable-panels";
-import type { Questionnaire } from "./types";
+import type { Composition, Questionnaire } from "./types";
 import { extractComposition } from "./utils/extract-composition";
 import { buildQuestionnaireIndex } from "./utils/questionnaire-index";
 import { renderComposition } from "./utils/render-api";
@@ -22,13 +22,15 @@ function App() {
     string,
     unknown
   > | null>(null);
+  const [composition, setComposition] = useState<Composition | null>(null);
   const [renderedHtml, setRenderedHtml] = useState<string | null>(null);
   const [renderErrors, setRenderErrors] = useState<string[]>([]);
   const [renderLoading, setRenderLoading] = useState(false);
 
-  const composition = questionnaire
-    ? extractComposition(questionnaire)
-    : null;
+  // Derive composition from questionnaire
+  useEffect(() => {
+    setComposition(questionnaire ? extractComposition(questionnaire) : null);
+  }, [questionnaire]);
 
   const questionnaireIndex = useMemo(
     () => (questionnaire ? buildQuestionnaireIndex(questionnaire) : undefined),
@@ -42,6 +44,51 @@ function App() {
     setRenderedHtml(null);
     setRenderErrors([]);
   }, []);
+
+  const TEMPLATE_EXTRACT_CONTEXT_URL =
+    "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext";
+
+  // Navigate to a nested section by path indices
+  const navigateToSection = (comp: Composition, path: number[]) => {
+    let sections = comp.section;
+    for (let i = 0; i < path.length - 1; i++) {
+      sections = sections?.[path[i]]?.section;
+    }
+    return sections?.[path[path.length - 1]];
+  };
+
+  const handleSectionHtmlChange = useCallback(
+    (sectionPath: number[], newDivHtml: string) => {
+      setComposition((prev) => {
+        if (!prev) return prev;
+        const updated = structuredClone(prev);
+        const target = navigateToSection(updated, sectionPath);
+        if (target?.text) {
+          target.text.div = newDivHtml;
+        }
+        return updated;
+      });
+    },
+    []
+  );
+
+  const handleContextExpressionChange = useCallback(
+    (sectionPath: number[], newExpression: string) => {
+      setComposition((prev) => {
+        if (!prev) return prev;
+        const updated = structuredClone(prev);
+        const target = navigateToSection(updated, sectionPath);
+        if (target?.extension) {
+          const ext = target.extension.find(
+            (e) => e.url === TEMPLATE_EXTRACT_CONTEXT_URL
+          );
+          if (ext) ext.valueString = newExpression;
+        }
+        return updated;
+      });
+    },
+    []
+  );
 
   // Debounced render when QR or composition changes
   const renderTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -115,6 +162,8 @@ function App() {
               composition={composition}
               questionnaireIndex={questionnaireIndex}
               showContext={showContext}
+              onSectionHtmlChange={handleSectionHtmlChange}
+              onContextExpressionChange={handleContextExpressionChange}
             />
           </Panel>
           <PanelResizeHandle className="panel-resize-handle" />
