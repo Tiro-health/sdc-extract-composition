@@ -3,9 +3,12 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+  optimizeDeps: {
+    exclude: ["fhirpath-rs"],
+  },
   server: {
     fs: {
-      allow: [".."],
+      allow: ["..", "/Users/axelvanraes/dev/fhirpath-py/pkg"],
     },
     proxy: {
       "/api": {

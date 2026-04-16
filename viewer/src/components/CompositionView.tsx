@@ -1,3 +1,4 @@
+import type { QuestionnaireIndex as WasmQuestionnaireIndex } from "fhirpath-rs";
 import type { Composition } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import { FhirPathPill } from "./FhirPathPill";
@@ -6,6 +7,7 @@ import { SectionView } from "./SectionView";
 interface CompositionViewProps {
   composition: Composition;
   questionnaireIndex?: QuestionnaireIndex;
+  wasmQuestionnaireIndex?: WasmQuestionnaireIndex | null;
   showContext?: boolean;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
@@ -23,7 +25,7 @@ function getDateExpression(composition: Composition): string | null {
   return match ? match[1].trim() : ext.valueString;
 }
 
-export function CompositionView({ composition, questionnaireIndex, showContext = true, onSectionHtmlChange, onContextExpressionChange }: CompositionViewProps) {
+export function CompositionView({ composition, questionnaireIndex, wasmQuestionnaireIndex, showContext = true, onSectionHtmlChange, onContextExpressionChange }: CompositionViewProps) {
   const dateExpr = getDateExpression(composition);
 
   return (
@@ -53,6 +55,7 @@ export function CompositionView({ composition, questionnaireIndex, showContext =
             key={i}
             section={section}
             questionnaireIndex={questionnaireIndex}
+            wasmQuestionnaireIndex={wasmQuestionnaireIndex}
             showContext={showContext}
             sectionPath={[i]}
             onSectionHtmlChange={onSectionHtmlChange}

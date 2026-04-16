@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import type { QuestionnaireIndex as WasmQuestionnaireIndex } from "fhirpath-rs";
 import type { Composition } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import { CompositionView } from "./CompositionView";
@@ -9,6 +10,7 @@ type Tab = "template" | "structure";
 interface CompositionTemplatePanelProps {
   composition: Composition;
   questionnaireIndex?: QuestionnaireIndex;
+  wasmQuestionnaireIndex?: WasmQuestionnaireIndex | null;
   showContext: boolean;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
@@ -29,6 +31,7 @@ function downloadJson(data: unknown, filename: string) {
 export function CompositionTemplatePanel({
   composition,
   questionnaireIndex,
+  wasmQuestionnaireIndex,
   showContext,
   onSectionHtmlChange,
   onContextExpressionChange,
@@ -74,6 +77,7 @@ export function CompositionTemplatePanel({
           <CompositionView
             composition={composition}
             questionnaireIndex={questionnaireIndex}
+            wasmQuestionnaireIndex={wasmQuestionnaireIndex}
             showContext={showContext}
             onSectionHtmlChange={onSectionHtmlChange}
             onContextExpressionChange={onContextExpressionChange}

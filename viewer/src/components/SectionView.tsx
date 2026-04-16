@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { QuestionnaireIndex as WasmQuestionnaireIndex } from "fhirpath-rs";
 import type { CompositionSection } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import { segmentExpressionToHtml } from "../utils/expression-pills";
@@ -13,6 +14,7 @@ interface SectionViewProps {
   section: CompositionSection;
   depth?: number;
   questionnaireIndex?: QuestionnaireIndex;
+  wasmQuestionnaireIndex?: WasmQuestionnaireIndex | null;
   showContext?: boolean;
   sectionPath?: number[];
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
@@ -131,6 +133,7 @@ function SectionContentWithChildren({
   section,
   depth,
   questionnaireIndex,
+  wasmQuestionnaireIndex,
   showContext,
   sectionPath,
   editable,
@@ -141,6 +144,7 @@ function SectionContentWithChildren({
   section: CompositionSection;
   depth: number;
   questionnaireIndex?: QuestionnaireIndex;
+  wasmQuestionnaireIndex?: WasmQuestionnaireIndex | null;
   showContext: boolean;
   sectionPath: number[];
   editable: boolean;
@@ -159,6 +163,7 @@ function SectionContentWithChildren({
       section={child}
       depth={depth + 1}
       questionnaireIndex={questionnaireIndex}
+      wasmQuestionnaireIndex={wasmQuestionnaireIndex}
       showContext={showContext}
       sectionPath={[...sectionPath, i]}
       onSectionHtmlChange={onSectionHtmlChange}
@@ -218,6 +223,7 @@ export function SectionView({
   section,
   depth = 0,
   questionnaireIndex,
+  wasmQuestionnaireIndex,
   showContext = true,
   sectionPath = [],
   onSectionHtmlChange,
@@ -269,6 +275,7 @@ export function SectionView({
           section={section}
           depth={depth}
           questionnaireIndex={questionnaireIndex}
+          wasmQuestionnaireIndex={wasmQuestionnaireIndex}
           showContext={showContext}
           sectionPath={sectionPath}
           editable={editable}
@@ -285,6 +292,8 @@ export function SectionView({
           onClose={() => setNarrativeModalOpen(false)}
           divHtml={section.text.div}
           questionnaireIndex={questionnaireIndex}
+          wasmQuestionnaireIndex={wasmQuestionnaireIndex}
+          contextExpression={contextExpr}
           onSave={(html) => onSectionHtmlChange?.(sectionPath, html)}
         />
       )}

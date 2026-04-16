@@ -4,9 +4,11 @@ import {
   Group as PanelGroup,
   Separator as PanelResizeHandle,
 } from "react-resizable-panels";
+import { QuestionnaireIndex as WasmQuestionnaireIndex } from "fhirpath-rs";
 import type { Composition, Questionnaire } from "./types";
 import { extractComposition } from "./utils/extract-composition";
 import { buildQuestionnaireIndex } from "./utils/questionnaire-index";
+import { ensureWasmInit } from "./utils/wasm-init";
 import { renderComposition } from "./utils/render-api";
 import { QuestionnaireLoader } from "./components/QuestionnaireLoader";
 import { QuestionnaireFormPanel } from "./components/QuestionnaireFormPanel";
@@ -36,6 +38,23 @@ function App() {
     () => (questionnaire ? buildQuestionnaireIndex(questionnaire) : undefined),
     [questionnaire]
   );
+
+  const [wasmQuestionnaireIndex, setWasmQuestionnaireIndex] =
+    useState<WasmQuestionnaireIndex | null>(null);
+
+  useEffect(() => {
+    if (!questionnaire) {
+      setWasmQuestionnaireIndex(null);
+      return;
+    }
+    let cancelled = false;
+    ensureWasmInit().then(() => {
+      if (cancelled) return;
+      const idx = new WasmQuestionnaireIndex(JSON.stringify(questionnaire));
+      setWasmQuestionnaireIndex(idx);
+    });
+    return () => { cancelled = true; };
+  }, [questionnaire]);
 
   // Clear QR when questionnaire changes
   const handleQuestionnaireLoad = useCallback((q: Questionnaire) => {
@@ -161,6 +180,7 @@ function App() {
             <CompositionTemplatePanel
               composition={composition}
               questionnaireIndex={questionnaireIndex}
+              wasmQuestionnaireIndex={wasmQuestionnaireIndex}
               showContext={showContext}
               onSectionHtmlChange={handleSectionHtmlChange}
               onContextExpressionChange={handleContextExpressionChange}
