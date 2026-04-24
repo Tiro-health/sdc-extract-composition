@@ -30,6 +30,8 @@ from typing import Any, Required, TypedDict
 import fhirpathpy
 from fhirpathpy.models import models as fhir_models
 
+from fhir_liquid.filters import apply_filters, split_filters
+
 __all__ = [
     "render_template",
     "evaluate_fhirpath",
@@ -159,8 +161,10 @@ def render_template(
     resource = context["resource"]
     base = context.get("base")
     def replace_expression(match: re.Match[str]) -> str:
-        expression = match.group(1).strip()
-        result = evaluate_fhirpath(expression, resource, base)
+        head, filters = split_filters(match.group(1))
+        result = evaluate_fhirpath(head, resource, base)
+        if filters:
+            result = apply_filters(result, filters)
         return _stringify(result)
 
     return FHIRPATH_PATTERN.sub(replace_expression, template_source)
