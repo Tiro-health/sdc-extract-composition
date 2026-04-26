@@ -10,11 +10,10 @@ import { $generateHtmlFromNodes } from "@lexical/html";
 import type { LexicalEditor } from "lexical";
 import type { QuestionnaireIndex } from "../../utils/questionnaire-index";
 import { Modal } from "../Modal";
-import { EditingFhirPathNode } from "./EditingFhirPathNode";
 import { FhirPathPillNode } from "./FhirPathPillNode";
 import { FhirPathAutocompletePlugin } from "./FhirPathAutocompletePlugin";
-import { FhirPathPillFinalizePlugin } from "./FhirPathPillFinalizePlugin";
 import { HtmlImportPlugin } from "./HtmlImportPlugin";
+import { PillEditingWorkspace } from "./PillEditingWorkspace";
 import { QuestionnaireIndexProvider } from "./QuestionnaireIndexContext";
 
 const XHTML_NS = 'http://www.w3.org/1999/xhtml';
@@ -32,7 +31,7 @@ interface NarrativeEditorModalProps {
 function editorConfig() {
   return {
     namespace: "NarrativeEditor",
-    nodes: [HeadingNode, FhirPathPillNode, EditingFhirPathNode],
+    nodes: [HeadingNode, FhirPathPillNode],
     theme: {},
     onError: (error: Error) => console.error("[NarrativeEditor]", error),
   };
@@ -103,7 +102,7 @@ export function NarrativeEditorModal({
             <FhirPathAutocompletePlugin
               contextExpression={contextExpression}
             />
-            <FhirPathPillFinalizePlugin />
+            <PillEditingWorkspace contextExpression={contextExpression} />
             <EditorRefPlugin editorRef={editorRef} />
           </LexicalComposer>
         </div>

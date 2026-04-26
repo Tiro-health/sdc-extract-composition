@@ -3,8 +3,9 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { useLexicalNodeSelection } from "@lexical/react/useLexicalNodeSelection";
 import { mergeRegister } from "@lexical/utils";
 import {
-  $createTextNode,
+  $createNodeSelection,
   $getNodeByKey,
+  $setSelection,
   CLICK_COMMAND,
   COMMAND_PRIORITY_LOW,
   KEY_BACKSPACE_COMMAND,
@@ -12,8 +13,6 @@ import {
   type NodeKey,
 } from "lexical";
 import { segmentExpressionToHtml } from "../../utils/expression-pills";
-import { $createEditingFhirPathNode } from "./EditingFhirPathNode";
-import { $isFhirPathPillNode } from "./FhirPathPillNode";
 import { useQuestionnaireIndex } from "./QuestionnaireIndexContext";
 
 interface FhirPathPillComponentProps {
@@ -44,17 +43,10 @@ export function FhirPathPillComponent({
           event.preventDefault();
           editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            if (!$isFhirPathPillNode(node)) return;
-            const expr = node.getExpression();
-            // Dissolve into an EditingFhirPathNode (the same wrapper the
-            // finalize transform creates from typing). Typing `}}` at the
-            // end re-crystallizes into a pill.
-            const inner = $createTextNode(`{{${expr}`);
-            const wrapper = $createEditingFhirPathNode();
-            wrapper.append(inner);
-            node.replace(wrapper);
-            const caret = 2 + expr.length;
-            inner.select(caret, caret);
+            if (!node) return;
+            const selection = $createNodeSelection();
+            selection.add(nodeKey);
+            $setSelection(selection);
           });
           return true;
         },
