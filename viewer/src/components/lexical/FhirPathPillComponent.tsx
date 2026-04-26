@@ -13,6 +13,7 @@ import {
   type NodeKey,
 } from "lexical";
 import { segmentExpressionToHtml } from "../../utils/expression-pills";
+import { useWasmReady } from "../../utils/wasm-init";
 import { useQuestionnaireIndex } from "./QuestionnaireIndexContext";
 
 interface FhirPathPillComponentProps {
@@ -28,6 +29,8 @@ export function FhirPathPillComponent({
   const pillRef = useRef<HTMLElement>(null);
   const [isSelected] = useLexicalNodeSelection(nodeKey);
   const questionnaireIndex = useQuestionnaireIndex();
+  // Subscribe so the pill label recomputes when wasm finishes loading.
+  useWasmReady();
 
   useEffect(() => {
     return mergeRegister(
