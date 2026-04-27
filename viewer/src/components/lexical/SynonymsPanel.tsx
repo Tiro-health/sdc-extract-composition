@@ -1,7 +1,7 @@
 import { useId, useState, type FormEvent } from "react";
 import type { AnswerOption } from "../../utils/questionnaire-index";
 import { useQuestionnaireIndex } from "./QuestionnaireIndexContext";
-import { useQuestionnaireMutable } from "./QuestionnaireMutableContext";
+import { useQuestionnaire } from "./QuestionnaireContext";
 import {
   clearDesignation,
   findDesignationValue,
@@ -24,7 +24,7 @@ export function SynonymsPanel({ expression }: SynonymsPanelProps) {
   // Subscribe so the panel recomputes once the wasm analyzer is loaded.
   useWasmReady();
   const index = useQuestionnaireIndex();
-  const mutable = useQuestionnaireMutable();
+  const binding = useQuestionnaire();
 
   // segmentExpression() depends on the wasm analyzer being ready.
   // useWasmReady() above subscribes us to its readiness flip, so this
@@ -35,13 +35,15 @@ export function SynonymsPanel({ expression }: SynonymsPanelProps) {
   // rather than show an empty list that can't do anything.
   if (codings.length === 0) return null;
 
+  const editable = binding?.setQuestionnaire != null;
+
   return (
     <div className="synonyms-panel">
       <div className="synonyms-panel-header">Synoniemen</div>
       <div className="synonyms-panel-body">
-        {!mutable && (
+        {!editable && (
           <div className="synonyms-empty">
-            No editable Questionnaire bound — overrides are read-only.
+            Read-only — overrides cannot be edited.
           </div>
         )}
         <ul className="synonyms-code-list">
@@ -64,29 +66,23 @@ interface CodeRowProps {
 }
 
 function CodeRow({ linkId, coding }: CodeRowProps) {
-  const mutable = useQuestionnaireMutable();
+  const binding = useQuestionnaire();
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
   const inputId = useId();
 
-  if (!mutable) {
-    return (
-      <li className="synonyms-code-row synonyms-code-row-readonly">
-        <CodeHeader coding={coding} linkId={linkId} />
-      </li>
-    );
-  }
+  const existing =
+    binding && coding.system
+      ? findDesignationValue(
+          binding.questionnaire,
+          coding.system,
+          coding.code,
+          OVERRIDE_USE,
+        )
+      : null;
 
-  const { questionnaire, setQuestionnaire } = mutable;
-
-  const existing = coding.system
-    ? findDesignationValue(
-        questionnaire,
-        coding.system,
-        coding.code,
-        OVERRIDE_USE,
-      )
-    : null;
+  const setQuestionnaire = binding?.setQuestionnaire;
+  const editable = setQuestionnaire != null;
 
   const startEdit = () => {
     setEditing(true);
@@ -100,28 +96,30 @@ function CodeRow({ linkId, coding }: CodeRowProps) {
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!coding.system) return;
+    if (!setQuestionnaire || !binding || !coding.system) return;
     const trimmed = draft.trim();
     if (!trimmed) return;
-    const next = setDesignation(questionnaire, {
-      system: coding.system,
-      code: coding.code,
-      useToken: OVERRIDE_USE,
-      value: trimmed,
-    });
-    setQuestionnaire(next);
+    setQuestionnaire(
+      setDesignation(binding.questionnaire, {
+        system: coding.system,
+        code: coding.code,
+        useToken: OVERRIDE_USE,
+        value: trimmed,
+      }),
+    );
     setEditing(false);
     setDraft("");
   };
 
   const remove = () => {
-    if (!coding.system) return;
-    const next = clearDesignation(questionnaire, {
-      system: coding.system,
-      code: coding.code,
-      useToken: OVERRIDE_USE,
-    });
-    setQuestionnaire(next);
+    if (!setQuestionnaire || !binding || !coding.system) return;
+    setQuestionnaire(
+      clearDesignation(binding.questionnaire, {
+        system: coding.system,
+        code: coding.code,
+        useToken: OVERRIDE_USE,
+      }),
+    );
   };
 
   return (
@@ -131,26 +129,30 @@ function CodeRow({ linkId, coding }: CodeRowProps) {
         <div className="synonyms-existing">
           <div className="synonyms-existing-row">
             <span className="synonyms-value">{existing}</span>
-            <button
-              type="button"
-              className="synonyms-button-link"
-              onClick={startEdit}
-              title="Edit"
-            >
-              Edit
-            </button>
-            <button
-              type="button"
-              className="synonyms-button-link synonyms-button-danger"
-              onClick={remove}
-              title="Clear"
-            >
-              Clear
-            </button>
+            {editable && (
+              <>
+                <button
+                  type="button"
+                  className="synonyms-button-link"
+                  onClick={startEdit}
+                  title="Edit"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  className="synonyms-button-link synonyms-button-danger"
+                  onClick={remove}
+                  title="Clear"
+                >
+                  Clear
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}
-      {existing === null && !editing && (
+      {existing === null && !editing && editable && (
         <div className="synonyms-add-row">
           <button
             type="button"

@@ -17,7 +17,7 @@ import { FhirPathAutocompletePlugin } from "./FhirPathAutocompletePlugin";
 import { HtmlImportPlugin } from "./HtmlImportPlugin";
 import { PillEditingWorkspace } from "./PillEditingWorkspace";
 import { QuestionnaireIndexProvider } from "./QuestionnaireIndexContext";
-import { QuestionnaireMutableProvider } from "./QuestionnaireMutableContext";
+import { QuestionnaireProvider } from "./QuestionnaireContext";
 import { WasmQuestionnaireIndexProvider } from "./WasmQuestionnaireIndexContext";
 
 // Use the nested-choice-questions iteration: it has answerOption.valueCoding
@@ -86,7 +86,7 @@ function NarrativeEditorHarness({
     };
   }, [questionnaire]);
 
-  const mutator = useMemo(
+  const binding = useMemo(
     () => ({ questionnaire, setQuestionnaire }),
     [questionnaire],
   );
@@ -123,7 +123,7 @@ function NarrativeEditorHarness({
   }, [questionnaire]);
 
   return (
-    <QuestionnaireMutableProvider value={mutator}>
+    <QuestionnaireProvider value={binding}>
       <QuestionnaireIndexProvider value={jsIndex}>
         <WasmQuestionnaireIndexProvider value={wasmIndex}>
           <div className="max-w-3xl p-6 font-sans text-sm text-gray-900 space-y-3">
@@ -182,7 +182,7 @@ function NarrativeEditorHarness({
           </div>
         </WasmQuestionnaireIndexProvider>
       </QuestionnaireIndexProvider>
-    </QuestionnaireMutableProvider>
+    </QuestionnaireProvider>
   );
 }
 

@@ -7,7 +7,10 @@ import { setDesignation } from "../../utils/supplement-editor";
 import { ensureWasmInit, useWasmReady } from "../../utils/wasm-init";
 
 import { QuestionnaireIndexProvider } from "./QuestionnaireIndexContext";
-import { QuestionnaireMutableProvider } from "./QuestionnaireMutableContext";
+import {
+  QuestionnaireProvider,
+  type QuestionnaireBinding,
+} from "./QuestionnaireContext";
 import { SynonymsPanel } from "./SynonymsPanel";
 
 import questionnaireJson from "../../iterations/03-nested-choice-questions/questionnaire-extract.json";
@@ -86,20 +89,17 @@ function SynonymsPanelHarnessInner({
     () => buildQuestionnaireIndex(questionnaire),
     [questionnaire],
   );
-  const mutator = useMemo(
-    () => ({ questionnaire, setQuestionnaire }),
-    [questionnaire],
+  const binding = useMemo<QuestionnaireBinding>(
+    () =>
+      readonly
+        ? { questionnaire }
+        : { questionnaire, setQuestionnaire },
+    [questionnaire, readonly],
   );
 
   const supplementCount = useMemo(
     () => countSupplementDesignations(questionnaire),
     [questionnaire],
-  );
-
-  const panel = (
-    <QuestionnaireIndexProvider value={index}>
-      <SynonymsPanel expression={expression} />
-    </QuestionnaireIndexProvider>
   );
 
   return (
@@ -119,18 +119,16 @@ function SynonymsPanelHarnessInner({
           )}
           {readonly && (
             <span className="ml-2 text-gray-400">
-              (no QuestionnaireMutableProvider — read-only)
+              (binding has no setter — read-only)
             </span>
           )}
         </div>
       </div>
-      {readonly ? (
-        panel
-      ) : (
-        <QuestionnaireMutableProvider value={mutator}>
-          {panel}
-        </QuestionnaireMutableProvider>
-      )}
+      <QuestionnaireProvider value={binding}>
+        <QuestionnaireIndexProvider value={index}>
+          <SynonymsPanel expression={expression} />
+        </QuestionnaireIndexProvider>
+      </QuestionnaireProvider>
     </div>
   );
 }
@@ -176,7 +174,7 @@ const meta: Meta<typeof SynonymsPanelHarness> = {
     readonly: {
       control: "boolean",
       description:
-        "When true, omit QuestionnaireMutableProvider so the panel renders in read-only mode.",
+        "When true, the QuestionnaireBinding is provided without a setter so the panel renders in read-only mode (overrides visible, no edit affordances).",
     },
   },
 };
