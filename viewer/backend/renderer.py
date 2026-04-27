@@ -276,10 +276,8 @@ def render_composition(
         if (section_html := render_section(section, questionnaire_response)) is not None
     ]
 
-    title = composition_dict.get("title", "Composition")
     html_output = (
         '<article class="composition">\n'
-        f"<h2>{html.escape(title)}</h2>\n"
         f"{''.join(sections_html)}\n"
         "</article>"
     )

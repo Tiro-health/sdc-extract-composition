@@ -1,3 +1,4 @@
+import { analyze_expression, type QuestionnaireIndex } from "fhirpath-rs";
 import type { CompositionSection } from "../types";
 
 export const TEMPLATE_EXTRACT_CONTEXT_URL =
@@ -19,15 +20,8 @@ export function isRepeatingContext(expr: string | null): boolean {
 export type ContextType = "always" | "conditional" | "repeating" | "custom";
 
 /**
- * Infer context type from a FHIRPath expression.
- *
- * This is a mock implementation using simple heuristics:
- * - No expression → "always"
- * - Has .where(...) → "conditional" (filtering, boolean result)
- * - Expression without .where() → "repeating" (iterating over list)
- * - Fallback → "custom"
- *
- * Will be replaced by colleague's FHIRPath analyzer that does proper type analysis.
+ * Infer context type from a FHIRPath expression using heuristics.
+ * Fallback when WASM analyzer is not available.
  */
 export function inferContextType(expr: string | null): ContextType {
   if (!expr || expr.trim() === "") {
@@ -40,13 +34,47 @@ export function inferContextType(expr: string | null): ContextType {
   }
 
   // If it references a repeating item without filtering, it's repeating
-  // This is a rough heuristic - assume any expression is repeating unless it filters
   if (/^%(?:context|resource)/.test(expr)) {
     return "repeating";
   }
 
-  // Fallback to custom for complex expressions
-  return "custom";
+  return "conditional";
+}
+
+/**
+ * Analyze context type using the WASM FHIRPath analyzer.
+ * Returns the inferred context type based on expression cardinality:
+ * - No expression → "always"
+ * - Singleton result → "conditional"
+ * - Collection result → "repeating"
+ */
+export function analyzeContextType(
+  expr: string | null,
+  wasmIndex: QuestionnaireIndex | null
+): ContextType {
+  if (!expr || expr.trim() === "") {
+    return "always";
+  }
+
+  if (!wasmIndex) {
+    return inferContextType(expr);
+  }
+
+  try {
+    // Check if expression returns a collection by expecting singleton
+    const result = analyze_expression(expr, wasmIndex, null, null, null, "singleton");
+
+    const hasCardinalityMismatch = result.diagnostics?.some(
+      (d: { code: string }) => d.code === "expression_cardinality_mismatch"
+    );
+
+    // If expecting singleton causes mismatch, it's a collection → repeating
+    // Otherwise it's singleton → conditional
+    return hasCardinalityMismatch ? "repeating" : "conditional";
+  } catch {
+    // Fallback to heuristic on error
+    return inferContextType(expr);
+  }
 }
 
 export const CONTEXT_COLORS: Record<ContextType, string> = {

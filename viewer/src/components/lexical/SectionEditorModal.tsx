@@ -9,7 +9,8 @@ import { HeadingNode } from "@lexical/rich-text";
 import { $generateHtmlFromNodes } from "@lexical/html";
 import type { LexicalEditor } from "lexical";
 import type { QuestionnaireIndex } from "../../utils/questionnaire-index";
-import { inferContextType, CONTEXT_COLORS, CONTEXT_LABELS } from "../../utils/section-helpers";
+import { analyzeContextType, CONTEXT_COLORS, CONTEXT_LABELS } from "../../utils/section-helpers";
+import { useWasmQuestionnaireIndex } from "./WasmQuestionnaireIndexContext";
 import { Modal } from "../Modal";
 import { FhirPathPillNode } from "./FhirPathPillNode";
 import { FhirPathAutocompletePlugin } from "./FhirPathAutocompletePlugin";
@@ -60,6 +61,8 @@ export function SectionEditorModal({
   const [title, setTitle] = useState(initialTitle ?? "");
   const [contextExpression, setContextExpression] = useState(initialContextExpression ?? "");
 
+  const wasmIndex = useWasmQuestionnaireIndex();
+
   useEffect(() => {
     if (open) {
       setTitle(initialTitle ?? "");
@@ -67,7 +70,7 @@ export function SectionEditorModal({
     }
   }, [open, initialTitle, initialContextExpression]);
 
-  const contextType = inferContextType(contextExpression || null);
+  const contextType = analyzeContextType(contextExpression || null, wasmIndex);
   const contextColor = CONTEXT_COLORS[contextType];
   const contextLabel = CONTEXT_LABELS[contextType];
 

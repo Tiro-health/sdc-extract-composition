@@ -3,9 +3,11 @@ import type { CompositionSection } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import {
   getContextExpression,
-  inferContextType,
+  analyzeContextType,
   CONTEXT_ICONS,
 } from "../utils/section-helpers";
+import { stripDivWrapper } from "../utils/parse-narrative";
+import { useWasmQuestionnaireIndex } from "./lexical/WasmQuestionnaireIndexContext";
 import { NarrativeHtml } from "./NarrativeHtml";
 import { AddBetweenButton } from "./AddBetweenButton";
 import { SectionEditorModal } from "./lexical/SectionEditorModal";
@@ -33,13 +35,16 @@ export function EditorSectionCard({
   onRemoveSection,
 }: EditorSectionCardProps) {
   const [modalOpen, setModalOpen] = useState(false);
+  const wasmIndex = useWasmQuestionnaireIndex();
 
   const contextExpr = getContextExpression(section);
-  const contextType = inferContextType(contextExpr);
+  const contextType = analyzeContextType(contextExpr, wasmIndex);
   const contextIcon = CONTEXT_ICONS[contextType];
 
   const hasTitle = !!section.title?.trim();
-  const hasContent = !!section.text?.div?.trim();
+  // Check if div has actual content (not just empty XHTML wrapper)
+  const innerContent = section.text?.div ? stripDivWrapper(section.text.div).trim() : "";
+  const hasContent = innerContent.length > 0;
   const children = section.section ?? [];
 
   const handleCardClick = (e: React.MouseEvent) => {

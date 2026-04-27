@@ -21,9 +21,27 @@ export function AnalyzeExpressionDebug() {
       return;
     }
     try {
-      const res = analyze_expression(expression, wasmIndex, null, null);
-      console.log("analyze_expression result:", res);
-      setResult(res);
+      // Test with expected_cardinality to detect singleton vs collection
+      const resCollection = analyze_expression(expression, wasmIndex, null, null, null, "collection");
+      const resSingleton = analyze_expression(expression, wasmIndex, null, null, null, "singleton");
+
+      const isCollection = !resCollection.diagnostics?.some(
+        (d: { code: string }) => d.code === "expression_cardinality_mismatch"
+      );
+      const isSingleton = !resSingleton.diagnostics?.some(
+        (d: { code: string }) => d.code === "expression_cardinality_mismatch"
+      );
+
+      const inferredType = isCollection ? "repeating" : isSingleton ? "conditional" : "unknown";
+
+      console.log("analyze_expression results:", { resCollection, resSingleton, inferredType });
+      setResult({
+        inferredType,
+        isCollection,
+        isSingleton,
+        withCollectionExpected: resCollection,
+        withSingletonExpected: resSingleton
+      });
     } catch (e) {
       setResult({ error: String(e) });
     }
