@@ -37,6 +37,48 @@ export type ExpressionSegment =
   | TextSegment;
 
 // ---------------------------------------------------------------------------
+// Filter pipeline splitter
+// ---------------------------------------------------------------------------
+
+/**
+ * Split a placeholder body into the FHIRPath head and the ``||`` filter tail.
+ *
+ * Mirrors the quote-aware splitter in ``src/fhir_liquid/filters.py`` so the
+ * analyzer only sees valid FHIRPath. The first top-level ``||`` outside any
+ * single/double-quoted region delimits head from tail; ``||`` inside string
+ * literals and FHIRPath's single-pipe union operator are preserved.
+ *
+ * Returns the original input as ``head`` (and an empty ``tail``) if no filter
+ * pipeline is present.
+ */
+export function splitFilterPipeline(expr: string): { head: string; tail: string } {
+  let i = 0;
+  let quote: string | null = null;
+  while (i < expr.length) {
+    const ch = expr[i];
+    if (quote !== null) {
+      if (ch === "\\" && i + 1 < expr.length) {
+        i += 2;
+        continue;
+      }
+      if (ch === quote) quote = null;
+      i += 1;
+      continue;
+    }
+    if (ch === "'" || ch === '"') {
+      quote = ch;
+      i += 1;
+      continue;
+    }
+    if (ch === "|" && expr[i + 1] === "|") {
+      return { head: expr.slice(0, i).trimEnd(), tail: expr.slice(i) };
+    }
+    i += 1;
+  }
+  return { head: expr, tail: "" };
+}
+
+// ---------------------------------------------------------------------------
 // Wasm annotation → segment mapping
 // ---------------------------------------------------------------------------
 
@@ -120,9 +162,13 @@ export function segmentExpression(expr: string): ExpressionSegment[] {
     return [{ kind: "text", from: 0, to: expr.length, text: expr }];
   }
 
+  // The analyzer only understands FHIRPath; strip any ``||`` filter pipeline
+  // before calling it and re-attach the tail as plain text.
+  const { head, tail } = splitFilterPipeline(expr);
+
   let annotations: Annotation[];
   try {
-    annotations = annotate_expression(expr);
+    annotations = annotate_expression(head);
   } catch {
     return [{ kind: "text", from: 0, to: expr.length, text: expr }];
   }
@@ -145,7 +191,16 @@ export function segmentExpression(expr: string): ExpressionSegment[] {
     lastEnd = pill.to;
   }
 
-  return buildSegments(expr, nonOverlapping);
+  const segments = buildSegments(head, nonOverlapping);
+  if (tail) {
+    segments.push({
+      kind: "text",
+      from: head.length,
+      to: expr.length,
+      text: expr.slice(head.length),
+    });
+  }
+  return segments;
 }
 
 /**
