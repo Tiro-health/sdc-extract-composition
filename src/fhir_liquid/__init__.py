@@ -78,9 +78,22 @@ def _coding_equival(left: list, right: list) -> list:
     return [a == b]
 
 
+def _coding_not_equival(left: list, right: list) -> list:
+    """Negated Coding-aware ~ — mirrors ``(left ~ right).not()``.
+
+    fhirpathpy's native ``!~`` does dict inequality, which spuriously reports
+    codings as different when one side has fields the other doesn't (e.g. a
+    QR's valueCoding carries ``display`` but the synthesized factory Coding
+    doesn't). Reusing the ``~`` semantics keeps both operators consistent.
+    """
+    eq = _coding_equival(left, right)
+    return [not v for v in eq]
+
+
 _EVAL_OPTIONS = {
     "userInvocationTable": {
         "~": {"fn": _coding_equival, "arity": {2: ["Any", "Any"]}},
+        "!~": {"fn": _coding_not_equival, "arity": {2: ["Any", "Any"]}},
     },
 }
 
