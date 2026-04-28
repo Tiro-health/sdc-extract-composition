@@ -115,6 +115,8 @@ export interface CompletionItem {
   filter_text: string;
   sort_text: string;
   kind: "value" | "code" | "display";
+  link_id: string;
+  item_type: string;
 }
 
 /** Index built from a FHIR Questionnaire, used for expression analysis. */

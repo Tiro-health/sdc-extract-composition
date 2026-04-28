@@ -8,6 +8,8 @@ export interface CompletionItem {
   filter_text: string;
   sort_text: string;
   kind: "value" | "code" | "display";
+  link_id: string;
+  item_type: string;
 }
 
 // Only entry-point variables - the rest comes from WASM generate_completions
@@ -19,6 +21,8 @@ export const STUB_COMPLETIONS: CompletionItem[] = [
     filter_text: "context",
     sort_text: "00-context",
     kind: "value",
+    link_id: "",
+    item_type: "",
   },
   {
     label: "%resource",
@@ -27,8 +31,24 @@ export const STUB_COMPLETIONS: CompletionItem[] = [
     filter_text: "resource",
     sort_text: "00-resource",
     kind: "value",
+    link_id: "",
+    item_type: "",
   },
 ];
+
+// WASM generate_completions emits insert_text relative to the supplied context
+// expression (e.g. "item.where(linkId='X').answer.value"). Pills need a
+// resolvable head — %resource for the global tree, %context for the
+// section-scoped tree.
+function withPrefix(prefix: string, items: CompletionItem[]): CompletionItem[] {
+  return items.map((it) => ({ ...it, insert_text: `${prefix}.${it.insert_text}` }));
+}
+
+// One canonical entry per item — drop the .code / .display variants the engine
+// emits for coding types. Users can refine via the pill editor afterward.
+function valueOnly(items: CompletionItem[]): CompletionItem[] {
+  return items.filter((it) => it.kind === "value");
+}
 
 function generateItemCompletions(
   questionnaireIndex: QuestionnaireIndex | undefined,
@@ -38,11 +58,11 @@ function generateItemCompletions(
   const completions: CompletionItem[] = [];
 
   for (const [linkId, info] of questionnaireIndex.items) {
+    if (info.type === "group" || info.type === "display") continue;
+
     const text = info.text || linkId;
-    const isChoice = info.type === "choice" || info.type === "open-choice";
     const path = info.path;
 
-    // Use the full path for nested items
     completions.push({
       label: text,
       detail: `linkId: ${linkId}`,
@@ -50,27 +70,9 @@ function generateItemCompletions(
       filter_text: `${text} ${linkId} resource`,
       sort_text: `10-${text}`,
       kind: "value",
+      link_id: linkId,
+      item_type: info.type,
     });
-
-    // For choice items, add .display and .code variants
-    if (isChoice) {
-      completions.push({
-        label: `${text} (display)`,
-        detail: `linkId: ${linkId}`,
-        insert_text: `${path}.answer.valueCoding.display`,
-        filter_text: `${text} ${linkId} display`,
-        sort_text: `11-${text}`,
-        kind: "display",
-      });
-      completions.push({
-        label: `${text} (code)`,
-        detail: `linkId: ${linkId}`,
-        insert_text: `${path}.answer.valueCoding.code`,
-        filter_text: `${text} ${linkId} code`,
-        sort_text: `12-${text}`,
-        kind: "code",
-      });
-    }
   }
 
   return completions;
@@ -84,19 +86,21 @@ export function getFhirPathCompletions(
   const wasm: CompletionItem[] = [];
 
   if (wasmQuestionnaireIndex) {
-    // Get completions for %resource (all questionnaire items)
     try {
-      const resourceItems = wasmQuestionnaireIndex.generate_completions("%resource") as CompletionItem[];
-      wasm.push(...resourceItems);
+      const resourceItems = wasmQuestionnaireIndex.generate_completions(
+        "%resource",
+      ) as CompletionItem[];
+      wasm.push(...valueOnly(withPrefix("%resource", resourceItems)));
     } catch {
       // Ignore errors
     }
 
-    // Also get context-specific completions if available
     if (contextExpression && contextExpression !== "%resource") {
       try {
-        const contextItems = wasmQuestionnaireIndex.generate_completions(contextExpression) as CompletionItem[];
-        wasm.push(...contextItems);
+        const contextItems = wasmQuestionnaireIndex.generate_completions(
+          contextExpression,
+        ) as CompletionItem[];
+        wasm.push(...valueOnly(withPrefix("%context", contextItems)));
       } catch {
         // Ignore errors
       }
