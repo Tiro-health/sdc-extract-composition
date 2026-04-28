@@ -9,6 +9,7 @@ import {
 } from "lexical";
 import { $isFhirPathPillNode } from "./FhirPathPillNode";
 import { FhirPathExpressionEditor } from "./FhirPathExpressionEditor";
+import { FormattingPanel } from "./FormattingPanel";
 import { SynonymsPanel } from "./SynonymsPanel";
 import { inferAnswerShape } from "../../utils/expression-type";
 import { useQuestionnaireIndex } from "./QuestionnaireIndexContext";
@@ -144,6 +145,11 @@ export function PillEditingWorkspace({
           contextExpression={contextExpression}
         />
       </div>
+      <FormattingPanel
+        expression={selected.expression}
+        shape={shape}
+        onChange={handleChange}
+      />
       <SynonymsPanel expression={selected.expression} />
     </div>
   );
