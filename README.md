@@ -48,7 +48,7 @@ Output is written to `iterations/<iteration>/output/` (HTML and PDF).
 
 ### Header/Footer Templates
 
-Iterations can include optional `header.html` and `footer.html` files. These templates support `{{ FHIRPath }}` expressions that are evaluated against the QuestionnaireResponse, e.g.:
+Iterations can include optional `header.html` and `footer.html` files. These templates support `{{ FHIRPath }}` expressions that are evaluated against the QuestionnaireResponse, e.g. :
 
 ```html
 <header>
