@@ -40,13 +40,14 @@ export function QuestionnaireFormPanel({
     <div className="panel-container">
       <div className="panel-header">
         <h2 className="panel-title">Questionnaire</h2>
+        {/* QR loading hidden for now
         <div className="flex items-center gap-2">
           {hasResponse && (
             <span className="text-xs text-green-600 font-medium">has QR</span>
           )}
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="text-xs text-gray-500 hover:text-gray-700 border border-gray-300 rounded px-2 py-0.5"
+            className="panel-header-btn"
           >
             Load QR
           </button>
@@ -58,6 +59,7 @@ export function QuestionnaireFormPanel({
             className="hidden"
           />
         </div>
+        */}
       </div>
       <div className="panel-body">
         <TiroFormFiller

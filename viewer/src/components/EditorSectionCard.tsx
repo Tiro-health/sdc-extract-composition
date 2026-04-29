@@ -18,6 +18,7 @@ interface EditorSectionCardProps {
   section: CompositionSection;
   sectionPath: number[];
   questionnaireIndex?: QuestionnaireIndex;
+  parentContextExpression?: string | null;
   onSectionChange: (
     sectionPath: number[],
     newDivHtml: string,
@@ -32,6 +33,7 @@ export function EditorSectionCard({
   section,
   sectionPath,
   questionnaireIndex,
+  parentContextExpression,
   onSectionChange,
   onAddSection,
   onRemoveSection,
@@ -142,6 +144,7 @@ export function EditorSectionCard({
                     section={child}
                     sectionPath={[...sectionPath, i]}
                     questionnaireIndex={questionnaireIndex}
+                    parentContextExpression={contextExpr ?? parentContextExpression}
                     onSectionChange={onSectionChange}
                     onAddSection={onAddSection}
                     onRemoveSection={onRemoveSection}
@@ -170,6 +173,7 @@ export function EditorSectionCard({
         divHtml={section.text?.div ?? ""}
         questionnaireIndex={questionnaireIndex}
         contextExpression={contextExpr}
+        parentContextExpression={parentContextExpression}
         onSave={handleSave}
       />
     </>

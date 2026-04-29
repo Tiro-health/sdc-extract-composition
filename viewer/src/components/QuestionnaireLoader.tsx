@@ -7,10 +7,12 @@ const iterationModules = import.meta.glob(
 ) as Record<string, Questionnaire>;
 
 // Build a map of iteration name → Questionnaire
-const iterations = Object.entries(iterationModules).map(([path, data]) => {
-  const name = path.split("/").at(-2) ?? path;
-  return { name, data };
-});
+const iterations = Object.entries(iterationModules)
+  .map(([path, data]) => {
+    const name = path.split("/").at(-2) ?? path;
+    return { name, data };
+  })
+  .sort((a, b) => a.name.localeCompare(b.name));
 
 /** Get iteration name from URL ?iteration= parameter */
 function getIterationFromUrl(): string | null {
@@ -27,7 +29,7 @@ function findIteration(name: string) {
 }
 
 /** Default iteration when none specified */
-const DEFAULT_ITERATION = "07-coloscopie";
+const DEFAULT_ITERATION = "demo-example";
 
 interface QuestionnaireLoaderProps {
   onLoad: (questionnaire: Questionnaire) => void;
@@ -147,7 +149,7 @@ export function QuestionnaireLoader({ onLoad }: QuestionnaireLoaderProps) {
   return (
     <div className="flex items-center gap-3">
       <IterationDropdown onSelect={onLoad} initialSelection={initialSelection} />
-
+      {/* Upload JSON hidden for now
       <button
         onClick={() => fileInputRef.current?.click()}
         className="border border-gray-300 rounded px-3 py-1.5 text-sm bg-white hover:bg-gray-50"
@@ -161,6 +163,7 @@ export function QuestionnaireLoader({ onLoad }: QuestionnaireLoaderProps) {
         onChange={handleFileUpload}
         className="hidden"
       />
+      */}
     </div>
   );
 }
