@@ -38,6 +38,7 @@ interface SectionEditorModalProps {
   divHtml: string;
   questionnaireIndex?: QuestionnaireIndex;
   contextExpression?: string | null;
+  parentContextExpression?: string | null;
   onSave: (newDivHtml: string, newTitle: string, newContextExpression: string) => void;
 }
 
@@ -67,6 +68,7 @@ export function SectionEditorModal({
   divHtml,
   questionnaireIndex,
   contextExpression: initialContextExpression,
+  parentContextExpression,
   onSave,
 }: SectionEditorModalProps) {
   const debugMode = useDebugMode();
@@ -179,6 +181,7 @@ export function SectionEditorModal({
                 conditions={contextConfig.conditions}
                 combineMode={contextConfig.combineMode}
                 questionnaireIndex={questionnaireIndex}
+                contextExpression={parentContextExpression}
                 onChange={handleConditionsChange}
               />
             )}
@@ -190,7 +193,7 @@ export function SectionEditorModal({
                   value={contextConfig.linkId}
                   scope={contextConfig.scope}
                   questionnaireIndex={questionnaireIndex}
-                  contextExpression={initialContextExpression}
+                  contextExpression={parentContextExpression}
                   onChange={handleForEachChange}
                 />
               </div>

@@ -6,19 +6,39 @@ import type {
   CombineMode,
 } from "../utils/context-expression";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
+import type { QuestionnaireIndex as WasmQuestionnaireIndex } from "fhirpath-rs";
+import { useWasmQuestionnaireIndex } from "./lexical/WasmQuestionnaireIndexContext";
 
 interface ConditionBuilderProps {
   conditions: Condition[];
   combineMode: CombineMode;
   questionnaireIndex?: QuestionnaireIndex;
+  contextExpression?: string | null;
   onChange: (conditions: Condition[], combineMode: CombineMode) => void;
 }
 
 interface ConditionRowProps {
   condition: Condition;
   questionnaireIndex?: QuestionnaireIndex;
+  contextExpression?: string | null;
+  wasmIndex: WasmQuestionnaireIndex | null;
   onChange: (condition: Condition) => void;
   onRemove: () => void;
+}
+
+interface FieldItem {
+  linkId: string;
+  text: string;
+  type: string;
+  scope: ConditionScope;
+}
+
+interface WasmCompletionItem {
+  link_id: string;
+  label: string;
+  item_type: string;
+  kind: string;
+  traverses_repeating?: boolean;
 }
 
 const BASE_OPERATORS: { value: ConditionOperator; label: string }[] = [
@@ -35,22 +55,84 @@ const CODING_OPERATORS: { value: ConditionOperator; label: string }[] = [
 
 const CODING_TYPES = new Set(["choice", "open-choice", "coding"]);
 
+function generateFieldItems(
+  wasmIndex: WasmQuestionnaireIndex | null,
+  questionnaireIndex: QuestionnaireIndex | undefined,
+  contextExpression: string | null | undefined,
+): { contextItems: FieldItem[]; resourceItems: FieldItem[] } {
+  const contextItems: FieldItem[] = [];
+  const resourceItems: FieldItem[] = [];
+  const resourceLinkIds = new Set<string>();
+
+  if (wasmIndex) {
+    try {
+      // Get %resource completions first
+      const resourceCompletions = wasmIndex.generate_completions("%resource") as WasmCompletionItem[];
+      for (const item of resourceCompletions) {
+        // Filter out items that traverse repeating ancestors (ambiguous)
+        if (item.traverses_repeating) continue;
+        if (item.kind === "value" && item.link_id && item.item_type !== "group" && item.item_type !== "display") {
+          resourceItems.push({
+            linkId: item.link_id,
+            text: item.label,
+            type: item.item_type,
+            scope: "resource",
+          });
+          resourceLinkIds.add(item.link_id);
+        }
+      }
+
+      // Get %context completions from parent context
+      if (contextExpression) {
+        const contextCompletions = wasmIndex.generate_completions(contextExpression) as WasmCompletionItem[];
+        for (const item of contextCompletions) {
+          // Filter out items that traverse repeating ancestors (ambiguous)
+          if (item.traverses_repeating) continue;
+          // Filter out duplicates already in %resource
+          if (resourceLinkIds.has(item.link_id)) continue;
+          if (item.kind === "value" && item.link_id && item.item_type !== "group" && item.item_type !== "display") {
+            contextItems.push({
+              linkId: item.link_id,
+              text: item.label,
+              type: item.item_type,
+              scope: "context",
+            });
+          }
+        }
+      }
+    } catch {
+      // Fall through to JS fallback
+    }
+  }
+
+  // Fallback to JS index if WASM didn't produce results
+  if (resourceItems.length === 0 && questionnaireIndex) {
+    for (const [linkId, info] of questionnaireIndex.items) {
+      if (info.type === "group" || info.type === "display") continue;
+      resourceItems.push({
+        linkId,
+        text: info.text || linkId,
+        type: info.type,
+        scope: "resource",
+      });
+    }
+  }
+
+  return { contextItems, resourceItems };
+}
+
 function ConditionRow({
   condition,
   questionnaireIndex,
+  contextExpression,
+  wasmIndex,
   onChange,
   onRemove,
 }: ConditionRowProps) {
-  const items = useMemo(() => {
-    if (!questionnaireIndex) return [];
-    return Array.from(questionnaireIndex.items.entries())
-      .filter(([, info]) => info.type !== "group" && info.type !== "display")
-      .map(([linkId, info]) => ({
-        linkId,
-        text: info.text,
-        type: info.type,
-      }));
-  }, [questionnaireIndex]);
+  const { contextItems, resourceItems } = useMemo(
+    () => generateFieldItems(wasmIndex, questionnaireIndex, contextExpression),
+    [wasmIndex, questionnaireIndex, contextExpression]
+  );
 
   const selectedItemInfo = useMemo(() => {
     if (!questionnaireIndex || !condition.linkId) return null;
@@ -116,20 +198,24 @@ function ConditionRow({
         onChange={(e) => handleFieldChange(e.target.value)}
       >
         <option value="">Select field...</option>
-        <optgroup label="%context (current scope)">
-          {items.map((item) => (
-            <option key={`context:${item.linkId}`} value={`context:${item.linkId}`}>
-              {item.text || item.linkId}
-            </option>
-          ))}
-        </optgroup>
-        <optgroup label="%resource (entire form)">
-          {items.map((item) => (
-            <option key={`resource:${item.linkId}`} value={`resource:${item.linkId}`}>
-              {item.text || item.linkId}
-            </option>
-          ))}
-        </optgroup>
+        {contextItems.length > 0 && (
+          <optgroup label="%context (current scope)">
+            {contextItems.map((item) => (
+              <option key={`context:${item.linkId}`} value={`context:${item.linkId}`}>
+                {item.text || item.linkId}
+              </option>
+            ))}
+          </optgroup>
+        )}
+        {resourceItems.length > 0 && (
+          <optgroup label="%resource (entire form)">
+            {resourceItems.map((item) => (
+              <option key={`resource:${item.linkId}`} value={`resource:${item.linkId}`}>
+                {item.text || item.linkId}
+              </option>
+            ))}
+          </optgroup>
+        )}
       </select>
 
       <select
@@ -195,8 +281,10 @@ export function ConditionBuilder({
   conditions,
   combineMode,
   questionnaireIndex,
+  contextExpression,
   onChange,
 }: ConditionBuilderProps) {
+  const wasmIndex = useWasmQuestionnaireIndex();
   const handleConditionChange = useCallback(
     (index: number, condition: Condition) => {
       const newConditions = [...conditions];
@@ -250,6 +338,8 @@ export function ConditionBuilder({
             key={index}
             condition={condition}
             questionnaireIndex={questionnaireIndex}
+            contextExpression={contextExpression}
+            wasmIndex={wasmIndex}
             onChange={(c) => handleConditionChange(index, c)}
             onRemove={() => handleConditionRemove(index)}
           />

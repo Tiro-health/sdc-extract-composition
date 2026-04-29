@@ -22,6 +22,14 @@ interface RepeatingItem {
 
 const REPEATING_TYPES = new Set(["group", "choice", "open-choice", "coding"]);
 
+interface WasmCompletionItem {
+  link_id: string;
+  label: string;
+  item_type: string;
+  kind: string;
+  traverses_repeating?: boolean;
+}
+
 function generateRepeatingItems(
   wasmIndex: WasmQuestionnaireIndex | null,
   questionnaireIndex: QuestionnaireIndex | undefined,
@@ -29,18 +37,34 @@ function generateRepeatingItems(
 ): { contextItems: RepeatingItem[]; resourceItems: RepeatingItem[] } {
   const contextItems: RepeatingItem[] = [];
   const resourceItems: RepeatingItem[] = [];
+  const resourceLinkIds = new Set<string>();
 
   if (wasmIndex) {
     try {
+      // Get completions for %resource scope first
+      const resourceCompletions = wasmIndex.generate_completions("%resource") as WasmCompletionItem[];
+      for (const item of resourceCompletions) {
+        // Filter out items that traverse repeating ancestors (ambiguous)
+        if (item.traverses_repeating) continue;
+        if (item.kind === "value" && item.link_id && REPEATING_TYPES.has(item.item_type)) {
+          resourceItems.push({
+            linkId: item.link_id,
+            text: item.label,
+            type: item.item_type,
+            scope: "resource",
+          });
+          resourceLinkIds.add(item.link_id);
+        }
+      }
+
       // Get completions for %context scope (if we have a context expression)
       if (contextExpression) {
-        const contextCompletions = wasmIndex.generate_completions(contextExpression) as Array<{
-          link_id: string;
-          label: string;
-          item_type: string;
-          kind: string;
-        }>;
+        const contextCompletions = wasmIndex.generate_completions(contextExpression) as WasmCompletionItem[];
         for (const item of contextCompletions) {
+          // Filter out items that traverse repeating ancestors (ambiguous)
+          if (item.traverses_repeating) continue;
+          // Filter out duplicates already in %resource
+          if (resourceLinkIds.has(item.link_id)) continue;
           if (item.kind === "value" && item.link_id && REPEATING_TYPES.has(item.item_type)) {
             contextItems.push({
               linkId: item.link_id,
@@ -49,24 +73,6 @@ function generateRepeatingItems(
               scope: "context",
             });
           }
-        }
-      }
-
-      // Get completions for %resource scope
-      const resourceCompletions = wasmIndex.generate_completions("%resource") as Array<{
-        link_id: string;
-        label: string;
-        item_type: string;
-        kind: string;
-      }>;
-      for (const item of resourceCompletions) {
-        if (item.kind === "value" && item.link_id && REPEATING_TYPES.has(item.item_type)) {
-          resourceItems.push({
-            linkId: item.link_id,
-            text: item.label,
-            type: item.item_type,
-            scope: "resource",
-          });
         }
       }
     } catch {
