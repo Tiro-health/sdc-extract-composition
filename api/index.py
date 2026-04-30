@@ -49,8 +49,10 @@ def health():
     return {
         "status": "ok",
         "GOOGLE_API_KEY": bool(os.environ.get("GOOGLE_API_KEY")),
+        "GEMINI_API_KEY": bool(os.environ.get("GEMINI_API_KEY")),
         "LOGFIRE_TOKEN": bool(os.environ.get("LOGFIRE_TOKEN")),
         "env_with_google": [k for k in os.environ.keys() if "GOOGLE" in k.upper()],
+        "env_with_gemini": [k for k in os.environ.keys() if "GEMINI" in k.upper()],
         "env_with_logfire": [k for k in os.environ.keys() if "LOGFIRE" in k.upper()],
     }
 
