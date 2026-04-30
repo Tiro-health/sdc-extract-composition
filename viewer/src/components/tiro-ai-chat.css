@@ -98,15 +98,45 @@
   line-height: 1.5;
 }
 
-.tiro-ai-placeholder ul {
-  margin: 8px 0 0 0;
-  padding-left: 20px;
+.tiro-ai-intro {
+  margin-bottom: 12px;
+  color: #374151;
 }
 
-.tiro-ai-placeholder li {
-  margin: 4px 0;
-  color: #9ca3af;
-  font-style: italic;
+.tiro-ai-presets {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.tiro-ai-preset {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 10px 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+}
+
+.tiro-ai-preset:hover {
+  background: #eff6ff;
+  border-color: #2563eb;
+}
+
+.tiro-ai-preset-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e3a5f;
+}
+
+.tiro-ai-preset-desc {
+  font-size: 11px;
+  color: #6b7280;
 }
 
 .tiro-ai-message {

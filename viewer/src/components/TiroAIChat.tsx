@@ -245,8 +245,9 @@ export function TiroAIChat({
     [onCompositionChange]
   );
 
-  const handleSubmit = async () => {
-    if ((!message.trim() && !selectedFile) || isLoading) return;
+  const handleSubmit = async (presetMessage?: string) => {
+    const promptText = presetMessage ?? message;
+    if ((!promptText.trim() && !selectedFile) || isLoading) return;
 
     setIsLoading(true);
     setError(null);
@@ -257,7 +258,7 @@ export function TiroAIChat({
 
       if (selectedFile) {
         const formData = new FormData();
-        formData.append("prompt", message);
+        formData.append("prompt", promptText);
         formData.append("questionnaire", JSON.stringify(questionnaire));
         formData.append("composition", JSON.stringify(composition));
         formData.append("file", selectedFile);
@@ -271,7 +272,7 @@ export function TiroAIChat({
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            prompt: message,
+            prompt: promptText,
             questionnaire,
             composition,
           }),
@@ -357,12 +358,37 @@ export function TiroAIChat({
 
             {!agentMessage && !currentAction && !error && !isLoading && (
               <div className="tiro-ai-placeholder">
-                Beschrijf welke compositie je wilt maken. Bijvoorbeeld:
-                <ul>
-                  <li>"Maak een brief met patiëntgegevens en medicatie"</li>
-                  <li>"Voeg een sectie toe voor allergieën"</li>
-                  <li>"Verwijder alle secties en begin opnieuw"</li>
-                </ul>
+                <div className="tiro-ai-intro">Kies een stijl of typ je eigen instructies:</div>
+                <div className="tiro-ai-presets">
+                  <button
+                    className="tiro-ai-preset"
+                    onClick={() => handleSubmit("Create a compact, condensed narrative with minimal text.")}
+                  >
+                    <span className="tiro-ai-preset-title">Compact</span>
+                    <span className="tiro-ai-preset-desc">Short, condensed text</span>
+                  </button>
+                  <button
+                    className="tiro-ai-preset"
+                    onClick={() => handleSubmit("Create a structured document using bullet points for each item.")}
+                  >
+                    <span className="tiro-ai-preset-title">Bullets</span>
+                    <span className="tiro-ai-preset-desc">Structured with bullet points</span>
+                  </button>
+                  <button
+                    className="tiro-ai-preset"
+                    onClick={() => handleSubmit("Create an elaborate, detailed narrative with full sentences.")}
+                  >
+                    <span className="tiro-ai-preset-title">Elaborate</span>
+                    <span className="tiro-ai-preset-desc">Detailed full sentences</span>
+                  </button>
+                  <button
+                    className="tiro-ai-preset"
+                    onClick={() => handleSubmit("Create a patient-friendly document using simple, laymen's language that avoids medical jargon.")}
+                  >
+                    <span className="tiro-ai-preset-title">Laymen</span>
+                    <span className="tiro-ai-preset-desc">Simple, patient-friendly</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>
