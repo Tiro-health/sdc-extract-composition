@@ -1,0 +1,6 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "test-comp-response",
+  "questionnaire": "http://templates.tiro.health/templates/71e237aaed8f4746a99237a6364742e8",
+  "status": "completed"
+}
