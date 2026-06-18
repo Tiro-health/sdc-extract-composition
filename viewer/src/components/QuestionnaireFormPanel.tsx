@@ -4,11 +4,13 @@ import { TiroFormFiller } from "./TiroFormFiller";
 interface QuestionnaireFormPanelProps {
   questionnaire: Questionnaire;
   onResponse: (qr: Record<string, unknown>) => void;
+  questionnaireResponse: Record<string, unknown> | null;
 }
 
 export function QuestionnaireFormPanel({
   questionnaire,
   onResponse,
+  questionnaireResponse,
 }: QuestionnaireFormPanelProps) {
   return (
     <div className="panel-container">
@@ -19,6 +21,7 @@ export function QuestionnaireFormPanel({
         <TiroFormFiller
           questionnaire={questionnaire}
           onResponse={onResponse}
+          initialResponse={questionnaireResponse}
         />
       </div>
     </div>
