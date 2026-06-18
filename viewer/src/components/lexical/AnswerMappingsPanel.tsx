@@ -79,14 +79,18 @@ export function AnswerMappingsPanel({ nodeKey, expression }: AnswerMappingsPanel
 
   // Update a single mapping
   const updateMapping = useCallback((code: string, text: string) => {
+    // Preserve the text exactly as typed (including spaces) — the input is
+    // controlled by the parsed expression, so trimming here would prevent the
+    // user from typing spaces. Only an empty/whitespace-only field removes
+    // the mapping.
+    const keep = text.length > 0;
     const newMappings: CodeMapping[] = [];
 
-    // Keep existing mappings, updating the one that changed
     let found = false;
     for (const m of currentMappings) {
       if (m.code === code) {
-        if (text.trim()) {
-          newMappings.push({ code, text: text.trim() });
+        if (keep) {
+          newMappings.push({ code, text });
         }
         found = true;
       } else {
@@ -94,9 +98,8 @@ export function AnswerMappingsPanel({ nodeKey, expression }: AnswerMappingsPanel
       }
     }
 
-    // Add new mapping if not found and text is non-empty
-    if (!found && text.trim()) {
-      newMappings.push({ code, text: text.trim() });
+    if (!found && keep) {
+      newMappings.push({ code, text });
     }
 
     const newParsed = setMapMappings(parsed, newMappings);
