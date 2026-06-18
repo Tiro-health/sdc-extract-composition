@@ -328,6 +328,7 @@ function App() {
                 <QuestionnaireFormPanel
                   questionnaire={questionnaire}
                   onResponse={setQuestionnaireResponse}
+                  questionnaireResponse={questionnaireResponse}
                 />
               </Panel>
               <PanelResizeHandle className="panel-resize-handle" />
