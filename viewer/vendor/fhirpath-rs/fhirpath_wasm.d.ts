@@ -118,9 +118,13 @@ export interface CompletionItem {
   link_id: string;
   item_type: string;
   /**
-   * `true` if any item on the path from the Questionnaire root down to and
-   * including the target item has `repeats: true`. UI hosts can use this to
-   * warn that the chain may collapse multiple instances into a single list.
+   * `true` if accepting this suggestion crosses a repeating boundary that
+   * the user's typed prefix has not already crossed — i.e. some item
+   * strictly between the context anchor and the target leaf has
+   * `repeats: true`. The leaf itself repeating does NOT flag the
+   * suggestion: that item is the *start* of the branch and is still a
+   * well-formed reference. Items already in the prefix, including the
+   * anchor itself, are excluded.
    */
   traverses_repeating: boolean;
 }

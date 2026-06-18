@@ -1,11 +1,5 @@
 /* @ts-self-types="./_rust.d.ts" */
 
-/**
- * A Questionnaire index for use in expression analysis.
- *
- * Build one from a FHIR Questionnaire JSON string, then pass it
- * to `analyze_expression` for semantic validation.
- */
 export class QuestionnaireIndex {
     __destroy_into_raw() {
         const ptr = this.__wbg_ptr;
@@ -18,7 +12,6 @@ export class QuestionnaireIndex {
         wasm.__wbg_questionnaireindex_free(ptr, 0);
     }
     /**
-     * Generate completion items for autocomplete given a context expression.
      * @param {string} context_expr
      * @returns {any}
      */
@@ -32,7 +25,6 @@ export class QuestionnaireIndex {
         return takeFromExternrefTable0(ret[0]);
     }
     /**
-     * Build a `QuestionnaireIndex` from a FHIR Questionnaire JSON string.
      * @param {string} questionnaire_json
      */
     constructor(questionnaire_json) {
@@ -42,7 +34,7 @@ export class QuestionnaireIndex {
         if (ret[2]) {
             throw takeFromExternrefTable0(ret[1]);
         }
-        this.__wbg_ptr = ret[0] >>> 0;
+        this.__wbg_ptr = ret[0];
         QuestionnaireIndexFinalization.register(this, this.__wbg_ptr, this);
         return this;
     }
@@ -50,26 +42,6 @@ export class QuestionnaireIndex {
 if (Symbol.dispose) QuestionnaireIndex.prototype[Symbol.dispose] = QuestionnaireIndex.prototype.free;
 
 /**
- * Analyze a FHIRPath expression in the context of a Questionnaire.
- *
- * Returns `{ annotations: Annotation[], diagnostics: Diagnostic[],
- * inferred_type: string, inferred_cardinality: string }`. The inferred
- * fields are snake_case enum values (`"boolean"`, `"coding"`,
- * `"singleton"`, `"collection"`, `"unknown"`, …) and are filled
- * unconditionally — UI hosts can use them for hover/badge metadata.
- * Span offsets are UTF-16 code units, suitable for
- * `String.prototype.slice` and CodeMirror/Monaco position math.
- *
- * - `expr` -- the FHIRPath expression string
- * - `index` -- a `QuestionnaireIndex` built from the Questionnaire
- * - `scope_link_id` -- optional linkId of the item scope (for reachability checks)
- * - `parent_context_expr` -- optional parent context expression (raw FHIRPath)
- * - `expected_result_type` -- optional snake_case type name (e.g. "boolean",
- *   "coding"). When set, the analyzer infers the expression's result type
- *   and emits `expression_type_mismatch` on a definite mismatch.
- * - `expected_cardinality` -- optional snake_case cardinality
- *   ("singleton" or "collection"). When set, emits
- *   `expression_cardinality_mismatch` on a definite mismatch.
  * @param {string} expr
  * @param {QuestionnaireIndex} index
  * @param {string | null} [scope_link_id]
@@ -98,12 +70,6 @@ export function analyze_expression(expr, index, scope_link_id, parent_context_ex
 }
 
 /**
- * Annotate a FHIRPath expression, extracting answer references,
- * item references, and coded values.
- *
- * Returns `Annotation[]` as a JavaScript value. Span offsets are
- * UTF-16 code units, suitable for `String.prototype.slice` and
- * CodeMirror/Monaco position math.
  * @param {string} expr
  * @returns {any}
  */
@@ -118,9 +84,6 @@ export function annotate_expression(expr) {
 }
 
 /**
- * Parse a FHIRPath expression string into an AST.
- *
- * Returns the AST as a JavaScript object.
  * @param {string} expr
  * @returns {any}
  */
@@ -135,11 +98,6 @@ export function parse(expr) {
 }
 
 /**
- * Resolve `%context` references in a FHIRPath expression at the AST level.
- *
- * Parses both expressions, replaces every `%context` reference in `expr`
- * with the parsed `base_expr` AST, and returns the serialized result.
- * Returns `expr` unchanged when no `%context` reference exists.
  * @param {string} expr
  * @param {string} base_expr
  * @returns {string}
@@ -169,7 +127,7 @@ export function resolve_context(expr, base_expr) {
 function __wbg_get_imports() {
     const import0 = {
         __proto__: null,
-        __wbg_Error_960c155d3d49e4c2: function(arg0, arg1) {
+        __wbg_Error_bce6d499ff0a4aff: function(arg0, arg1) {
             const ret = Error(getStringFromWasm0(arg0, arg1));
             return ret;
         },
@@ -180,22 +138,22 @@ function __wbg_get_imports() {
             getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
             getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
         },
-        __wbg___wbindgen_throw_6b64449b9b9ed33c: function(arg0, arg1) {
+        __wbg___wbindgen_throw_9c31b086c2b26051: function(arg0, arg1) {
             throw new Error(getStringFromWasm0(arg0, arg1));
         },
-        __wbg_new_682678e2f47e32bc: function() {
-            const ret = new Array();
-            return ret;
-        },
-        __wbg_new_aa8d0fa9762c29bd: function() {
+        __wbg_new_02d162bc6cf02f60: function() {
             const ret = new Object();
             return ret;
         },
-        __wbg_set_3bf1de9fab0cd644: function(arg0, arg1, arg2) {
-            arg0[arg1 >>> 0] = arg2;
+        __wbg_new_310879b66b6e95e1: function() {
+            const ret = new Array();
+            return ret;
         },
         __wbg_set_6be42768c690e380: function(arg0, arg1, arg2) {
             arg0[arg1] = arg2;
+        },
+        __wbg_set_78ea6a19f4818587: function(arg0, arg1, arg2) {
+            arg0[arg1 >>> 0] = arg2;
         },
         __wbindgen_cast_0000000000000001: function(arg0) {
             // Cast intrinsic for `F64 -> Externref`.
@@ -230,7 +188,7 @@ function __wbg_get_imports() {
 
 const QuestionnaireIndexFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
-    : new FinalizationRegistry(ptr => wasm.__wbg_questionnaireindex_free(ptr >>> 0, 1));
+    : new FinalizationRegistry(ptr => wasm.__wbg_questionnaireindex_free(ptr, 1));
 
 function _assertClass(instance, klass) {
     if (!(instance instanceof klass)) {
@@ -247,8 +205,7 @@ function getDataViewMemory0() {
 }
 
 function getStringFromWasm0(ptr, len) {
-    ptr = ptr >>> 0;
-    return decodeText(ptr, len);
+    return decodeText(ptr >>> 0, len);
 }
 
 let cachedUint8ArrayMemory0 = null;
@@ -335,8 +292,9 @@ if (!('encodeInto' in cachedTextEncoder)) {
 
 let WASM_VECTOR_LEN = 0;
 
-let wasmModule, wasm;
+let wasmModule, wasmInstance, wasm;
 function __wbg_finalize_init(instance, module) {
+    wasmInstance = instance;
     wasm = instance.exports;
     wasmModule = module;
     cachedDataViewMemory0 = null;

@@ -1,7 +1,7 @@
 {
   "name": "fhirpath-rs",
   "type": "module",
-  "version": "3.0.0",
+  "version": "0.2.6",
   "files": [
     "_rust_bg.wasm",
     "_rust.js",
