@@ -161,6 +161,46 @@
   color: #ef4444;
 }
 
+/* Duplicate button */
+.editor-duplicate-btn {
+  position: absolute;
+  top: 4px;
+  right: 32px;
+  opacity: 0;
+  padding: 4px;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  line-height: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editor-duplicate-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.editor-section:hover > .editor-duplicate-btn {
+  opacity: 1;
+}
+
+/* Hide parent duplicate when hovering nested section */
+.editor-section:has(.editor-section-children .editor-section:hover) > .editor-duplicate-btn {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.editor-duplicate-btn:hover {
+  color: #3b82f6;
+  background: #eff6ff;
+}
+
 /* Add subsection button */
 .editor-subsection-btn {
   position: absolute;
