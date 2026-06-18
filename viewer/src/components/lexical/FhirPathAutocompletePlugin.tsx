@@ -7,12 +7,7 @@ import {
   type MenuRenderFn,
   type MenuTextMatch,
 } from "@lexical/react/LexicalTypeaheadMenuPlugin";
-import {
-  $createNodeSelection,
-  $setSelection,
-  type LexicalEditor,
-  type TextNode,
-} from "lexical";
+import { type LexicalEditor, type TextNode } from "lexical";
 import { useWasmQuestionnaireIndex } from "./WasmQuestionnaireIndexContext";
 import { useQuestionnaireIndex } from "./QuestionnaireIndexContext";
 import { $createFhirPathPillNode } from "./FhirPathPillNode";
@@ -84,13 +79,12 @@ export function FhirPathAutocompletePlugin({
       editor.update(() => {
         if (!textNodeContainingQuery) return;
         // `splitNodeContainingQuery` isolated the `%<query>` chunk into this
-        // TextNode. Swap the whole chunk for a pill, then select the pill so
-        // PillEditingWorkspace opens the side editor for refinement.
+        // TextNode. Swap the chunk for a pill and place the caret right
+        // after it so the user can keep typing without first dismissing a
+        // node selection.
         const pill = $createFhirPathPillNode(option.completionItem.insert_text);
         textNodeContainingQuery.replace(pill);
-        const selection = $createNodeSelection();
-        selection.add(pill.getKey());
-        $setSelection(selection);
+        pill.selectNext();
       });
       closeMenu();
     },
