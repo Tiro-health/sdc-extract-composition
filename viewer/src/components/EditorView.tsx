@@ -16,6 +16,7 @@ interface EditorViewProps {
   ) => void;
   onAddSection: (parentPath: number[], insertIndex?: number) => void;
   onRemoveSection: (sectionPath: number[]) => void;
+  onDuplicateSection?: (sectionPath: number[]) => void;
   onAIQuickStart?: (preset?: string) => void;
 }
 
@@ -46,6 +47,7 @@ export function EditorView({
   onSectionChange,
   onAddSection,
   onRemoveSection,
+  onDuplicateSection,
   onAIQuickStart,
 }: EditorViewProps) {
   const sections = composition.section ?? [];
@@ -117,6 +119,7 @@ export function EditorView({
                   onSectionChange={onSectionChange}
                   onAddSection={onAddSection}
                   onRemoveSection={onRemoveSection}
+                  onDuplicateSection={onDuplicateSection}
                 />
                 <AddBetweenButton onClick={() => onAddSection([], i + 1)} />
               </div>

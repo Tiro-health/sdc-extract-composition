@@ -27,6 +27,7 @@ interface EditorSectionCardProps {
   ) => void;
   onAddSection: (parentPath: number[], insertIndex?: number) => void;
   onRemoveSection: (sectionPath: number[]) => void;
+  onDuplicateSection?: (sectionPath: number[]) => void;
 }
 
 export function EditorSectionCard({
@@ -37,6 +38,7 @@ export function EditorSectionCard({
   onSectionChange,
   onAddSection,
   onRemoveSection,
+  onDuplicateSection,
 }: EditorSectionCardProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const wasmIndex = useWasmQuestionnaireIndex();
@@ -59,6 +61,11 @@ export function EditorSectionCard({
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     onRemoveSection(sectionPath);
+  };
+
+  const handleDuplicate = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onDuplicateSection?.(sectionPath);
   };
 
   const handleAddSubsection = (e: React.MouseEvent) => {
@@ -101,6 +108,25 @@ export function EditorSectionCard({
             </span>
           )}
 
+          {onDuplicateSection && (
+            <button
+              className="editor-duplicate-btn"
+              onClick={handleDuplicate}
+              title="Duplicate section"
+            >
+              <svg
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="5" y="5" width="8" height="8" rx="1.5" />
+                <path d="M3 11V4a1 1 0 0 1 1-1h7" />
+              </svg>
+            </button>
+          )}
           <button
             className="editor-delete-btn"
             onClick={handleDelete}
@@ -149,6 +175,7 @@ export function EditorSectionCard({
                     onSectionChange={onSectionChange}
                     onAddSection={onAddSection}
                     onRemoveSection={onRemoveSection}
+                    onDuplicateSection={onDuplicateSection}
                   />
                   <AddBetweenButton
                     onClick={() => onAddSection(sectionPath, i + 1)}

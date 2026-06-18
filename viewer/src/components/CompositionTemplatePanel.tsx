@@ -17,6 +17,7 @@ interface CompositionTemplatePanelProps {
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
   onAddSection?: (parentPath: number[], insertIndex?: number) => void;
   onRemoveSection?: (sectionPath: number[]) => void;
+  onDuplicateSection?: (sectionPath: number[]) => void;
   onClearSections?: () => void;
   onImportComposition?: (composition: Composition) => void;
   onSectionChange?: (
@@ -49,6 +50,7 @@ export function CompositionTemplatePanel({
   onContextExpressionChange,
   onAddSection,
   onRemoveSection,
+  onDuplicateSection,
   onClearSections,
   onImportComposition,
   onSectionChange,
@@ -147,6 +149,7 @@ export function CompositionTemplatePanel({
               onSectionChange={onSectionChange}
               onAddSection={onAddSection}
               onRemoveSection={onRemoveSection}
+              onDuplicateSection={onDuplicateSection}
               onAIQuickStart={onAIQuickStart}
             />
           )

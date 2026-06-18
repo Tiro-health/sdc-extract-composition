@@ -223,6 +223,27 @@ function App() {
     []
   );
 
+  const handleDuplicateSection = useCallback(
+    (sectionPath: number[]) => {
+      if (sectionPath.length === 0) return;
+      setComposition((prev) => {
+        if (!prev) return prev;
+        const updated = structuredClone(prev);
+        const index = sectionPath[sectionPath.length - 1];
+        const siblings =
+          sectionPath.length === 1
+            ? updated.section
+            : navigateToSection(updated, sectionPath.slice(0, -1))?.section;
+        if (!siblings || !siblings[index]) return updated;
+        const copy = structuredClone(siblings[index]);
+        delete copy._animationState;
+        siblings.splice(index + 1, 0, copy);
+        return updated;
+      });
+    },
+    []
+  );
+
   const handleClearSections = useCallback(() => {
     setComposition((prev) => {
       if (!prev) return prev;
@@ -316,6 +337,7 @@ function App() {
                   questionnaireIndex={questionnaireIndex}
                   onAddSection={handleAddSection}
                   onRemoveSection={handleRemoveSection}
+                  onDuplicateSection={handleDuplicateSection}
                   onClearSections={handleClearSections}
                   onImportComposition={setComposition}
                   onSectionChange={handleSectionChange}
