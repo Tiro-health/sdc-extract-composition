@@ -56,6 +56,16 @@
   "subjectType": "Patient",
   "contained": [
     {
+      "resourceType": "Composition",
+      "id": "composition-template",
+      "status": "preliminary",
+      "type": {
+        "text": "Coloscopie verslag"
+      },
+      "title": "Colo",
+      "section": []
+    },
+    {
       "id": "preset-1",
       "resourceType": "QuestionnaireResponse",
       "status": "in-progress",
