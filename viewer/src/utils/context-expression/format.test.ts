@@ -2,6 +2,34 @@ import { describe, it, expect } from "vitest";
 import { formatContextExpression } from "./format";
 import { parseContextExpression } from "./parse";
 import type { ContextConfig } from "./types";
+import type { QuestionnaireIndex, QuestionnaireItemInfo } from "../questionnaire-index";
+
+function mockIndex(
+  items: Record<string, { path: string; type: string; repeats?: boolean }>
+): QuestionnaireIndex {
+  const itemsMap = new Map<string, QuestionnaireItemInfo>();
+  for (const [linkId, info] of Object.entries(items)) {
+    itemsMap.set(linkId, {
+      linkId,
+      text: linkId,
+      type: info.type,
+      repeats: info.repeats ?? true,
+      path: info.path,
+      answerOptions: new Map(),
+      answerCodings: new Map(),
+    });
+  }
+  return {
+    items: itemsMap,
+    linkIdTextMap: new Map(),
+    resolveItemText: (id) => itemsMap.get(id)?.text ?? null,
+    resolveCodeDisplay: () => null,
+    resolveAnswerCoding: () => null,
+    listAnswerCodings: () => [],
+    resolveItemType: (id) => itemsMap.get(id)?.type ?? null,
+    resolveItemRepeats: (id) => itemsMap.get(id)?.repeats ?? false,
+  };
+}
 
 describe("formatContextExpression", () => {
   describe("always mode", () => {
@@ -27,6 +55,55 @@ describe("formatContextExpression", () => {
       expect(
         formatContextExpression({ mode: "for-each", linkId: "medications" })
       ).toBe("%context.repeat(item).where(linkId='medications')");
+    });
+
+    it("with index: repeating group iterates over items (no .answer)", () => {
+      const index = mockIndex({
+        medication: {
+          path: "%resource.item.where(linkId='medications').item.where(linkId='medication')",
+          type: "group",
+        },
+      });
+      expect(
+        formatContextExpression(
+          { mode: "for-each", linkId: "medication", scope: "resource" },
+          index
+        )
+      ).toBe("%resource.item.where(linkId='medications').item.where(linkId='medication')");
+    });
+
+    it("with index: repeating non-group question iterates over answers (.answer appended)", () => {
+      const index = mockIndex({
+        bloedverdunners: {
+          path: "%resource.item.where(linkId='group').item.where(linkId='bloedverdunners')",
+          type: "choice",
+        },
+      });
+      expect(
+        formatContextExpression(
+          { mode: "for-each", linkId: "bloedverdunners", scope: "resource" },
+          index
+        )
+      ).toBe(
+        "%resource.item.where(linkId='group').item.where(linkId='bloedverdunners').answer"
+      );
+    });
+
+    it("with index: context-scoped non-group appends .answer", () => {
+      const index = mockIndex({
+        bloedverdunners: {
+          path: "%resource.item.where(linkId='group').item.where(linkId='bloedverdunners')",
+          type: "choice",
+        },
+      });
+      expect(
+        formatContextExpression(
+          { mode: "for-each", linkId: "bloedverdunners", scope: "context" },
+          index
+        )
+      ).toBe(
+        "%context.item.where(linkId='group').item.where(linkId='bloedverdunners').answer"
+      );
     });
   });
 
@@ -54,7 +131,7 @@ describe("formatContextExpression", () => {
           combineMode: "and",
           conditions: [{ linkId: "allergie", operator: "exists", scope: "context" }],
         })
-      ).toBe("%context.where(%context.repeat(item).where(linkId='allergie').answer.exists())");
+      ).toBe("%context.where(%context.item.where(linkId='allergie').answer.exists())");
     });
 
     it("formats not-exists condition", () => {
