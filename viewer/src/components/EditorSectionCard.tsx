@@ -95,6 +95,7 @@ export function EditorSectionCard({
                 <ContextBadge
                   expression={contextExpr}
                   questionnaireIndex={questionnaireIndex}
+                  parentContextExpression={parentContextExpression}
                 />
               }
             >

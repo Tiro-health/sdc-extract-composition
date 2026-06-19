@@ -343,3 +343,33 @@ function humanizeCode(code: string): string {
     .replace(/[-_]/g, " ")
     .replace(/^\w/, (c) => c.toUpperCase());
 }
+
+/**
+ * Combine a section's templateExtractContext with its parent's, returning the
+ * fully-resolved base path against which placeholders inside the section
+ * should resolve ``%context``.
+ *
+ * - If the section has no context, the parent's effective context applies.
+ * - If the section's context contains ``%context``, it's resolved against the
+ *   parent (e.g. ``%context.answer`` under parent ``%resource.foo`` becomes
+ *   ``%resource.foo.answer``).
+ * - Otherwise the section's context is already absolute and replaces the
+ *   parent's.
+ *
+ * Returns ``null`` when neither side has a context. Falls back to the raw
+ * section context if the WASM resolver isn't available or throws.
+ */
+export function combineContextExpression(
+  sectionContext: string | null | undefined,
+  parentContext: string | null | undefined,
+): string | null {
+  if (!sectionContext) return parentContext ?? null;
+  if (!parentContext) return sectionContext;
+  if (!sectionContext.includes("%context")) return sectionContext;
+  if (!isWasmReady()) return sectionContext;
+  try {
+    return resolve_context(sectionContext, parentContext);
+  } catch {
+    return sectionContext;
+  }
+}
