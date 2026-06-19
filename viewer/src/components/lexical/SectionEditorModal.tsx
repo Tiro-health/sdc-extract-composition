@@ -18,6 +18,7 @@ import {
   type CombineMode,
 } from "../../utils/context-expression";
 import { CONTEXT_COLORS } from "../../utils/section-helpers";
+import { combineContextExpression } from "../../utils/expression-pills";
 import { Modal } from "../Modal";
 import { FhirPathPillNode } from "./FhirPathPillNode";
 import { FhirPathAutocompletePlugin } from "./FhirPathAutocompletePlugin";
@@ -91,8 +92,13 @@ export function SectionEditorModal({
   // Build the actual expression from current config
   const contextExpression = formatContextExpression(contextConfig, questionnaireIndex);
 
-  // Effective context for completions: section's own context OR parent's if section has no context
-  const effectiveContextExpression = contextExpression || parentContextExpression || null;
+  // Effective context for completions and pill resolution: resolve the
+  // section's own context against the parent's effective scope so %context
+  // references chain through ancestors correctly.
+  const effectiveContextExpression = combineContextExpression(
+    contextExpression || null,
+    parentContextExpression
+  );
 
   const handleModeChange = useCallback((mode: ContextMode) => {
     switch (mode) {
