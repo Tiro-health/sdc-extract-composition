@@ -15,6 +15,7 @@ import { FhirPathAutocompletePlugin } from "./FhirPathAutocompletePlugin";
 import { HtmlImportPlugin } from "./HtmlImportPlugin";
 import { PillEditingWorkspace } from "./PillEditingWorkspace";
 import { QuestionnaireIndexProvider } from "./QuestionnaireIndexContext";
+import { SectionContextExpressionProvider } from "./SectionContextExpressionContext";
 
 const XHTML_NS = 'http://www.w3.org/1999/xhtml';
 
@@ -76,6 +77,7 @@ export function NarrativeEditorModal({
   return (
     <Modal title="Edit Section" onClose={onClose} open={open}>
       <QuestionnaireIndexProvider value={questionnaireIndex}>
+        <SectionContextExpressionProvider value={contextExpression ?? null}>
         <div className="narrative-editor p-4">
           <div className="mb-3">
             <label htmlFor="section-title" className="block text-xs font-medium text-gray-600 mb-1">
@@ -106,6 +108,7 @@ export function NarrativeEditorModal({
             <EditorRefPlugin editorRef={editorRef} />
           </LexicalComposer>
         </div>
+        </SectionContextExpressionProvider>
       </QuestionnaireIndexProvider>
       <div className="flex justify-end gap-2 px-4 py-3 border-t border-gray-200 shrink-0">
         <button

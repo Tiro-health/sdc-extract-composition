@@ -2,6 +2,7 @@ import { useId, useState, type FormEvent } from "react";
 import type { AnswerOption } from "../../utils/questionnaire-index";
 import { useQuestionnaireIndex } from "./QuestionnaireIndexContext";
 import { useQuestionnaire } from "./QuestionnaireContext";
+import { useSectionContextExpression } from "./SectionContextExpressionContext";
 import {
   clearDesignation,
   findDesignationValue,
@@ -25,11 +26,12 @@ export function SynonymsPanel({ expression }: SynonymsPanelProps) {
   useWasmReady();
   const index = useQuestionnaireIndex();
   const binding = useQuestionnaire();
+  const sectionContext = useSectionContextExpression();
 
   // segmentExpression() depends on the wasm analyzer being ready.
   // useWasmReady() above subscribes us to its readiness flip, so this
   // recomputes on each render and stays correct.
-  const codings = collectCodings(expression, index);
+  const codings = collectCodings(expression, index, sectionContext);
 
   // Nothing coded reachable from this expression — hide the panel entirely
   // rather than show an empty list that can't do anything.
@@ -242,9 +244,10 @@ interface CodeWithLinkId {
 function collectCodings(
   expression: string,
   index: ReturnType<typeof useQuestionnaireIndex>,
+  contextBase: string | null,
 ): CodeWithLinkId[] {
   if (!index) return [];
-  const segments = segmentExpression(expression);
+  const segments = segmentExpression(expression, contextBase);
   const linkIds = new Set<string>();
   for (const seg of segments) {
     if (seg.kind === "answer-pill") {

@@ -22,6 +22,7 @@ import {
 } from "../../utils/filter-catalog";
 import { inferAnswerShape } from "../../utils/expression-type";
 import { useQuestionnaireIndex } from "./QuestionnaireIndexContext";
+import { useSectionContextExpression } from "./SectionContextExpressionContext";
 import { useDebugMode } from "../../contexts/DebugContext";
 import {
   DndContext,
@@ -125,6 +126,7 @@ export function FormulaBar() {
   const [inputValue, setInputValue] = useState("");
   const [isDraggingAny, setIsDraggingAny] = useState(false);
   const index = useQuestionnaireIndex();
+  const sectionContext = useSectionContextExpression();
 
   useEffect(() => {
     return editor.registerUpdateListener(({ editorState }) => {
@@ -188,8 +190,8 @@ export function FormulaBar() {
 
   // Infer shape for filter suggestions
   const shape = useMemo(
-    () => inferAnswerShape(inputValue, index),
-    [inputValue, index]
+    () => inferAnswerShape(inputValue, index, sectionContext),
+    [inputValue, index, sectionContext]
   );
 
   const valueShape = shape?.valueShape ?? null;

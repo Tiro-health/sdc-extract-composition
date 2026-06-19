@@ -23,6 +23,7 @@ import { FhirPathPillNode } from "./FhirPathPillNode";
 import { FhirPathAutocompletePlugin } from "./FhirPathAutocompletePlugin";
 import { HtmlImportPlugin } from "./HtmlImportPlugin";
 import { QuestionnaireIndexProvider } from "./QuestionnaireIndexContext";
+import { SectionContextExpressionProvider } from "./SectionContextExpressionContext";
 import { PillEditingWorkspace } from "./PillEditingWorkspace";
 import { FormulaBar } from "./FormulaBar";
 import { ConditionBuilder } from "../ConditionBuilder";
@@ -150,6 +151,7 @@ export function SectionEditorModal({
     <Modal title="Edit Section" onClose={onClose} open={open}>
       <div className="section-editor-modal">
       <QuestionnaireIndexProvider value={questionnaireIndex}>
+        <SectionContextExpressionProvider value={effectiveContextExpression}>
         <div className="section-editor p-4">
           <div className="mb-3">
             <label className="block text-xs font-medium text-gray-600 mb-2">
@@ -259,6 +261,7 @@ export function SectionEditorModal({
             <PillEditingWorkspace />
           </LexicalComposer>
         </div>
+        </SectionContextExpressionProvider>
       </QuestionnaireIndexProvider>
       <div className="flex justify-end gap-2 px-4 py-3 border-t border-gray-200 shrink-0">
         <button

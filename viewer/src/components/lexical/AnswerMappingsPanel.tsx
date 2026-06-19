@@ -3,6 +3,7 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { $getNodeByKey, type NodeKey } from "lexical";
 import { $isFhirPathPillNode } from "./FhirPathPillNode";
 import { useQuestionnaireIndex } from "./QuestionnaireIndexContext";
+import { useSectionContextExpression } from "./SectionContextExpressionContext";
 import {
   parseExpression,
   formatExpression,
@@ -28,11 +29,12 @@ interface OptionWithMapping {
 export function AnswerMappingsPanel({ nodeKey, expression }: AnswerMappingsPanelProps) {
   const [editor] = useLexicalComposerContext();
   const index = useQuestionnaireIndex();
+  const sectionContext = useSectionContextExpression();
 
   // Get answerOptions from the questionnaire for this expression's linkId
   const answerOptions = useMemo((): AnswerOption[] => {
     if (!index) return [];
-    const segments = segmentExpression(expression);
+    const segments = segmentExpression(expression, sectionContext);
     for (const seg of segments) {
       if (seg.kind === "answer-pill" && seg.linkIds.length > 0) {
         const leafLinkId = seg.linkIds[seg.linkIds.length - 1];
@@ -40,7 +42,7 @@ export function AnswerMappingsPanel({ nodeKey, expression }: AnswerMappingsPanel
       }
     }
     return [];
-  }, [expression, index]);
+  }, [expression, index, sectionContext]);
 
   // Parse current mappings from expression
   const parsed = useMemo(() => parseExpression(expression), [expression]);

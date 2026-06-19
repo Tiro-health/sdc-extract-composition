@@ -15,6 +15,7 @@ import {
 import { segmentExpressionToHtml } from "../../utils/expression-pills";
 import { useWasmReady } from "../../utils/wasm-init";
 import { useQuestionnaireIndex } from "./QuestionnaireIndexContext";
+import { useSectionContextExpression } from "./SectionContextExpressionContext";
 
 interface FhirPathPillComponentProps {
   expression: string;
@@ -29,6 +30,7 @@ export function FhirPathPillComponent({
   const pillRef = useRef<HTMLElement>(null);
   const [isSelected] = useLexicalNodeSelection(nodeKey);
   const questionnaireIndex = useQuestionnaireIndex();
+  const sectionContext = useSectionContextExpression();
   // Subscribe so the pill label recomputes when wasm finishes loading.
   useWasmReady();
 
@@ -86,7 +88,7 @@ export function FhirPathPillComponent({
     );
   }, [editor, isSelected, nodeKey]);
 
-  const pillHtml = segmentExpressionToHtml(expression, questionnaireIndex);
+  const pillHtml = segmentExpressionToHtml(expression, questionnaireIndex, sectionContext);
 
   const handleClick = (event: React.MouseEvent) => {
     event.preventDefault();
