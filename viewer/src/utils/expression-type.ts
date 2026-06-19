@@ -43,9 +43,10 @@ const VALUE_SHAPE_BY_ITEM_TYPE: Record<string, string> = {
 export function inferAnswerShape(
   expression: string,
   index: QuestionnaireIndex | undefined,
+  contextBase?: string | null,
 ): AnswerShape | null {
   if (!index) return null;
-  const segments = segmentExpression(expression);
+  const segments = segmentExpression(expression, contextBase);
   const leafIds: string[] = [];
   const seen = new Set<string>();
   for (const seg of segments) {

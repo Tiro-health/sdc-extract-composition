@@ -1,6 +1,4 @@
-import { analyze_expression, type QuestionnaireIndex } from "fhirpath-rs";
 import type { CompositionSection } from "../types";
-import { parseContextExpression } from "./context-expression";
 
 export const TEMPLATE_EXTRACT_CONTEXT_URL =
   "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-templateExtractContext";
@@ -18,84 +16,32 @@ export function isRepeatingContext(expr: string | null): boolean {
   return true;
 }
 
-export type ContextType = "always" | "conditional" | "repeating" | "custom";
+export type ContextType = "always" | "conditional" | "repeating";
+
+const WHERE_PREFIX = /^%(?:context|resource)\.where\(/;
 
 /**
- * Infer context type from a FHIRPath expression using the parser.
+ * Classify a templateExtractContext expression for icon display.
+ *
+ * - `always`: no expression, blank, or just `%context` (no narrowing).
+ * - `conditional`: starts with `%context.where(...)` or `%resource.where(...)` —
+ *   filters the current context without changing its shape.
+ * - `repeating`: anything else — every other expression narrows or redirects
+ *   the context, so the section iterates over the resulting collection.
  */
 export function inferContextType(expr: string | null): ContextType {
-  if (!expr || expr.trim() === "") {
-    return "always";
-  }
-
-  const config = parseContextExpression(expr);
-
-  switch (config.mode) {
-    case "always":
-      return "always";
-    case "if":
-      return "conditional";
-    case "for-each":
-      return "repeating";
-    case "custom":
-      return "custom";
-  }
-}
-
-/**
- * Analyze context type using the parser first, then WASM for custom expressions.
- * - Recognized patterns (always, if, for-each) → use parser result
- * - Custom expressions → use WASM cardinality analysis
- */
-export function analyzeContextType(
-  expr: string | null,
-  wasmIndex: QuestionnaireIndex | null
-): ContextType {
-  if (!expr || expr.trim() === "") {
-    return "always";
-  }
-
-  // First try the parser - it knows our canonical patterns
-  const config = parseContextExpression(expr);
-
-  // If parser recognized a specific mode, use it
-  if (config.mode !== "custom") {
-    switch (config.mode) {
-      case "always":
-        return "always";
-      case "if":
-        return "conditional";
-      case "for-each":
-        return "repeating";
-    }
-  }
-
-  // For custom expressions, use WASM to analyze cardinality
-  if (!wasmIndex) {
-    return "custom";
-  }
-
-  try {
-    const result = analyze_expression(expr, wasmIndex, undefined, undefined, undefined, "singleton");
-
-    const hasCardinalityMismatch = result.diagnostics?.some(
-      (d: { code: string }) => d.code === "expression_cardinality_mismatch"
-    );
-
-    // If expecting singleton causes mismatch, it's a collection → repeating
-    // Otherwise it's singleton → conditional
-    return hasCardinalityMismatch ? "repeating" : "conditional";
-  } catch {
-    return "custom";
-  }
+  if (!expr) return "always";
+  const trimmed = expr.trim();
+  if (!trimmed || trimmed === "%context") return "always";
+  if (WHERE_PREFIX.test(trimmed)) return "conditional";
+  return "repeating";
 }
 
 export const CONTEXT_COLORS: Record<string, string> = {
   always: "#6b9fd4",
   conditional: "#9b8cc9",
   repeating: "#5fb090",
-  custom: "#d4a85a",
-  // Aliases for new mode names
+  // Aliases for editor mode names
   "if": "#9b8cc9",
   "for-each": "#5fb090",
 };
@@ -104,12 +50,10 @@ export const CONTEXT_ICONS: Record<ContextType, string> = {
   always: "—",
   conditional: "⎇",
   repeating: "↻",
-  custom: "{}",
 };
 
 export const CONTEXT_LABELS: Record<ContextType, string> = {
   always: "Always",
   conditional: "Conditional",
   repeating: "For each",
-  custom: "Custom",
 };

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { CompositionSection } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
-import { segmentExpressionToHtml } from "../utils/expression-pills";
+import { combineContextExpression, segmentExpressionToHtml } from "../utils/expression-pills";
 import { stripDivWrapper } from "../utils/parse-narrative";
 import { useWasmReady } from "../utils/wasm-init";
 import { ContextBadge } from "./ContextBadge";
@@ -16,6 +16,8 @@ interface SectionViewProps {
   questionnaireIndex?: QuestionnaireIndex;
   showContext?: boolean;
   sectionPath?: number[];
+  /** Effective templateExtractContext inherited from ancestor sections. */
+  parentContextExpression?: string | null;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onSectionTitleChange?: (sectionPath: number[], newTitle: string) => void;
   onContextExpressionChange?: (sectionPath: number[], newExpression: string) => void;
@@ -66,7 +68,8 @@ function isCondBlock(section: CompositionSection): boolean {
  */
 function buildCondIndicatorHtml(
   section: CompositionSection,
-  questionnaireIndex?: QuestionnaireIndex
+  questionnaireIndex?: QuestionnaireIndex,
+  parentContextExpression?: string | null,
 ): string {
   const ctx = getContextExpression(section);
   if (!ctx) return "";
@@ -74,7 +77,7 @@ function buildCondIndicatorHtml(
   const icon = repeating ? "↻" : "⎇";
   const label = repeating ? "per item" : "als";
   const summaryClass = repeating ? "cond-repeating" : "cond-conditional";
-  const exprHtml = segmentExpressionToHtml(ctx, questionnaireIndex);
+  const exprHtml = segmentExpressionToHtml(ctx, questionnaireIndex, parentContextExpression);
   return (
     `<div class="cond-badge-margin">` +
     `<span class="cond-summary ${summaryClass}" title="${ctx.replace(/"/g, "&quot;")}">` +
@@ -94,13 +97,14 @@ function buildCondIndicatorHtml(
 function buildSectionHtml(
   section: CompositionSection,
   questionnaireIndex?: QuestionnaireIndex,
-  showContext = true
+  showContext = true,
+  contextBase: string | null = null,
 ): string {
   const div = section.text?.div;
   if (!div) return "";
 
   let html = stripDivWrapper(div);
-  html = injectPills(html, questionnaireIndex);
+  html = injectPills(html, questionnaireIndex, contextBase);
 
   if (hasSectionsPlaceholder(section) && section.section?.length) {
     const childrenHtml = section.section
@@ -108,10 +112,15 @@ function buildSectionHtml(
         const childDiv = child.text?.div;
         if (!childDiv) return "";
         const isCond = isCondBlock(child);
-        const indicator = showContext ? buildCondIndicatorHtml(child, questionnaireIndex) : "";
+        const indicator = showContext ? buildCondIndicatorHtml(child, questionnaireIndex, contextBase) : "";
+        const childBase = combineContextExpression(
+          getContextExpression(child),
+          contextBase
+        );
         const childInner = injectPills(
           stripDivWrapper(childDiv),
-          questionnaireIndex
+          questionnaireIndex,
+          childBase,
         );
         if (isCond) {
           return `<div class="cond-block">${indicator}${childInner}</div>`;
@@ -138,6 +147,7 @@ function SectionContentWithChildren({
   showContext,
   sectionPath,
   editable,
+  effectiveContextBase,
   onNarrativeClick,
   onSectionHtmlChange,
   onSectionTitleChange,
@@ -151,6 +161,7 @@ function SectionContentWithChildren({
   showContext: boolean;
   sectionPath: number[];
   editable: boolean;
+  effectiveContextBase: string | null;
   onNarrativeClick: () => void;
   onSectionHtmlChange?: (sectionPath: number[], newDivHtml: string) => void;
   onSectionTitleChange?: (sectionPath: number[], newTitle: string) => void;
@@ -169,7 +180,7 @@ function SectionContentWithChildren({
       section={child}
       depth={depth + 1}
       questionnaireIndex={questionnaireIndex}
-
+      parentContextExpression={effectiveContextBase}
       showContext={showContext}
       sectionPath={[...sectionPath, i]}
       onSectionHtmlChange={onSectionHtmlChange}
@@ -198,6 +209,7 @@ function SectionContentWithChildren({
           <NarrativeHtml
             divHtml={divHtml}
             questionnaireIndex={questionnaireIndex}
+            contextBase={effectiveContextBase}
             onClick={editable ? onNarrativeClick : undefined}
           />
         )}
@@ -224,6 +236,7 @@ function SectionContentWithChildren({
         <NarrativeHtml
           divHtml={beforeDiv}
           questionnaireIndex={questionnaireIndex}
+          contextBase={effectiveContextBase}
           onClick={editable ? onNarrativeClick : undefined}
         />
       )}
@@ -233,6 +246,7 @@ function SectionContentWithChildren({
         <NarrativeHtml
           divHtml={afterDiv}
           questionnaireIndex={questionnaireIndex}
+          contextBase={effectiveContextBase}
           onClick={editable ? onNarrativeClick : undefined}
         />
       )}
@@ -246,6 +260,7 @@ export function SectionView({
   questionnaireIndex,
   showContext = true,
   sectionPath = [],
+  parentContextExpression = null,
   onSectionHtmlChange,
   onSectionTitleChange,
   onContextExpressionChange,
@@ -258,6 +273,7 @@ export function SectionView({
   const contextExpr = getContextExpression(section);
   const repeating = isRepeatingContext(contextExpr);
   const inlinesChildren = mustInlineChildren(section);
+  const effectiveContextBase = combineContextExpression(contextExpr, parentContextExpression);
 
   const [narrativeModalOpen, setNarrativeModalOpen] = useState(false);
   const [contextModalOpen, setContextModalOpen] = useState(false);
@@ -269,7 +285,7 @@ export function SectionView({
       {showContext && contextExpr && (
         <div className="cond-badge-margin">
           <ContextTooltip
-            content={<ContextBadge expression={contextExpr} questionnaireIndex={questionnaireIndex} />}
+            content={<ContextBadge expression={contextExpr} questionnaireIndex={questionnaireIndex} parentContextExpression={parentContextExpression} />}
           >
             <span
               className={`cond-summary ${repeating ? 'cond-repeating' : 'cond-conditional'}${editable ? ' cursor-pointer' : ''}`}
@@ -330,7 +346,7 @@ export function SectionView({
           className={`narrative-content${editable ? " narrative-content-editable" : ""}`}
           onClick={editable ? () => setNarrativeModalOpen(true) : undefined}
           dangerouslySetInnerHTML={{
-            __html: buildSectionHtml(section, questionnaireIndex, showContext),
+            __html: buildSectionHtml(section, questionnaireIndex, showContext, effectiveContextBase),
           }}
         />
       ) : (
@@ -338,7 +354,7 @@ export function SectionView({
           section={section}
           depth={depth}
           questionnaireIndex={questionnaireIndex}
-
+          effectiveContextBase={effectiveContextBase}
           showContext={showContext}
           sectionPath={sectionPath}
           editable={editable}
@@ -359,8 +375,7 @@ export function SectionView({
           title={section.title}
           divHtml={section.text?.div ?? ""}
           questionnaireIndex={questionnaireIndex}
-
-          contextExpression={contextExpr}
+          contextExpression={effectiveContextBase}
           onSave={(html, title) => {
             onSectionHtmlChange?.(sectionPath, html);
             onSectionTitleChange?.(sectionPath, title);

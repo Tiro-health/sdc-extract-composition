@@ -3,11 +3,11 @@ import type { CompositionSection } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import {
   getContextExpression,
-  analyzeContextType,
+  inferContextType,
   CONTEXT_ICONS,
 } from "../utils/section-helpers";
+import { combineContextExpression } from "../utils/expression-pills";
 import { stripDivWrapper } from "../utils/parse-narrative";
-import { useWasmQuestionnaireIndex } from "./lexical/WasmQuestionnaireIndexContext";
 import { NarrativeHtml } from "./NarrativeHtml";
 import { AddBetweenButton } from "./AddBetweenButton";
 import { ContextBadge } from "./ContextBadge";
@@ -41,11 +41,11 @@ export function EditorSectionCard({
   onDuplicateSection,
 }: EditorSectionCardProps) {
   const [modalOpen, setModalOpen] = useState(false);
-  const wasmIndex = useWasmQuestionnaireIndex();
 
   const contextExpr = getContextExpression(section);
-  const contextType = analyzeContextType(contextExpr, wasmIndex);
+  const contextType = inferContextType(contextExpr);
   const contextIcon = CONTEXT_ICONS[contextType];
+  const effectiveContextBase = combineContextExpression(contextExpr, parentContextExpression);
 
   const hasTitle = !!section.title?.trim();
   // Check if div has actual content (not just empty XHTML wrapper)
@@ -97,6 +97,7 @@ export function EditorSectionCard({
                 <ContextBadge
                   expression={contextExpr}
                   questionnaireIndex={questionnaireIndex}
+                  parentContextExpression={parentContextExpression}
                 />
               }
             >
@@ -144,6 +145,7 @@ export function EditorSectionCard({
                 <NarrativeHtml
                   divHtml={section.text?.div ?? ""}
                   questionnaireIndex={questionnaireIndex}
+                  contextBase={effectiveContextBase}
                 />
               </div>
             ) : (
@@ -171,7 +173,7 @@ export function EditorSectionCard({
                     section={child}
                     sectionPath={[...sectionPath, i]}
                     questionnaireIndex={questionnaireIndex}
-                    parentContextExpression={contextExpr ?? parentContextExpression}
+                    parentContextExpression={effectiveContextBase}
                     onSectionChange={onSectionChange}
                     onAddSection={onAddSection}
                     onRemoveSection={onRemoveSection}

@@ -1,4 +1,4 @@
-import { annotate_expression, type Annotation } from "fhirpath-rs";
+import { annotate_expression, resolve_context, type Annotation } from "fhirpath-rs";
 import { isWasmReady } from "./wasm-init";
 import type { QuestionnaireIndex } from "./questionnaire-index";
 
@@ -153,11 +153,22 @@ function buildSegments(
  * Parse a FHIRPath expression and segment it into text and pill ranges via
  * the wasm analyzer.
  *
+ * When ``contextBase`` is provided and the expression references ``%context``,
+ * the analyzer is given the resolved expression so it can recognize references
+ * relative to the section's templateExtractContext (e.g. ``%context.value``
+ * inside a for-each over ``...item.where(linkId='X').answer`` is annotated as
+ * an answer pill for X). The returned spans are against the resolved
+ * expression, so callers that need character-accurate offsets into the
+ * original string should leave ``contextBase`` undefined.
+ *
  * Returns a single text segment if the wasm module isn't ready yet (callers
  * subscribed to `useWasmReady` will re-render once it is) or if the analyzer
  * throws on the input.
  */
-export function segmentExpression(expr: string): ExpressionSegment[] {
+export function segmentExpression(
+  expr: string,
+  contextBase?: string | null,
+): ExpressionSegment[] {
   if (!isWasmReady()) {
     return [{ kind: "text", from: 0, to: expr.length, text: expr }];
   }
@@ -166,9 +177,23 @@ export function segmentExpression(expr: string): ExpressionSegment[] {
   // before calling it and re-attach the tail as plain text.
   const { head, tail } = splitFilterPipeline(expr);
 
+  // Substitute %context with the section's base so the analyzer can attribute
+  // references that depend on the parent scope. Falls through with the
+  // original head if resolution fails — the analyzer will then yield no
+  // annotations and the expression renders as plain text, matching the
+  // pre-resolution behaviour.
+  let analyzed = head;
+  if (contextBase && head.includes("%context")) {
+    try {
+      analyzed = resolve_context(head, contextBase);
+    } catch {
+      analyzed = head;
+    }
+  }
+
   let annotations: Annotation[];
   try {
-    annotations = annotate_expression(head);
+    annotations = annotate_expression(analyzed);
   } catch {
     return [{ kind: "text", from: 0, to: expr.length, text: expr }];
   }
@@ -191,14 +216,14 @@ export function segmentExpression(expr: string): ExpressionSegment[] {
     lastEnd = pill.to;
   }
 
-  const segments = buildSegments(head, nonOverlapping);
+  const segments = buildSegments(analyzed, nonOverlapping);
   if (tail) {
     // Strip map filter details for display (just show "|| map" not the mappings)
     const displayTail = simplifyFiltersForDisplay(tail);
     segments.push({
       kind: "text",
-      from: head.length,
-      to: expr.length,
+      from: analyzed.length,
+      to: analyzed.length + tail.length,
       text: displayTail,
     });
   }
@@ -276,11 +301,12 @@ function simplifyFiltersForDisplay(tail: string): string {
  */
 export function segmentExpressionToHtml(
   expr: string,
-  index?: QuestionnaireIndex
+  index?: QuestionnaireIndex,
+  contextBase?: string | null,
 ): string {
   if (!index) return escapeHtml(expr);
 
-  const segments = segmentExpression(expr);
+  const segments = segmentExpression(expr, contextBase);
   const hasPills = segments.some((s) => s.kind !== "text");
   if (!hasPills) return escapeHtml(expr);
 
@@ -316,4 +342,34 @@ function humanizeCode(code: string): string {
   return code
     .replace(/[-_]/g, " ")
     .replace(/^\w/, (c) => c.toUpperCase());
+}
+
+/**
+ * Combine a section's templateExtractContext with its parent's, returning the
+ * fully-resolved base path against which placeholders inside the section
+ * should resolve ``%context``.
+ *
+ * - If the section has no context, the parent's effective context applies.
+ * - If the section's context contains ``%context``, it's resolved against the
+ *   parent (e.g. ``%context.answer`` under parent ``%resource.foo`` becomes
+ *   ``%resource.foo.answer``).
+ * - Otherwise the section's context is already absolute and replaces the
+ *   parent's.
+ *
+ * Returns ``null`` when neither side has a context. Falls back to the raw
+ * section context if the WASM resolver isn't available or throws.
+ */
+export function combineContextExpression(
+  sectionContext: string | null | undefined,
+  parentContext: string | null | undefined,
+): string | null {
+  if (!sectionContext) return parentContext ?? null;
+  if (!parentContext) return sectionContext;
+  if (!sectionContext.includes("%context")) return sectionContext;
+  if (!isWasmReady()) return sectionContext;
+  try {
+    return resolve_context(sectionContext, parentContext);
+  } catch {
+    return sectionContext;
+  }
 }

@@ -51,11 +51,15 @@ export function formatContextExpression(
     case "for-each": {
       const itemInfo = questionnaireIndex?.items.get(config.linkId);
       if (itemInfo) {
-        // Use the actual path from questionnaire index
+        // For non-group items with repeats, the item itself appears once
+        // in the QuestionnaireResponse with multiple answers — iteration
+        // is over .answer. Repeating groups iterate over the item instances.
+        const suffix = itemInfo.type === "group" ? "" : ".answer";
+        const path = itemInfo.path + suffix;
         if (config.scope === "context") {
-          return itemInfo.path.replace("%resource", "%context");
+          return path.replace("%resource", "%context");
         }
-        return itemInfo.path;
+        return path;
       }
       // Fallback to repeat(item) pattern if index not available
       const prefix = config.scope === "resource" ? "%resource" : "%context";

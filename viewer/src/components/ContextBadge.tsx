@@ -9,6 +9,8 @@ import { useWasmReady } from "../utils/wasm-init";
 interface ContextBadgeProps {
   expression: string;
   questionnaireIndex?: QuestionnaireIndex;
+  /** Parent's effective context, used to resolve %context inside the expression. */
+  parentContextExpression?: string | null;
 }
 
 function SegmentView({
@@ -45,11 +47,11 @@ function SegmentView({
   return <span className="expr-text" />;
 }
 
-export function ContextBadge({ expression, questionnaireIndex }: ContextBadgeProps) {
+export function ContextBadge({ expression, questionnaireIndex, parentContextExpression }: ContextBadgeProps) {
   const wasmReady = useWasmReady();
   const segments = useMemo(
-    () => (questionnaireIndex ? segmentExpression(expression) : null),
-    [expression, questionnaireIndex, wasmReady]
+    () => (questionnaireIndex ? segmentExpression(expression, parentContextExpression) : null),
+    [expression, questionnaireIndex, parentContextExpression, wasmReady]
   );
 
   const hasPills = segments?.some((s) => s.kind !== "text");

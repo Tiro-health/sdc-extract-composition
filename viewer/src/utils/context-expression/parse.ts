@@ -40,12 +40,13 @@ const NOT_EQUALS_REPEAT_PATTERN =
 const NOT_EQUALS_ITEM_PATTERN =
   /^\(%(context|resource)(?:\.item\.where\(linkId='[^']+'\))*\.item\.where\(linkId='([^']+)'\)\.answer\.value\s*~\s*%factory\.Coding\('([^']+)',\s*'([^']+)'\)\)\.not\(\)$/;
 
-// Pattern: %context.repeat(item).where(linkId='X') or %resource.repeat(item).where(linkId='X')
-const FOR_EACH_REPEAT_PATTERN = /^%(context|resource)\.repeat\(item\)\.where\(linkId='([^']+)'\)$/;
+// Pattern: %context.repeat(item).where(linkId='X')[.answer] or %resource.repeat(item).where(linkId='X')[.answer]
+const FOR_EACH_REPEAT_PATTERN = /^%(context|resource)\.repeat\(item\)\.where\(linkId='([^']+)'\)(?:\.answer)?$/;
 
-// Pattern: %(context|resource).item.where(linkId='...')...item.where(linkId='X') - new format
+// Pattern: %(context|resource).item.where(linkId='...')...item.where(linkId='X')[.answer] - new format
 // Matches paths like %resource.item.where(linkId='medications').item.where(linkId='medication')
-const FOR_EACH_ITEM_PATTERN = /^%(context|resource)(?:\.item\.where\(linkId='[^']+'\))+$/;
+// or %resource.item.where(linkId='bloedverdunners').answer (for multi-answer repeating questions)
+const FOR_EACH_ITEM_PATTERN = /^%(context|resource)(?:\.item\.where\(linkId='[^']+'\))+(?:\.answer)?$/;
 
 // Pattern: %context.where(...)
 const CONTEXT_WHERE_PATTERN = /^%context\.where\((.+)\)$/s;

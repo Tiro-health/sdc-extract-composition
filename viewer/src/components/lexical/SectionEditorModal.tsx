@@ -18,11 +18,13 @@ import {
   type CombineMode,
 } from "../../utils/context-expression";
 import { CONTEXT_COLORS } from "../../utils/section-helpers";
+import { combineContextExpression } from "../../utils/expression-pills";
 import { Modal } from "../Modal";
 import { FhirPathPillNode } from "./FhirPathPillNode";
 import { FhirPathAutocompletePlugin } from "./FhirPathAutocompletePlugin";
 import { HtmlImportPlugin } from "./HtmlImportPlugin";
 import { QuestionnaireIndexProvider } from "./QuestionnaireIndexContext";
+import { SectionContextExpressionProvider } from "./SectionContextExpressionContext";
 import { PillEditingWorkspace } from "./PillEditingWorkspace";
 import { FormulaBar } from "./FormulaBar";
 import { ConditionBuilder } from "../ConditionBuilder";
@@ -90,8 +92,13 @@ export function SectionEditorModal({
   // Build the actual expression from current config
   const contextExpression = formatContextExpression(contextConfig, questionnaireIndex);
 
-  // Effective context for completions: section's own context OR parent's if section has no context
-  const effectiveContextExpression = contextExpression || parentContextExpression || null;
+  // Effective context for completions and pill resolution: resolve the
+  // section's own context against the parent's effective scope so %context
+  // references chain through ancestors correctly.
+  const effectiveContextExpression = combineContextExpression(
+    contextExpression || null,
+    parentContextExpression
+  );
 
   const handleModeChange = useCallback((mode: ContextMode) => {
     switch (mode) {
@@ -150,6 +157,7 @@ export function SectionEditorModal({
     <Modal title="Edit Section" onClose={onClose} open={open}>
       <div className="section-editor-modal">
       <QuestionnaireIndexProvider value={questionnaireIndex}>
+        <SectionContextExpressionProvider value={effectiveContextExpression}>
         <div className="section-editor p-4">
           <div className="mb-3">
             <label className="block text-xs font-medium text-gray-600 mb-2">
@@ -259,6 +267,7 @@ export function SectionEditorModal({
             <PillEditingWorkspace />
           </LexicalComposer>
         </div>
+        </SectionContextExpressionProvider>
       </QuestionnaireIndexProvider>
       <div className="flex justify-end gap-2 px-4 py-3 border-t border-gray-200 shrink-0">
         <button

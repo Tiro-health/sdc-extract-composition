@@ -30,6 +30,42 @@ describe("parseContextExpression", () => {
         scope: "resource",
       });
     });
+
+    it("parses item-path for-each (repeating group)", () => {
+      const expr = "%resource.item.where(linkId='medications').item.where(linkId='medication')";
+      expect(parseContextExpression(expr)).toEqual({
+        mode: "for-each",
+        linkId: "medication",
+        scope: "resource",
+      });
+    });
+
+    it("parses item-path for-each with trailing .answer (multi-answer question)", () => {
+      const expr = "%resource.item.where(linkId='group').item.where(linkId='bloedverdunners').answer";
+      expect(parseContextExpression(expr)).toEqual({
+        mode: "for-each",
+        linkId: "bloedverdunners",
+        scope: "resource",
+      });
+    });
+
+    it("parses context-scoped item-path with trailing .answer", () => {
+      const expr = "%context.item.where(linkId='bloedverdunners').answer";
+      expect(parseContextExpression(expr)).toEqual({
+        mode: "for-each",
+        linkId: "bloedverdunners",
+        scope: "context",
+      });
+    });
+
+    it("parses repeat-item for-each with trailing .answer", () => {
+      const expr = "%resource.repeat(item).where(linkId='bloedverdunners').answer";
+      expect(parseContextExpression(expr)).toEqual({
+        mode: "for-each",
+        linkId: "bloedverdunners",
+        scope: "resource",
+      });
+    });
   });
 
   describe("if mode - single condition", () => {
