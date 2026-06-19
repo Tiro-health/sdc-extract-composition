@@ -3,11 +3,10 @@ import type { CompositionSection } from "../types";
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import {
   getContextExpression,
-  analyzeContextType,
+  inferContextType,
   CONTEXT_ICONS,
 } from "../utils/section-helpers";
 import { stripDivWrapper } from "../utils/parse-narrative";
-import { useWasmQuestionnaireIndex } from "./lexical/WasmQuestionnaireIndexContext";
 import { NarrativeHtml } from "./NarrativeHtml";
 import { AddBetweenButton } from "./AddBetweenButton";
 import { ContextBadge } from "./ContextBadge";
@@ -41,10 +40,9 @@ export function EditorSectionCard({
   onDuplicateSection,
 }: EditorSectionCardProps) {
   const [modalOpen, setModalOpen] = useState(false);
-  const wasmIndex = useWasmQuestionnaireIndex();
 
   const contextExpr = getContextExpression(section);
-  const contextType = analyzeContextType(contextExpr, wasmIndex);
+  const contextType = inferContextType(contextExpr);
   const contextIcon = CONTEXT_ICONS[contextType];
 
   const hasTitle = !!section.title?.trim();
