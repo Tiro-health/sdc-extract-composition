@@ -188,6 +188,31 @@ html, body, #root {
 }
 
 /*
+ * Missing-reference chip — shown when a question linkId no longer exists in
+ * the Questionnaire. Renders in editor pills and resolved context badges.
+ */
+.expr-pill.missing {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: #fdecec;
+  border: 1px solid #f5b1b1;
+  color: #b42318;
+  font-style: normal;
+  font-weight: 500;
+  border-radius: 3px;
+  padding: 0.05em 0.35em;
+  white-space: nowrap;
+  cursor: help;
+}
+
+.expr-pill-icon {
+  width: 0.9em;
+  height: 0.9em;
+  flex-shrink: 0;
+}
+
+/*
  * Gutter for left-margin badges.
  */
 .sections-gutter {
