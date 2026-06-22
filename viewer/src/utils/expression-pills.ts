@@ -344,17 +344,28 @@ const MISSING_ICON_SVG =
 export { MISSING_ICON_SVG };
 
 /**
- * Whether the expression resolves to at least one known reference (answer,
- * item, or coded value). Returns ``true`` optimistically while wasm is still
- * loading so pills don't briefly flash as missing.
+ * Whether an expression is "missing" — i.e. it either references no known
+ * question/code at all, or any of its item/answer references points at a
+ * linkId that no longer exists in the Questionnaire. Returns ``false``
+ * optimistically while wasm is still loading so pills don't briefly flash
+ * as missing.
  */
-export function expressionHasReferences(
+export function isExpressionMissing(
   expr: string,
+  index: QuestionnaireIndex,
   contextBase?: string | null,
 ): boolean {
-  if (!isWasmReady()) return true;
+  if (!isWasmReady()) return false;
   const segments = segmentExpression(expr, contextBase);
-  return segments.some((s) => s.kind !== "text");
+  const refs = segments.filter((s) => s.kind !== "text");
+  if (refs.length === 0) return true;
+  for (const seg of segments) {
+    if (seg.kind === "answer-pill") {
+      const lastLinkId = seg.linkIds[seg.linkIds.length - 1];
+      if (index.resolveItemText(lastLinkId) == null) return true;
+    }
+  }
+  return false;
 }
 
 function escapeHtml(s: string): string {

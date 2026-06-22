@@ -14,7 +14,7 @@ import {
 } from "lexical";
 import {
   MISSING_ICON_SVG,
-  expressionHasReferences,
+  isExpressionMissing,
   segmentExpressionToHtml,
 } from "../../utils/expression-pills";
 import { useWasmReady } from "../../utils/wasm-init";
@@ -94,7 +94,7 @@ export function FhirPathPillComponent({
 
   const isMissing =
     questionnaireIndex != null &&
-    !expressionHasReferences(expression, sectionContext);
+    isExpressionMissing(expression, questionnaireIndex, sectionContext);
   const pillHtml = isMissing
     ? `${MISSING_ICON_SVG}Missing`
     : segmentExpressionToHtml(expression, questionnaireIndex, sectionContext);

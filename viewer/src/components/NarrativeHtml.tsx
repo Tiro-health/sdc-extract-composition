@@ -1,7 +1,7 @@
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
 import {
   MISSING_ICON_SVG,
-  expressionHasReferences,
+  isExpressionMissing,
   segmentExpressionToHtml,
 } from "../utils/expression-pills";
 import { stripDivWrapper } from "../utils/parse-narrative";
@@ -35,7 +35,7 @@ export function injectPills(
   return html.replace(/\{\{(.*?)\}\}/g, (_match, expr: string) => {
     const trimmed = expr.trim();
     const isMissing =
-      index != null && !expressionHasReferences(trimmed, contextBase);
+      index != null && isExpressionMissing(trimmed, index, contextBase);
     const pillHtml = isMissing
       ? `${MISSING_ICON_SVG}Missing`
       : index
