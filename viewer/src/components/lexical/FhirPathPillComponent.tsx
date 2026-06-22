@@ -12,7 +12,11 @@ import {
   KEY_DELETE_COMMAND,
   type NodeKey,
 } from "lexical";
-import { segmentExpressionToHtml } from "../../utils/expression-pills";
+import {
+  MISSING_ICON_SVG,
+  expressionHasReferences,
+  segmentExpressionToHtml,
+} from "../../utils/expression-pills";
 import { useWasmReady } from "../../utils/wasm-init";
 import { useQuestionnaireIndex } from "./QuestionnaireIndexContext";
 import { useSectionContextExpression } from "./SectionContextExpressionContext";
@@ -88,7 +92,15 @@ export function FhirPathPillComponent({
     );
   }, [editor, isSelected, nodeKey]);
 
-  const pillHtml = segmentExpressionToHtml(expression, questionnaireIndex, sectionContext);
+  const isMissing =
+    questionnaireIndex != null &&
+    !expressionHasReferences(expression, sectionContext);
+  const pillHtml = isMissing
+    ? `${MISSING_ICON_SVG}Missing`
+    : segmentExpressionToHtml(expression, questionnaireIndex, sectionContext);
+  const tooltip = isMissing
+    ? `'${expression}' doesn't reference a known question. Click to fix.`
+    : expression;
 
   const handleClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -105,8 +117,8 @@ export function FhirPathPillComponent({
   return (
     <code
       ref={pillRef}
-      className={`fhirpath-pill${isSelected ? " fhirpath-pill-selected" : ""}`}
-      title={expression}
+      className={`fhirpath-pill${isSelected ? " fhirpath-pill-selected" : ""}${isMissing ? " fhirpath-pill-missing" : ""}`}
+      title={tooltip}
       dangerouslySetInnerHTML={{ __html: pillHtml }}
       onClick={handleClick}
     />

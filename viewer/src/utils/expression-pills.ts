@@ -305,16 +305,10 @@ export function segmentExpressionToHtml(
   contextBase?: string | null,
 ): string {
   if (!index) return escapeHtml(expr);
-  // Wait for wasm before judging an expression as missing — otherwise we'd
-  // briefly flash a red chip on every pill while the analyzer loads.
-  if (!isWasmReady()) return escapeHtml(expr);
 
   const segments = segmentExpression(expr, contextBase);
   const hasPills = segments.some((s) => s.kind !== "text");
-  if (!hasPills) {
-    const tooltip = `'${expr}' doesn't reference a known question. Click to fix.`;
-    return `<span class="expr-pill missing" title="${escapeHtml(tooltip)}">${MISSING_ICON_SVG}Missing</span>`;
-  }
+  if (!hasPills) return escapeHtml(expr);
 
   return segments
     .map((seg) => {
@@ -346,6 +340,22 @@ const MISSING_ICON_SVG =
   '<line x1="12" y1="9" x2="12" y2="13"/>' +
   '<line x1="12" y1="17" x2="12.01" y2="17"/>' +
   '</svg>';
+
+export { MISSING_ICON_SVG };
+
+/**
+ * Whether the expression resolves to at least one known reference (answer,
+ * item, or coded value). Returns ``true`` optimistically while wasm is still
+ * loading so pills don't briefly flash as missing.
+ */
+export function expressionHasReferences(
+  expr: string,
+  contextBase?: string | null,
+): boolean {
+  if (!isWasmReady()) return true;
+  const segments = segmentExpression(expr, contextBase);
+  return segments.some((s) => s.kind !== "text");
+}
 
 function escapeHtml(s: string): string {
   return s
