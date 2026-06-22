@@ -304,6 +304,13 @@
   vertical-align: baseline;
 }
 
+.editor-section .fhirpath-pill-missing,
+.section-editor .fhirpath-pill-missing {
+  background: #fdecec;
+  border-color: #f5b1b1;
+  color: #b42318;
+}
+
 /* Legend */
 .editor-legend {
   display: flex;

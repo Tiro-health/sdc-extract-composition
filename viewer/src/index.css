@@ -188,6 +188,49 @@ html, body, #root {
 }
 
 /*
+ * Missing-reference chip — shown when a question linkId no longer exists in
+ * the Questionnaire. Renders inside resolved context badges (SegmentView).
+ */
+.expr-pill.missing {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: #fdecec;
+  border: 1px solid #f5b1b1;
+  color: #b42318;
+  font-style: normal;
+  font-weight: 500;
+  border-radius: 3px;
+  padding: 0.05em 0.35em;
+  white-space: nowrap;
+  cursor: help;
+}
+
+/*
+ * Missing-reference state applied to the outer .fhirpath-pill — used when an
+ * expression doesn't resolve to any known question, code, or variable. Colour
+ * overrides only; layout is inherited from .fhirpath-pill so it works both
+ * inline in narrative text and as a chip in the editor view.
+ */
+.fhirpath-pill-missing {
+  color: #b42318;
+  border-bottom-color: #b42318;
+  white-space: nowrap;
+}
+
+.fhirpath-pill-missing .expr-pill-icon {
+  margin-right: 3px;
+}
+
+.expr-pill-icon {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+}
+
+/*
  * Gutter for left-margin badges.
  */
 .sections-gutter {

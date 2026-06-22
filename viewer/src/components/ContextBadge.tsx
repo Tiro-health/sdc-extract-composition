@@ -13,6 +13,25 @@ interface ContextBadgeProps {
   parentContextExpression?: string | null;
 }
 
+function MissingIcon() {
+  return (
+    <svg
+      className="expr-pill-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+      <line x1="12" y1="9" x2="12" y2="13" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
+    </svg>
+  );
+}
+
 function SegmentView({
   segment,
   index,
@@ -26,10 +45,21 @@ function SegmentView({
 
   if (segment.kind === "answer-pill" && index) {
     const lastLinkId = segment.linkIds[segment.linkIds.length - 1];
-    const label = index.resolveItemText(lastLinkId) ?? lastLinkId;
+    const resolved = index.resolveItemText(lastLinkId);
+    if (resolved == null) {
+      return (
+        <span
+          className="expr-pill missing"
+          title={`Question '${lastLinkId}' was removed from the Questionnaire. Click to fix.`}
+        >
+          <MissingIcon />
+          Missing
+        </span>
+      );
+    }
     return (
       <span className="expr-pill answer" title={`linkId: ${segment.linkIds.join(" → ")}`}>
-        {label}
+        {resolved}
       </span>
     );
   }

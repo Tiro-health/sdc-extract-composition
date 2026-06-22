@@ -1,5 +1,9 @@
 import type { QuestionnaireIndex } from "../utils/questionnaire-index";
-import { segmentExpressionToHtml } from "../utils/expression-pills";
+import {
+  MISSING_ICON_SVG,
+  isExpressionMissing,
+  segmentExpressionToHtml,
+} from "../utils/expression-pills";
 import { stripDivWrapper } from "../utils/parse-narrative";
 import { useWasmReady } from "../utils/wasm-init";
 
@@ -30,10 +34,18 @@ export function injectPills(
 ): string {
   return html.replace(/\{\{(.*?)\}\}/g, (_match, expr: string) => {
     const trimmed = expr.trim();
-    const pillHtml = index
-      ? segmentExpressionToHtml(trimmed, index, contextBase)
-      : escapeHtml(trimmed);
-    return `<code class="fhirpath-pill" title="${escapeHtml(trimmed)}">${pillHtml}</code>`;
+    const isMissing =
+      index != null && isExpressionMissing(trimmed, index, contextBase);
+    const pillHtml = isMissing
+      ? `${MISSING_ICON_SVG}Missing`
+      : index
+        ? segmentExpressionToHtml(trimmed, index, contextBase)
+        : escapeHtml(trimmed);
+    const className = `fhirpath-pill${isMissing ? " fhirpath-pill-missing" : ""}`;
+    const tooltip = isMissing
+      ? `'${trimmed}' doesn't reference a known question. Click to fix.`
+      : trimmed;
+    return `<code class="${className}" title="${escapeHtml(tooltip)}">${pillHtml}</code>`;
   });
 }
 
