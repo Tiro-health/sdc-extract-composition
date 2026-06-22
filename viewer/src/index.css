@@ -215,16 +215,18 @@ html, body, #root {
 .fhirpath-pill-missing {
   color: #b42318;
   border-bottom-color: #b42318;
+  white-space: nowrap;
 }
 
 .fhirpath-pill-missing .expr-pill-icon {
-  vertical-align: -2px;
-  margin-right: 2px;
+  margin-right: 3px;
 }
 
 .expr-pill-icon {
+  display: inline-block;
   width: 0.9em;
   height: 0.9em;
+  vertical-align: -0.15em;
   flex-shrink: 0;
 }
 
