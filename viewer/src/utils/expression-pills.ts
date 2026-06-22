@@ -305,10 +305,16 @@ export function segmentExpressionToHtml(
   contextBase?: string | null,
 ): string {
   if (!index) return escapeHtml(expr);
+  // Wait for wasm before judging an expression as missing — otherwise we'd
+  // briefly flash a red chip on every pill while the analyzer loads.
+  if (!isWasmReady()) return escapeHtml(expr);
 
   const segments = segmentExpression(expr, contextBase);
   const hasPills = segments.some((s) => s.kind !== "text");
-  if (!hasPills) return escapeHtml(expr);
+  if (!hasPills) {
+    const tooltip = `'${expr}' doesn't reference a known question. Click to fix.`;
+    return `<span class="expr-pill missing" title="${escapeHtml(tooltip)}">${MISSING_ICON_SVG}Missing</span>`;
+  }
 
   return segments
     .map((seg) => {
