@@ -1,13 +1,13 @@
 {
-  "id": "2740",
+  "id": "2756",
   "meta": {
     "extension": [
       {
         "url": "http://hl7.org/fhir/StructureDefinition/firstCreated",
-        "valueInstant": "2026-06-17T15:27:20.397434Z"
+        "valueInstant": "2026-06-23T12:07:00.918466Z"
       }
     ],
-    "lastUpdated": "2026-06-18T09:35:19.694681Z",
+    "lastUpdated": "2026-06-23T12:20:43.952578Z",
     "tag": [
       {
         "system": "http://terminology.hl7.org/CodeSystem/common-tags",
@@ -16,8 +16,7 @@
       }
     ]
   },
-  "status": "active",
-  "version": "5.0.1",
+  "status": "draft",
   "resourceType": "Questionnaire",
   "useContext": [
     {
@@ -51,18 +50,25 @@
   ],
   "name": "Colo",
   "url": "http://templates.tiro.health/templates/3499e844feaa47a3acca12d4a51fc09c",
-  "experimental": true,
+  "experimental": false,
   "language": "nl-BE",
   "subjectType": "Patient",
   "contained": [
     {
       "resourceType": "Composition",
       "id": "composition-template",
-      "status": "preliminary",
+      "status": "final",
       "type": {
-        "text": "Coloscopie verslag"
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "11488-4",
+            "display": "Consultation note"
+          }
+        ]
       },
-      "title": "Colo",
+      "title": "Coloscopie verslag",
+      "date": "2024-01-01",
       "section": []
     },
     {
@@ -2383,7 +2389,7 @@
                   "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
                   "valueExpression": {
                     "name": "01920590-f948-7eed-9d5b-aed5b3a4e2a6",
-                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate | date: '%d/%m/%Y' -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate -%}\n{%- if Answer -%}{%- assign Answer = Answer | date: '%d/%m/%Y' -%}{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
                     "language": "text/liquid"
                   }
                 }
@@ -2502,7 +2508,7 @@
                   "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
                   "valueExpression": {
                     "name": "01997fcc-08ca-7cc0-9686-03f0ea28a2b6",
-                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate | date: '%d/%m/%Y' -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate -%}\n{%- if Answer -%}{%- assign Answer = Answer | date: '%d/%m/%Y' -%}{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
                     "language": "text/liquid"
                   }
                 }
@@ -2550,7 +2556,7 @@
                   "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
                   "valueExpression": {
                     "name": "01997fcc-8162-7cc0-968e-fdf3bcc5ea77",
-                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate | date: '%d/%m/%Y' -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate -%}\n{%- if Answer -%}{%- assign Answer = Answer | date: '%d/%m/%Y' -%}{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
                     "language": "text/liquid"
                   }
                 }
@@ -2598,7 +2604,7 @@
                   "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
                   "valueExpression": {
                     "name": "01997fcc-b2ca-7cc0-9692-70f4bb2414ed",
-                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate | date: '%d/%m/%Y' -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate -%}\n{%- if Answer -%}{%- assign Answer = Answer | date: '%d/%m/%Y' -%}{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
                     "language": "text/liquid"
                   }
                 }
@@ -2646,7 +2652,7 @@
                   "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
                   "valueExpression": {
                     "name": "01997fcd-2ac2-7cc0-9695-3f56b1460a92",
-                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate | date: '%d/%m/%Y' -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate -%}\n{%- if Answer -%}{%- assign Answer = Answer | date: '%d/%m/%Y' -%}{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
                     "language": "text/liquid"
                   }
                 }
@@ -2772,7 +2778,7 @@
                   "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
                   "valueExpression": {
                     "name": "01997fcd-83eb-7cc0-96a1-5464041152f2",
-                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate | date: '%d/%m/%Y' -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate -%}\n{%- if Answer -%}{%- assign Answer = Answer | date: '%d/%m/%Y' -%}{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
                     "language": "text/liquid"
                   }
                 }
@@ -2820,7 +2826,7 @@
                   "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
                   "valueExpression": {
                     "name": "0199801e-67d3-7cc0-96ab-a907b0b09214",
-                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate | date: '%d/%m/%Y' -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate -%}\n{%- if Answer -%}{%- assign Answer = Answer | date: '%d/%m/%Y' -%}{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
                     "language": "text/liquid"
                   }
                 }
@@ -2868,7 +2874,7 @@
                   "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
                   "valueExpression": {
                     "name": "0199801e-754e-7cc0-96ac-bf887dbd6cf9",
-                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate | date: '%d/%m/%Y' -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate -%}\n{%- if Answer -%}{%- assign Answer = Answer | date: '%d/%m/%Y' -%}{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
                     "language": "text/liquid"
                   }
                 }
@@ -2916,7 +2922,7 @@
                   "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
                   "valueExpression": {
                     "name": "0199801e-7c56-7cc0-96ad-cce1ef54a712",
-                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate | date: '%d/%m/%Y' -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate -%}\n{%- if Answer -%}{%- assign Answer = Answer | date: '%d/%m/%Y' -%}{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
                     "language": "text/liquid"
                   }
                 }
@@ -3035,7 +3041,7 @@
                   "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
                   "valueExpression": {
                     "name": "0199801f-a570-7cc0-96bb-929fb1410af7",
-                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate | date: '%d/%m/%Y' -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate -%}\n{%- if Answer -%}{%- assign Answer = Answer | date: '%d/%m/%Y' -%}{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
                     "language": "text/liquid"
                   }
                 }
@@ -3083,7 +3089,7 @@
                   "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
                   "valueExpression": {
                     "name": "01998020-2a89-7cc0-96c7-f92498b3c3b4",
-                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate | date: '%d/%m/%Y' -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate -%}\n{%- if Answer -%}{%- assign Answer = Answer | date: '%d/%m/%Y' -%}{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
                     "language": "text/liquid"
                   }
                 }
@@ -3131,7 +3137,7 @@
                   "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
                   "valueExpression": {
                     "name": "01998020-32b8-7cc0-96c9-0b6188d47a8a",
-                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate | date: '%d/%m/%Y' -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                    "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer = item.answer[0].valueDate -%}\n{%- if Answer -%}{%- assign Answer = Answer | date: '%d/%m/%Y' -%}{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
                     "language": "text/liquid"
                   }
                 }
@@ -4621,6 +4627,61 @@
                 "system": "http://snomed.info/sct",
                 "code": "373067005",
                 "display": "nee"
+              }
+            }
+          ]
+        },
+        {
+          "enableWhen": [
+            {
+              "question": "0196f6f2-c567-788e-8dbf-873772f0b24c",
+              "operator": "=",
+              "answerCoding": {
+                "system": "http://snomed.info/sct",
+                "code": "373066001",
+                "display": "ja"
+              }
+            }
+          ],
+          "enableBehavior": "all",
+          "disabledDisplay": "hidden",
+          "linkId": "019ef460-ae6a-7cc0-b850-3c7bb4ab7c20",
+          "type": "decimal",
+          "text": "Aantal poliepen",
+          "code": [
+            {
+              "system": "http://templates.tiro.health/templates/3499e844feaa47a3acca12d4a51fc09c/technical-key",
+              "code": "aantal_poliepen",
+              "display": "aantal_poliepen"
+            }
+          ],
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+              "valueExpression": {
+                "expression": "%resource.item.where(linkId = '01922946-8e17-74e2-987c-1e90923be5d1').item.where(linkId = '019541c0-b2ea-7ffd-a95a-38cbe7e9d713').count()",
+                "language": "text/fhirpath"
+              }
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "text": "decimal-field",
+                "coding": [
+                  {
+                    "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
+                    "code": "decimal-field"
+                  }
+                ]
+              }
+            },
+            {
+              "url": "http://fhir.tiro.health/StructureDefinition/narrative-template-snippet",
+              "valueExpression": {
+                "name": "019ef460-ae6a-7cc0-b850-3c7bb4ab7c20",
+                "expression": "{%- assign Question = item.text | default: item.linkId -%}\n{%- assign Answer_display = item.answer[0].valueDecimal -%}\n{%- assign Answer_unit = item | unit -%}\n{%- if Answer_display -%}\n{%- assign Answer = Answer_display | append: ' ' | append: Answer_unit -%}\n{%- endif -%}\n{%- if Answer -%}\n<div>{{Question}}: {{ Answer }}</div>\n{%- endif -%}\n",
+                "language": "text/liquid"
               }
             }
           ]
@@ -10865,11 +10926,11 @@
                 {
                   "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
                   "valueCodeableConcept": {
-                    "text": "list",
+                    "text": "grid",
                     "coding": [
                       {
                         "system": "http://fhir.tiro.health/CodeSystem/tiro-questionnaire-item-control",
-                        "code": "list"
+                        "code": "grid"
                       }
                     ]
                   }
