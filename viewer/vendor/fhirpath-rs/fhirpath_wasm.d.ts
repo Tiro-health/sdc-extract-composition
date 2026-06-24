@@ -127,6 +127,14 @@ export interface CompletionItem {
    * anchor itself, are excluded.
    */
   traverses_repeating: boolean;
+  /**
+   * Cardinality the suggestion's expression evaluates to in the active
+   * `$extract` context. `"collection"` when accepting the suggestion would
+   * yield more than one value per iteration of the templateExtractContext;
+   * `"singleton"` when it would yield at most one. Completions always know
+   * enough to decide, so this is never the upstream `Unknown` variant.
+   */
+  cardinality: "singleton" | "collection";
 }
 
 /** Index built from a FHIR Questionnaire, used for expression analysis. */
