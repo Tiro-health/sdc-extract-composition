@@ -1,6 +1,8 @@
 import type { QuestionnaireIndex as WasmQuestionnaireIndex } from "fhirpath-rs";
 import type { QuestionnaireIndex } from "../../utils/questionnaire-index";
 
+export type Cardinality = "singleton" | "collection";
+
 export interface CompletionItem {
   label: string;
   detail: string | null;
@@ -16,6 +18,14 @@ export interface CompletionItem {
    * item — that's the start of the branch, not a descent past one.
    */
   traverses_repeating?: boolean;
+  /**
+   * Whether the expression resolves to a single value or a collection.
+   * Stamped by the JS layer (combines `traverses_repeating` with the
+   * leaf's `repeats` flag, and treats an anchor's own value under
+   * `%context` as singleton — extract iterates the anchor one element
+   * at a time). Absent on raw WASM output.
+   */
+  cardinality?: Cardinality;
 }
 
 // No stub completions - UI handles context/resource scoping automatically
@@ -46,6 +56,26 @@ function extractAnchorLinkId(
   return matches.length ? matches[matches.length - 1][1] : null;
 }
 
+// Anchor-own completions under %context emit bare `answer.value` / `value`
+// (no `where(...)` segment, since the relative path starts inside the
+// anchor). Use this to distinguish the singleton "current iteration" view
+// from a list-shaped descent.
+function isContextAnchorOwn(insertText: string): boolean {
+  return !insertText.includes("where(");
+}
+
+function computeCardinality(
+  it: CompletionItem,
+  prefix: "%resource" | "%context",
+  qi: QuestionnaireIndex | undefined,
+): Cardinality {
+  if (it.traverses_repeating) return "collection";
+  if (prefix === "%context" && isContextAnchorOwn(it.insert_text)) {
+    return "singleton";
+  }
+  return qi?.resolveItemRepeats(it.link_id) ? "collection" : "singleton";
+}
+
 function generateItemCompletions(
   questionnaireIndex: QuestionnaireIndex | undefined,
 ): CompletionItem[] {
@@ -68,6 +98,7 @@ function generateItemCompletions(
       kind: "value",
       link_id: linkId,
       item_type: info.type,
+      cardinality: info.repeats ? "collection" : "singleton",
     });
   }
 
@@ -80,12 +111,14 @@ export function getFhirPathCompletions(
   questionnaireIndex?: QuestionnaireIndex,
 ): CompletionItem[] {
   const wasm: CompletionItem[] = [];
-  const resourceLinkIds = new Set<string>();
+  // Dedupe key is `linkId:cardinality`: the same linkId can legitimately
+  // appear twice when its two forms have different cardinality (e.g. at a
+  // repeating anchor, %resource → list, %context → current iteration).
+  const resourceKeys = new Set<string>();
 
-  // When the anchor of the context expression repeats, the anchor's own
-  // value has TWO useful forms: %resource collects across all iterations,
-  // %context refers to the current one. Both stay in the list and get a
-  // `detail` so the menu rows aren't visually identical.
+  // For the menu's "current iteration" / "all iterations" tag, we also
+  // need to know whether the anchor of the typed prefix is the one that
+  // repeats — that's where the two-form duplication actually occurs.
   const anchorLinkId = extractAnchorLinkId(contextExpression);
   const anchorRepeats = !!(
     anchorLinkId && questionnaireIndex?.resolveItemRepeats(anchorLinkId)
@@ -96,19 +129,19 @@ export function getFhirPathCompletions(
       const resourceItems = wasmQuestionnaireIndex.generate_completions(
         "%resource",
       ) as CompletionItem[];
-      console.log("[completions] %resource raw:", resourceItems);
-      // Filter out items that traverse repeating ancestors (ambiguous results)
       const safeResourceItems = valueOnly(resourceItems)
         .filter((it) => !it.traverses_repeating)
+        .map((it) => ({
+          ...it,
+          cardinality: computeCardinality(it, "%resource", questionnaireIndex),
+        }))
         .map((it) =>
           anchorRepeats && it.link_id === anchorLinkId
             ? { ...it, detail: "all iterations" }
             : it,
         );
-      console.log("[completions] %resource filtered:", safeResourceItems);
-      // Track which linkIds are in the safe %resource set
       for (const it of safeResourceItems) {
-        if (it.link_id) resourceLinkIds.add(it.link_id);
+        if (it.link_id) resourceKeys.add(`${it.link_id}:${it.cardinality}`);
       }
       wasm.push(...withPrefix("%resource", safeResourceItems));
     } catch (e) {
@@ -117,38 +150,33 @@ export function getFhirPathCompletions(
 
     if (contextExpression && contextExpression !== "%resource") {
       try {
-        console.log("[completions] calling generate_completions with contextExpression:", contextExpression);
         const contextItems = wasmQuestionnaireIndex.generate_completions(
           contextExpression,
         ) as CompletionItem[];
-        console.log("[completions] generate_completions(contextExpression) returned:", contextItems);
-        console.log("[completions] contextItems length:", contextItems?.length);
-        if (contextItems && contextItems.length > 0) {
-          console.log("[completions] first context item:", contextItems[0]);
-        }
-        // Drop items that traverse a repeating boundary, and drop %context
-        // duplicates of %resource entries that resolve to the same value.
-        // EXCEPTION: when the anchor repeats, keep the anchor's own %context
-        // form too — it points at the current iteration while the %resource
-        // form collects across all iterations.
+        // Drop items that traverse a repeating boundary; drop %context
+        // duplicates of %resource that share BOTH linkId and cardinality
+        // (same value). When the two forms differ in cardinality — e.g.
+        // anchor own under a repeating anchor — both stay.
         const uniqueContextItems = valueOnly(contextItems)
-          .filter((it) => {
-            if (it.traverses_repeating) return false;
-            if (!it.link_id || !resourceLinkIds.has(it.link_id)) return true;
-            return anchorRepeats && it.link_id === anchorLinkId;
-          })
+          .filter((it) => !it.traverses_repeating)
+          .map((it) => ({
+            ...it,
+            cardinality: computeCardinality(it, "%context", questionnaireIndex),
+          }))
+          .filter(
+            (it) =>
+              !it.link_id ||
+              !resourceKeys.has(`${it.link_id}:${it.cardinality}`),
+          )
           .map((it) =>
             anchorRepeats && it.link_id === anchorLinkId
               ? { ...it, detail: "current iteration" }
               : it,
           );
-        console.log("[completions] %context filtered:", uniqueContextItems);
         wasm.push(...withPrefix("%context", uniqueContextItems));
       } catch (e) {
         console.error("[completions] %context error:", e);
       }
-    } else {
-      console.log("[completions] no context expression or equals %resource:", contextExpression);
     }
   }
 

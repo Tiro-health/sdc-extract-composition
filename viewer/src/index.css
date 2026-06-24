@@ -1701,6 +1701,26 @@ html, body, #root {
   color: #c2410c;
 }
 
+.fhirpath-autocomplete-item .item-cardinality {
+  font-size: 0.5625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.item-cardinality-singleton {
+  background: #e0f2fe;
+  color: #075985;
+}
+
+.item-cardinality-collection {
+  background: #fef3c7;
+  color: #92400e;
+}
+
 /*
  * Condition Builder
  */
