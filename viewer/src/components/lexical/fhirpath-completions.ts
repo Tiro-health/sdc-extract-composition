@@ -10,7 +10,11 @@ export interface CompletionItem {
   kind: "value" | "code" | "display";
   link_id: string;
   item_type: string;
-  /** True if the path traverses any repeating ancestor */
+  /**
+   * True when accepting this suggestion crosses a repeating boundary the
+   * typed prefix has not. The leaf itself repeating does NOT flag the
+   * item — that's the start of the branch, not a descent past one.
+   */
   traverses_repeating?: boolean;
 }
 
@@ -29,6 +33,17 @@ function withPrefix(prefix: string, items: CompletionItem[]): CompletionItem[] {
 // emits for coding types. Users can refine via the pill editor afterward.
 function valueOnly(items: CompletionItem[]): CompletionItem[] {
   return items.filter((it) => it.kind === "value");
+}
+
+// The deepest linkId in a context expression is the anchor — the item the
+// user has already drilled into. Returns null when there is no
+// `where(linkId='...')` segment (e.g. bare `%resource` / `%context`).
+function extractAnchorLinkId(
+  contextExpression: string | null | undefined,
+): string | null {
+  if (!contextExpression) return null;
+  const matches = [...contextExpression.matchAll(/where\(linkId='([^']+)'\)/g)];
+  return matches.length ? matches[matches.length - 1][1] : null;
 }
 
 function generateItemCompletions(
@@ -67,6 +82,15 @@ export function getFhirPathCompletions(
   const wasm: CompletionItem[] = [];
   const resourceLinkIds = new Set<string>();
 
+  // When the anchor of the context expression repeats, the anchor's own
+  // value has TWO useful forms: %resource collects across all iterations,
+  // %context refers to the current one. Both stay in the list and get a
+  // `detail` so the menu rows aren't visually identical.
+  const anchorLinkId = extractAnchorLinkId(contextExpression);
+  const anchorRepeats = !!(
+    anchorLinkId && questionnaireIndex?.resolveItemRepeats(anchorLinkId)
+  );
+
   if (wasmQuestionnaireIndex) {
     try {
       const resourceItems = wasmQuestionnaireIndex.generate_completions(
@@ -74,9 +98,13 @@ export function getFhirPathCompletions(
       ) as CompletionItem[];
       console.log("[completions] %resource raw:", resourceItems);
       // Filter out items that traverse repeating ancestors (ambiguous results)
-      const safeResourceItems = valueOnly(resourceItems).filter(
-        (it) => !it.traverses_repeating
-      );
+      const safeResourceItems = valueOnly(resourceItems)
+        .filter((it) => !it.traverses_repeating)
+        .map((it) =>
+          anchorRepeats && it.link_id === anchorLinkId
+            ? { ...it, detail: "all iterations" }
+            : it,
+        );
       console.log("[completions] %resource filtered:", safeResourceItems);
       // Track which linkIds are in the safe %resource set
       for (const it of safeResourceItems) {
@@ -98,10 +126,22 @@ export function getFhirPathCompletions(
         if (contextItems && contextItems.length > 0) {
           console.log("[completions] first context item:", contextItems[0]);
         }
-        // Filter out items that traverse repeating ancestors and duplicates
-        const uniqueContextItems = valueOnly(contextItems).filter(
-          (it) => !it.traverses_repeating && (!it.link_id || !resourceLinkIds.has(it.link_id))
-        );
+        // Drop items that traverse a repeating boundary, and drop %context
+        // duplicates of %resource entries that resolve to the same value.
+        // EXCEPTION: when the anchor repeats, keep the anchor's own %context
+        // form too — it points at the current iteration while the %resource
+        // form collects across all iterations.
+        const uniqueContextItems = valueOnly(contextItems)
+          .filter((it) => {
+            if (it.traverses_repeating) return false;
+            if (!it.link_id || !resourceLinkIds.has(it.link_id)) return true;
+            return anchorRepeats && it.link_id === anchorLinkId;
+          })
+          .map((it) =>
+            anchorRepeats && it.link_id === anchorLinkId
+              ? { ...it, detail: "current iteration" }
+              : it,
+          );
         console.log("[completions] %context filtered:", uniqueContextItems);
         wasm.push(...withPrefix("%context", uniqueContextItems));
       } catch (e) {
