@@ -311,6 +311,17 @@
   color: #b42318;
 }
 
+/* Pill tinted to match the repeating-section accent — applied when the
+ * expression starts with `%context`. Differentiates the singleton
+ * current-iteration reference from the `%resource` collection form so both
+ * can read at a glance inside a repeating section. */
+.editor-section .fhirpath-pill-context,
+.section-editor .fhirpath-pill-context {
+  background: #e8f5ee;
+  border-color: #a8d4be;
+  color: #2d6a45;
+}
+
 /* Legend */
 .editor-legend {
   display: flex;

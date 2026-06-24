@@ -101,6 +101,15 @@ export function FhirPathPillComponent({
   const tooltip = isMissing
     ? `'${expression}' doesn't reference a known question. Click to fix.`
     : expression;
+  // Tint the pill by its leading variable so a `%context`-rooted reference
+  // (only meaningful inside a repeating section) reads as distinct from the
+  // global `%resource` form. When both forms reference the same linkId at the
+  // same repeating anchor they're visually identical otherwise.
+  const variantClass = expression.trimStart().startsWith("%context")
+    ? " fhirpath-pill-context"
+    : expression.trimStart().startsWith("%resource")
+      ? " fhirpath-pill-resource"
+      : "";
 
   const handleClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -117,7 +126,7 @@ export function FhirPathPillComponent({
   return (
     <code
       ref={pillRef}
-      className={`fhirpath-pill${isSelected ? " fhirpath-pill-selected" : ""}${isMissing ? " fhirpath-pill-missing" : ""}`}
+      className={`fhirpath-pill${variantClass}${isSelected ? " fhirpath-pill-selected" : ""}${isMissing ? " fhirpath-pill-missing" : ""}`}
       title={tooltip}
       dangerouslySetInnerHTML={{ __html: pillHtml }}
       onClick={handleClick}
