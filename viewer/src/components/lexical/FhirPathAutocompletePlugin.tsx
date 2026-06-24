@@ -116,6 +116,15 @@ export function FhirPathAutocompletePlugin({
                   {option.completionItem.detail}
                 </span>
               )}
+              {option.completionItem.cardinality && (
+                <span
+                  className={`item-cardinality item-cardinality-${option.completionItem.cardinality}`}
+                >
+                  {option.completionItem.cardinality === "collection"
+                    ? "list"
+                    : "single"}
+                </span>
+              )}
               <span
                 className={`item-kind item-kind-${option.completionItem.kind}`}
               >
