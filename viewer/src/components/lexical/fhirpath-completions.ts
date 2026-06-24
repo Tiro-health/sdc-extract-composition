@@ -12,23 +12,37 @@ export interface CompletionItem {
   item_type: string;
   /** True if the path traverses any repeating ancestor */
   traverses_repeating?: boolean;
+  /**
+   * Cardinality the suggestion's expression evaluates to in the active
+   * `$extract` context. Always populated by the WASM path (fhir-sdc-rs ≥ 0.3.2)
+   * and stamped by the JS fallback below. Optional in the type so existing
+   * callers that build items by hand still compile.
+   */
+  cardinality?: "singleton" | "collection";
 }
 
-// No stub completions - UI handles context/resource scoping automatically
 const STUB_COMPLETIONS: CompletionItem[] = [];
 
-// WASM generate_completions emits insert_text relative to the supplied context
-// expression (e.g. "item.where(linkId='X').answer.value"). Pills need a
-// resolvable head — %resource for the global tree, %context for the
-// section-scoped tree.
 function withPrefix(prefix: string, items: CompletionItem[]): CompletionItem[] {
   return items.map((it) => ({ ...it, insert_text: `${prefix}.${it.insert_text}` }));
 }
 
-// One canonical entry per item — drop the .code / .display variants the engine
-// emits for coding types. Users can refine via the pill editor afterward.
 function valueOnly(items: CompletionItem[]): CompletionItem[] {
   return items.filter((it) => it.kind === "value");
+}
+
+function dedupeKey(item: CompletionItem): string {
+  return `${item.link_id}|${item.cardinality ?? ""}`;
+}
+
+// Anchor linkId — the linkId in the deepest `where(linkId='...')` segment of
+// the contextExpression. Only used to decorate the two anchor-own rows with a
+// "all iterations" / "current iteration" hint; the dedupe itself runs on
+// (link_id, cardinality) so it doesn't need this.
+function extractAnchorLinkId(contextExpression: string | null | undefined): string | null {
+  if (!contextExpression) return null;
+  const matches = [...contextExpression.matchAll(/where\(linkId='([^']+)'\)/g)];
+  return matches.length ? matches[matches.length - 1][1] : null;
 }
 
 function generateItemCompletions(
@@ -53,6 +67,7 @@ function generateItemCompletions(
       kind: "value",
       link_id: linkId,
       item_type: info.type,
+      cardinality: info.repeats ? "collection" : "singleton",
     });
   }
 
@@ -65,54 +80,50 @@ export function getFhirPathCompletions(
   questionnaireIndex?: QuestionnaireIndex,
 ): CompletionItem[] {
   const wasm: CompletionItem[] = [];
-  const resourceLinkIds = new Set<string>();
+  const resourceKeys = new Set<string>();
+  const anchorLinkId = extractAnchorLinkId(contextExpression);
 
   if (wasmQuestionnaireIndex) {
     try {
       const resourceItems = wasmQuestionnaireIndex.generate_completions(
         "%resource",
       ) as CompletionItem[];
-      console.log("[completions] %resource raw:", resourceItems);
-      // Filter out items that traverse repeating ancestors (ambiguous results)
       const safeResourceItems = valueOnly(resourceItems).filter(
-        (it) => !it.traverses_repeating
+        (it) => !it.traverses_repeating,
       );
-      console.log("[completions] %resource filtered:", safeResourceItems);
-      // Track which linkIds are in the safe %resource set
-      for (const it of safeResourceItems) {
-        if (it.link_id) resourceLinkIds.add(it.link_id);
-      }
-      wasm.push(...withPrefix("%resource", safeResourceItems));
+      const stamped = safeResourceItems.map((it) =>
+        anchorLinkId &&
+        it.link_id === anchorLinkId &&
+        it.cardinality === "collection"
+          ? { ...it, detail: "all iterations" }
+          : it,
+      );
+      for (const it of stamped) resourceKeys.add(dedupeKey(it));
+      wasm.push(...withPrefix("%resource", stamped));
     } catch (e) {
       console.error("[completions] %resource error:", e);
     }
 
     if (contextExpression && contextExpression !== "%resource") {
       try {
-        console.log("[completions] calling generate_completions with contextExpression:", contextExpression);
         const contextItems = wasmQuestionnaireIndex.generate_completions(
           contextExpression,
         ) as CompletionItem[];
-        console.log("[completions] generate_completions(contextExpression) returned:", contextItems);
-        console.log("[completions] contextItems length:", contextItems?.length);
-        if (contextItems && contextItems.length > 0) {
-          console.log("[completions] first context item:", contextItems[0]);
-        }
-        // Filter out items that traverse repeating ancestors and duplicates
-        const uniqueContextItems = valueOnly(contextItems).filter(
-          (it) => !it.traverses_repeating && (!it.link_id || !resourceLinkIds.has(it.link_id))
+        const uniqueContextItems = valueOnly(contextItems)
+          .filter((it) => !it.traverses_repeating)
+          .filter((it) => !resourceKeys.has(dedupeKey(it)));
+        const stamped = uniqueContextItems.map((it) =>
+          anchorLinkId && it.link_id === anchorLinkId
+            ? { ...it, detail: "current iteration" }
+            : it,
         );
-        console.log("[completions] %context filtered:", uniqueContextItems);
-        wasm.push(...withPrefix("%context", uniqueContextItems));
+        wasm.push(...withPrefix("%context", stamped));
       } catch (e) {
         console.error("[completions] %context error:", e);
       }
-    } else {
-      console.log("[completions] no context expression or equals %resource:", contextExpression);
     }
   }
 
-  // Fall back to JS-generated completions if WASM returns nothing
   if (wasm.length === 0) {
     const itemCompletions = generateItemCompletions(questionnaireIndex);
     return [...STUB_COMPLETIONS, ...itemCompletions];
